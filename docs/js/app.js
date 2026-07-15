@@ -145,7 +145,7 @@ async function render(route) {
   }
 // Thêm vào ngay dưới đoạn xử lý trang essay (khoảng dòng 132)
    if (topic.render === 'pdf') {
-    views.renderPDF(topic, `content/pdf/${topic.id}.pdf`);
+    views.renderPDF(topic, `content/pdf/${id}.pdf`);
     return;
   }
   if (topic.render === 'quiz') {
