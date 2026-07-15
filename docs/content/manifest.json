@@ -8,7 +8,7 @@
 		{ "id": "cam_nang", "label": "Sổ tay 5S", "render": "pdf" },
 		{ "id": "kaizen_doc", "label": "Tài liệu Kaizen", "render": "pdf" }
 	  ]
-	}
+	},
     {
       "label": "Lõi",
       "items": [
