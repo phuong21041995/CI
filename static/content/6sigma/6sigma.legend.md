@@ -1,0 +1,22 @@
+# Huyền thoại — 6 Sigma
+# Những trường ca cải tiến mang tính bước ngoặt, thay đổi cục diện kinh tế toàn cầu.
+
+@ Motorola — Trận đánh sinh tử chống lại làn sóng Nhật Bản
+- Bối cảnh lịch sử: Những năm 1980, đế chế điện tử Mỹ chứng kiến sự sụp đổ dây chuyền trước hàng hóa Nhật Bản. Máy nhắn tin và thiết bị liên lạc của Motorola liên tục bị lỗi bo mạch, tỷ lệ bảo hành cao khủng khiếp. Khách hàng quay lưng, doanh nghiệp đứng bên bờ vực phá sản.
+- Bước ngoặt vĩ đại: Kỹ sư Bill Smith nhận ra phương pháp kiểm tra chất lượng truyền thống (bắt lỗi ở cuối dây chuyền) là một sai lầm. Ông đề xuất một triết lý điên rồ thời bấy giờ: Phải triệt tiêu biến động ngay trong lúc sản xuất để lỗi không thể xuất hiện. Tổng giám đốc Bob Galvin lập tức đặt cược toàn bộ vận mệnh công ty vào canh bạc này, khai sinh ra hệ phương pháp 6 Sigma.
+- Kết quả kinh điển: Motorola lội ngược dòng ngoạn mục, loại bỏ 99.9997% khuyết tật, tiết kiệm hơn 16 tỷ USD chi phí vận hành chỉ trong một thập kỷ và vinh dự nhận giải thưởng Chất lượng Quốc gia Malcolm Baldrige đầu tiên của Mỹ. 6 Sigma chính thức bước ra ánh sáng như một vũ khí tối thượng.
+
+@ General Electric — Cú chuyển mình vĩ đại của Jack Welch
+- Bối cảnh lịch sử: Năm 1995, General Electric (GE) là một tập đoàn công nghiệp khổng lồ nhưng trì trệ, bộ máy hành chính cồng kềnh và các mảng dịch vụ tài chính (GE Capital) liên tục gặp rủi ro hệ thống do dữ liệu giao dịch bị nhiễu động.
+- Bước ngoặt vĩ đại: Huyền thoại quản trị Jack Welch tuyên bố 6 Sigma là mục tiêu tối thượng và bắt buộc trên toàn tập đoàn. Ông không chỉ áp dụng nó dưới xưởng cơ khí, mà ép toàn bộ khối văn phòng, kế toán, ngân hàng phải dùng biểu đồ SPC và kiểm định P-value để tối ưu hóa quy trình duyệt vay và xử lý hóa đơn. Welch ra điều kiện khắc nghiệt: Không có chứng chỉ Green Belt/Black Belt thì không có cơ hội thăng tiến tại GE.
+- Kết quả kinh điển: 6 Sigma biến GE từ một gã khổng lồ chậm chạp thành một cỗ máy kiếm tiền siêu hạng, mang lại hơn 12 tỷ USD lợi nhuận thuần trong vòng 5 năm. Giá trị vốn hóa của GE vọt lên mức 400 tỷ USD, đưa công ty trở thành doanh nghiệp đắt giá nhất hành tinh thời điểm đó và chứng minh 6 Sigma hoạt động hoàn hảo cả trong khối dịch vụ/văn phòng.
+
+@ AlliedSignal — Cứu vãn con tàu đắm ngành công nghiệp nặng
+- Bối cảnh lịch sử: AlliedSignal (tập đoàn chuyên về hàng không vũ trụ và phụ tùng ô tô) đối mặt với cuộc khủng hoảng sụt giảm biên lợi nhuận nghiêm trọng vào đầu thập niên 90. Cổ phiếu lao dốc, chi phí vật tư tăng phi mã, nội bộ các phòng ban đổ lỗi lẫn nhau khi tiến độ bàn giao linh kiện liên tục bị chậm trễ.
+- Bước ngoặt vĩ đại: CEO Larry Bossidy triển khai 6 Sigma với một tư duy cực kỳ thực dụng: Tập trung toàn lực vào việc giảm thời gian chu kỳ (Cycle Time Execution). Ông yêu cầu các Đai Đen không được ngồi phòng thiền phân tích lý thuyết, mà phải lao thẳng xuống hiện trường, mổ xẻ chuỗi cung ứng phẳng và viết lại toàn bộ quy trình phối hợp để triệt tiêu lãng phí chờ đợi.
+- Kết quả kinh điển: AlliedSignal tiết kiệm được hơn 2 tỷ USD, biên lợi nhuận tăng trưởng liên tục trong 31 quý. Sự thành công của câu chuyện này đã thuyết phục hoàn toàn giới công nghiệp nặng toàn cầu rằng: 6 Sigma không phải là trò chơi của riêng ngành điện tử công nghệ cao, mà là tấm khiên hộ mệnh cho mọi loại hình nhà máy.
+
+@ Amazon — Định hình trật tự trong sự hỗn độn của Logistics
+- Bối cảnh lịch sử: Đầu những năm 2000, Amazon bùng nổ số lượng đơn hàng vượt ngoài tầm kiểm soát. Hệ thống kho bãi quá tải, hàng hóa thất lạc, thời gian đóng gói và giao hàng trễ hẹn đe dọa trực tiếp đến trải nghiệm cốt lõi của khách hàng khi hệ thống vận hành rơi vào trạng thái hỗn mang.
+- Bước ngoặt vĩ đại: Jeff Bezos quyết định nhập khẩu tư duy Lean 6 Sigma vào hệ thống trung tâm phân phối (Fulfillment Centers). Amazon phát triển mô hình "Lưu trữ hỗn độn" (Chaotic Storage) nhưng được kiểm soát bằng thuật toán tracking biến động tuyệt đối. Mỗi lỗi đặt sai vị trí hàng hóa được xem là một "chủng tử sai lỗi" cần dùng 5 Whys để truy tìm tận gốc mã lệnh phần mềm hoặc thao tác gá đặt của robot.
+- Kết quả kinh điển: Tỷ lệ giao sai hàng giảm về mức tiệm cận 0, thời gian luân chuyển một món hàng từ lúc khách click mua đến khi lên xe tải rút ngắn từ 3 ngày xuống còn vài chục phút. Đây chính là bệ phóng hạ tầng vững chắc giúp Amazon tự tin vận hành cam kết giao dịch Prime siêu tốc trên toàn cầu.

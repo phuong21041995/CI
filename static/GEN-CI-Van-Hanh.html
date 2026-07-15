@@ -1,0 +1,1613 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SProduction GEN-CI System (Light Mode)</title>
+<!-- Đổi sang font Quicksand + Giữ lại Mono cho số liệu/bảng biểu -->
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* LIGHT THEME VARIABLES */
+  --bg:       #f0f2f5;
+  --bg2:      #ffffff;
+  --bg3:      #f9fafb;
+  --bg4:      #f3f4f6;
+  --line:     #e5e7eb;
+  --line2:    #d1d5db;
+  --text:     #111827;
+  --text2:    #4b5563;
+  --text3:    #6b7280;
+  
+  --gold:     #d97706;
+  --gold2:    #b45309;
+  --green:    #10b981;
+  --green2:   #059669;
+  --blue:     #3b82f6;
+  --blue2:    #1d4ed8;
+  --red:      #ef4444;
+  --red2:     #b91c1c;
+  --orange:   #f97316;
+  --orange2:  #c2410c;
+  --purple:   #8b5cf6;
+  --teal:     #0d9488;
+  
+  --r:        8px;
+  --mono:     'IBM Plex Mono', monospace;
+  --sans:     'Quicksand', sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:15px;line-height:1.6;min-height:100vh; font-weight:500;}
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--line2);border-radius:4px}
+
+/* ── LAYOUT ── */
+.shell{display:grid;grid-template-columns:250px 1fr;min-height:100vh}
+.sidebar{background:var(--bg2);border-right:1px solid var(--line);display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow-y:auto}
+.main{overflow-x:hidden}
+
+/* ── SIDEBAR ── */
+.sb-logo{padding:20px 16px 16px;border-bottom:1px solid var(--line)}
+.sb-logo .mark{font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.12em;color:var(--gold);text-transform:uppercase}
+.sb-logo .name{font-size:18px;font-weight:700;color:var(--text);margin-top:4px;line-height:1.2}
+.sb-logo .ver{font-family:var(--mono);font-size:12px;color:var(--text3);margin-top:4px}
+.sb-section{padding:12px 0 4px}
+.sb-label{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.1em;color:var(--text3);padding:0 16px 6px;text-transform:uppercase}
+.sb-item{display:flex;align-items:center;gap:10px;padding:8px 16px;cursor:pointer;font-size:14px;font-weight:600;color:var(--text2);transition:all .12s;border-left:3px solid transparent;text-decoration:none}
+.sb-item:hover{background:var(--bg3);color:var(--text)}
+.sb-item.on{color:var(--text);background:var(--bg3);border-left-color:var(--gold)}
+.sb-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.sb-divider{height:1px;background:var(--line);margin:8px 16px}
+
+/* ── TOPBAR ── */
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 24px;background:var(--bg2);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:50}
+.tb-breadcrumb{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:13px;color:var(--text3)}
+.tb-breadcrumb span{color:var(--text2); font-weight:600;}
+.tb-right{display:flex;align-items:center;gap:12px; justify-content: flex-start;margin-right: 700px; }
+.badge{font-family:var(--mono);font-size:12px;padding:4px 10px;border-radius:4px;font-weight:600}
+.badge-green{background:#10b9811a;color:var(--green2);border:1px solid #10b98133}
+.badge-gold{background:#d977061a;color:var(--gold2);border:1px solid #d9770633}
+.badge-red{background:#ef44441a;color:var(--red2);border:1px solid #ef444433}
+.badge-blue{background:#3b82f61a;color:var(--blue2);border:1px solid #3b82f633}
+.badge-gray{background:var(--bg4);color:var(--text2);border:1px solid var(--line2)}
+
+/* ── PAGE ── */
+.page{display:none;padding:24px;animation:fadeUp .2s ease}
+.page.on{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── SECTION HEADERS ── */
+.ph{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:24px;gap:16px}
+.ph-left .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.1em;color:var(--gold);text-transform:uppercase;margin-bottom:6px}
+.ph-left h1{font-size:28px;font-weight:700;color:var(--text);line-height:1.2}
+.ph-left p{font-size:15px;color:var(--text2);margin-top:8px;max-width:600px;line-height:1.6}
+.ph-actions{display:flex;gap:8px;flex-shrink:0;flex-wrap:wrap}
+
+/* ── BUTTONS ── */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:var(--r);font-size:14px;font-family:var(--sans);font-weight:700;cursor:pointer;border:1px solid var(--line2);background:var(--bg2);color:var(--text2);transition:all .12s}
+.btn:hover{background:var(--bg4);color:var(--text);border-color:var(--text3)}
+.btn-primary{background:var(--gold);border-color:var(--gold);color:#fff}
+.btn-primary:hover{background:var(--gold2);border-color:var(--gold2);color:#fff}
+.btn-green{background:#10b9811a;border-color:#10b98133;color:var(--green2)}
+.btn-green:hover{background:#10b98126}
+.btn-red{background:#ef44441a;border-color:#ef444433;color:var(--red2)}
+.btn-red:hover{background:#ef444426}
+.btn-sm{padding:6px 12px;font-size:13px}
+.btn-icon{width:32px;height:32px;padding:0;justify-content:center;font-size:16px}
+
+/* ── GRID ── */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+
+/* ── CARDS ── */
+.card{background:var(--bg2);border:1px solid var(--line);border-radius:var(--r);overflow:hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.05);}
+.card-head{padding:16px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between}
+.card-title{font-size:16px;font-weight:700;color:var(--text)}
+.card-sub{font-size:13px;color:var(--text3);margin-top:4px}
+.card-body{padding:16px}
+
+/* ── STAT CARDS ── */
+.stat{background:var(--bg2);border:1px solid var(--line);border-radius:var(--r);padding:20px;position:relative;overflow:hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.05);}
+.stat::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.stat-green::before{background:var(--green)}
+.stat-gold::before{background:var(--gold)}
+.stat-red::before{background:var(--red)}
+.stat-blue::before{background:var(--blue)}
+.stat-teal::before{background:var(--teal)}
+.stat-label{font-family:var(--mono);font-size:12px;letter-spacing:.06em;color:var(--text3);text-transform:uppercase;margin-bottom:8px; font-weight:500;}
+.stat-val{font-family:var(--mono);font-size:32px;font-weight:600;line-height:1; color:var(--text)}
+.stat-sub{font-size:13px;color:var(--text2);margin-top:6px}
+
+/* ── FORMS ── */
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-size:13px;font-weight:700;color:var(--text2)}
+.field input,.field select,.field textarea{background:var(--bg2);border:1px solid var(--line2);border-radius:var(--r);color:var(--text);font-family:var(--sans);font-size:14px;font-weight:500;padding:10px 12px;transition:border-color .12s, box-shadow .12s;outline:none}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--gold); box-shadow: 0 0 0 3px rgba(217,119,6,0.1)}
+.field textarea{resize:vertical;min-height:80px;line-height:1.6}
+.field select option{background:var(--bg2)}
+.form-row{display:grid;gap:12px}
+.form-row.c2{grid-template-columns:1fr 1fr}
+.form-row.c3{grid-template-columns:1fr 1fr 1fr}
+.form-row.c4{grid-template-columns:1fr 1fr 1fr 1fr}
+
+/* ── TABLES ── */
+.tbl-wrap{overflow-x:auto; border: 1px solid var(--line); border-radius: var(--r);}
+table{width:100%;border-collapse:collapse}
+th{font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text3);padding:12px 16px;text-align:left;background:var(--bg3);border-bottom:1px solid var(--line2);white-space:nowrap}
+td{padding:12px 16px;border-bottom:1px solid var(--line);font-size:14px;vertical-align:top; color:var(--text2)}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--bg3)}
+.td-mono{font-family:var(--mono);font-size:13px; color:var(--text)}
+.td-num{font-family:var(--mono);font-size:15px;font-weight:600; color:var(--text)}
+
+/* ── KPN COLORS ── */
+.kpn-high{color:var(--red2); font-weight:700;}
+.kpn-med{color:var(--gold2); font-weight:700;}
+.kpn-low{color:var(--blue2); font-weight:700;}
+
+/* ── PHASE BADGES ── */
+.phase-1{background:#d977061a;color:var(--gold2);border:1px solid #d9770633}
+.phase-2{background:#3b82f61a;color:var(--blue2);border:1px solid #3b82f633}
+.phase-3{background:#10b9811a;color:var(--green2);border:1px solid #10b98133}
+.phase-4{background:#8b5cf61a;color:#6d28d9;border:1px solid #8b5cf633}
+.phase-tag{font-family:var(--mono);font-size:12px;padding:4px 8px;border-radius:4px;font-weight:600;white-space:nowrap}
+
+/* ── 3M TAGS ── */
+.m-mura{background:#3b82f61a;color:var(--blue2);border:1px solid #3b82f633;font-family:var(--mono);font-size:12px;padding:3px 8px;border-radius:4px}
+.m-muri{background:#d977061a;color:var(--gold2);border:1px solid #d9770633;font-family:var(--mono);font-size:12px;padding:3px 8px;border-radius:4px}
+.m-muda{background:#ef44441a;color:var(--red2);border:1px solid #ef444433;font-family:var(--mono);font-size:12px;padding:3px 8px;border-radius:4px}
+
+/* ── PROGRESS BAR ── */
+.prog-wrap{margin:16px 0}
+.prog-label{display:flex;justify-content:space-between;font-size:13px;color:var(--text3);margin-bottom:6px; font-weight:600;}
+.prog-track{height:6px;background:var(--bg4);border-radius:3px;overflow:hidden}
+.prog-fill{height:100%;border-radius:3px;transition:width .4s ease}
+
+/* ── GEN LAYER ── */
+.gen-layer{background:linear-gradient(135deg,var(--bg2),var(--bg3));border:1px solid var(--line2);border-radius:var(--r);padding:20px;margin-bottom:16px; box-shadow: 0 1px 3px rgba(0,0,0,0.02);}
+.gen-layer-title{font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:10px}
+.gen-layer-title::after{content:'';flex:1;height:1px;background:var(--line2)}
+.gen-badges{display:flex;flex-wrap:wrap;gap:8px}
+.gen-badge{font-family:var(--mono);font-size:12px;padding:4px 10px;border-radius:4px;font-weight:500;border:1px solid}
+
+/* ── TIMELINE ── */
+.timeline{display:flex;gap:0;overflow-x:auto;padding-bottom:12px; margin-top: 16px;}
+.tl-step{flex:1;min-width:180px;padding:16px;border:1px solid var(--line);border-right:none;position:relative;transition:background .12s; background:var(--bg2)}
+.tl-step:first-child{border-radius:var(--r) 0 0 var(--r)}
+.tl-step:last-child{border-right:1px solid var(--line);border-radius:0 var(--r) var(--r) 0}
+.tl-step:hover{background:var(--bg3)}
+.tl-num{font-family:var(--mono);font-size:24px;font-weight:600;line-height:1;margin-bottom:8px}
+.tl-name{font-size:15px;font-weight:700;margin-bottom:6px; color:var(--text)}
+.tl-desc{font-size:13px;color:var(--text2);line-height:1.5}
+.tl-tools{margin-top:10px;display:flex;flex-wrap:wrap;gap:6px}
+.tl-tool{font-family:var(--mono);font-size:11px;padding:3px 6px;border-radius:3px;background:var(--bg4);color:var(--text2);border:1px solid var(--line); font-weight:600;}
+
+/* ── CHECKLIST ── */
+.ck-list{display:flex;flex-direction:column;gap:8px}
+.ck-item{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border-radius:var(--r);border:1px solid var(--line);cursor:pointer;transition:all .12s;background:var(--bg2)}
+.ck-item:hover{border-color:var(--line2); background:var(--bg3)}
+.ck-item.done{opacity:.6; background:var(--bg)}
+.ck-box{width:18px;height:18px;border-radius:4px;border:1px solid var(--line2);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;font-size:11px;transition:all .12s;color:var(--bg2)}
+.ck-item.done .ck-box{background:var(--green);border-color:var(--green); color:#fff}
+.ck-item.done .ck-main{text-decoration:line-through;color:var(--text3)}
+.ck-main{font-size:14px;font-weight:600;color:var(--text)}
+.ck-sub{font-size:13px;color:var(--text3);margin-top:4px;line-height:1.4}
+
+/* ── QUOTE ── */
+.quote{border-left:3px solid var(--gold);padding:12px 16px;background:var(--bg2);border-radius:0 var(--r) var(--r) 0;margin:16px 0; box-shadow: 0 1px 2px rgba(0,0,0,0.02);}
+.quote-text{font-size:14px;font-weight:600;color:var(--text2);line-height:1.7;font-style:italic}
+.quote-src{font-family:var(--mono);font-size:12px;color:var(--text3);margin-top:6px}
+
+/* ── MODAL ── */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(17, 24, 39, 0.6);backdrop-filter: blur(2px);z-index:200;align-items:center;justify-content:center}
+.modal-bg.on{display:flex}
+.modal{background:var(--bg2);border:1px solid var(--line2);border-radius:var(--r);width:600px;max-width:95vw;max-height:90vh;overflow-y:auto;box-shadow:0 20px 40px rgba(0,0,0,0.15)}
+.modal-head{padding:16px 20px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between}
+.modal-title{font-size:18px;font-weight:700;color:var(--text)}
+.modal-body{padding:20px}
+.modal-foot{padding:16px 20px;border-top:1px solid var(--line);display:flex;justify-content:flex-end;gap:10px}
+
+/* ── MISC ── */
+.divider{height:1px;background:var(--line);margin:20px 0}
+.tag{font-family:var(--mono);font-size:12px;padding:3px 8px;border-radius:4px;font-weight:600}
+.empty-state{text-align:center;padding:40px;color:var(--text3);font-size:14px}
+.empty-state .ico{font-size:32px;margin-bottom:12px}
+.alert{border-radius:var(--r);padding:12px 16px;font-size:14px;border:1px solid;margin-bottom:16px; line-height: 1.6;}
+.alert-gold{background:#d977061a;border-color:#d9770633;color:var(--gold2)}
+.alert-green{background:#10b9811a;border-color:#10b98133;color:var(--green2)}
+.scroll-x{overflow-x:auto}
+.text-mono{font-family:var(--mono)}
+.gap8{display:flex;flex-direction:column;gap:8px}
+.gap12{display:flex;flex-direction:column;gap:12px}
+.mt8{margin-top:8px}
+.mt12{margin-top:12px}
+.mt16{margin-top:16px}
+.flex{display:flex;align-items:center}
+.flex-between{display:flex;align-items:center;justify-content:space-between}
+.flex-wrap{display:flex;flex-wrap:wrap;gap:8px}
+.fw600{font-weight:700}
+.fs11{font-size:13px}
+.col-text3{color:var(--text3)}
+.col-text2{color:var(--text2)}
+.col-gold{color:var(--gold2)}
+.col-green{color:var(--green2)}
+.col-red{color:var(--red2)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  .shell{grid-template-columns:1fr}
+  .sidebar{position:relative;height:auto}
+  .grid2,.grid3,.grid4{grid-template-columns:1fr}
+  .form-row.c2,.form-row.c3,.form-row.c4{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<!-- Nút quay lại trang chủ -->
+<a href="/" style="
+    position: fixed; 
+    top: 5px; 
+    right: 20px; 
+    padding: 8px 16px; 
+    background: var(--bg1); 
+    border: 1px solid var(--line);
+    border-radius: var(--r);
+    text-decoration: none;
+    color: var(--text2);
+    font-weight: 600;
+    font-family: var(--sans);
+    box-shadow: 0 2px 6px rgba(0,0,234,1);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    Về trang chủ
+</a>
+<div class="shell">
+
+<!-- SIDEBAR -->
+<nav class="sidebar">
+  <div class="sb-logo">
+    <div class="mark">GEN-CI</div>
+    <div class="name">Hệ Thống Tiến Hóa </div>
+    <div class="ver">Tích hợp Mã GEN + TPS</div>
+  </div>
+  <!-- Inline Styles updated for Light mode -->
+  <div style="margin:16px 16px 8px;border:1px solid var(--border);border-radius:8px;overflow:hidden">
+    <div style="background:var(--bg);padding:8px 14px;font-size:11px;letter-spacing:.08em;color:var(--text3);text-transform:uppercase;font-weight:700">Bộ ứng dụng GEN-CI</div>
+    <a href="GEN-CI-Hoc-va-Ren.html" style="display:flex;align-items:center;gap:10px;padding:10px 14px;text-decoration:none;font-size:14px;color:var(--text2);background:var(--bg3);border-left:3px solid transparent;font-family:inherit">
+      <span style="font-size:18px">📖</span>
+      <span><span style="font-weight:700;display:block;line-height:1.2">Học & Rèn</span><span style="font-size:11px;color:var(--text3);font-weight:600">Tầng Người · Bộ GEN</span></span>
+    </a>
+    <a href="GEN-CI-Van-Hanh.html" style="display:flex;align-items:center;gap:10px;padding:10px 14px;text-decoration:none;font-size:14px;color:var(--blue2);background:var(--bg2);border-left:3px solid var(--blue);font-family:inherit">
+      <span style="font-size:18px">⚙️</span>
+      <span><span style="font-weight:700;display:block;line-height:1.2;color:var(--text)">Vận Hành</span><span style="font-size:11px;color:var(--blue);font-weight:600">Tầng Công Cụ · TPS</span></span>
+    </a>
+  </div>
+
+  <div class="sb-section">
+    <div class="sb-label">Tổng quan</div>
+    <a class="sb-item on" onclick="nav('dashboard')">
+      <span class="sb-dot" style="background:var(--gold)"></span>Dashboard
+    </a>
+    <a class="sb-item" onclick="nav('gen')">
+      <span class="sb-dot" style="background:var(--purple)"></span>Bộ GEN Nền Tảng
+    </a>
+  </div>
+
+  <div class="sb-divider"></div>
+
+  <div class="sb-section">
+    <div class="sb-label">Vận hành CI</div>
+    <a class="sb-item" onclick="nav('gemba')">
+      <span class="sb-dot" style="background:var(--blue)"></span>Gemba Pain-Point Board
+    </a>
+    <a class="sb-item" onclick="nav('kpn')">
+      <span class="sb-dot" style="background:var(--red)"></span>KPN & Phân luồng
+    </a>
+    <a class="sb-item" onclick="nav('phases')">
+      <span class="sb-dot" style="background:var(--green)"></span>4 Giai đoạn Tiến hóa
+    </a>
+  </div>
+
+  <div class="sb-divider"></div>
+
+  <div class="sb-section">
+    <div class="sb-label">Theo dõi</div>
+    <a class="sb-item" onclick="nav('kaizen')">
+      <span class="sb-dot" style="background:var(--teal)"></span>Kaizen Log
+    </a>
+    <a class="sb-item" onclick="nav('report')">
+      <span class="sb-dot" style="background:var(--orange)"></span>Báo cáo & Xuất dữ liệu
+    </a>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<div class="main">
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="tb-breadcrumb">
+    <span id="tb-page">Dashboard</span>
+  </div>
+  <div class="tb-right">
+    <span class="badge badge-green" id="tb-total">0 Pain-points</span>
+    <span class="badge badge-gold" id="tb-quick">0 Quick Wins</span>
+    <span class="badge badge-blue" id="tb-date"></span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     PAGE: DASHBOARD
+══════════════════════════════════════════════════════════ -->
+<div class="page on" id="page-dashboard">
+<div style="padding:24px">
+
+  <div class="ph">
+    <div class="ph-left">
+      <div class="eyebrow">SProduction GEN-CI System</div>
+      <h1>Dashboard Tổng Quan</h1>
+      <p>Hệ thống tích hợp Mã GEN (Tâm-Định-Cương) làm nền tảng con người × TPS/Kaizen làm công cụ vận hành. Cải tiến bắt đầu từ Tâm, không phải từ công cụ.</p>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="grid4 mt8" id="dash-stats">
+    <div class="stat stat-gold">
+      <div class="stat-label">Total Pain-points</div>
+      <div class="stat-val col-gold" id="ds-total">0</div>
+      <div class="stat-sub">Đã ghi nhận</div>
+    </div>
+    <div class="stat stat-red">
+      <div class="stat-label">Quick Wins (KPN≥15)</div>
+      <div class="stat-val col-red" id="ds-qw">0</div>
+      <div class="stat-sub">Xử lý trong 24-48h</div>
+    </div>
+    <div class="stat stat-blue">
+      <div class="stat-label">Lean/6σ (5≤KPN&lt;15)</div>
+      <div class="stat-val col-blue2" id="ds-l6">0</div>
+      <div class="stat-sub">Dự án hệ thống</div>
+    </div>
+    <div class="stat stat-teal">
+      <div class="stat-label">TRIZ (KPN&lt;5+mâu thuẫn)</div>
+      <div class="stat-val" style="color:var(--teal)" id="ds-triz">0</div>
+      <div class="stat-sub">R&D đột phá</div>
+    </div>
+  </div>
+
+  <!-- 3M DISTRIBUTION -->
+  <div class="grid2 mt16">
+    <div class="card">
+      <div class="card-head">
+        <div>
+          <div class="card-title">Phân bố 3M</div>
+          <div class="card-sub">Mura · Muri · Muda tại hiện trường</div>
+        </div>
+      </div>
+      <div class="card-body" id="dash-3m">
+        <div class="empty-state"><div class="ico">📊</div>Chưa có dữ liệu</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div>
+          <div class="card-title">GEN Check — Tâm Pháp đội nhóm</div>
+          <div class="card-sub">6 Hoà · Tự đánh giá tuần này</div>
+        </div>
+        <button class="btn btn-sm" onclick="nav('gen')">Chi tiết →</button>
+      </div>
+      <div class="card-body" id="dash-gen">
+        <div class="empty-state"><div class="ico">🧘</div>Chưa check-in tuần này</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RECENT PAIN-POINTS -->
+  <div class="card mt16">
+    <div class="card-head">
+      <div class="card-title">Pain-points gần nhất</div>
+      <button class="btn btn-sm" onclick="nav('gemba')">Xem tất cả →</button>
+    </div>
+    <div class="tbl-wrap" style="border:none">
+      <table id="dash-table">
+        <thead><tr>
+          <th>#</th><th>Công đoạn</th><th>Mô tả</th><th>3M</th>
+          <th>KPN</th><th>Phân luồng</th><th>Trạng thái</th>
+        </tr></thead>
+        <tbody id="dash-tbody">
+          <tr><td colspan="7" class="empty-state">Chưa có dữ liệu — <a style="color:var(--gold);cursor:pointer;font-weight:700" onclick="nav('gemba')">Thêm pain-point đầu tiên →</a></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- GEN REMINDER -->
+  <div class="alert alert-gold mt16">
+    <b>0 · Tinh thần Huyền Không:</b> Trước mỗi Gemba Walk — dừng lại 1 nhịp thở. Tôi đang CI từ tình yêu hay từ sợ hãi? Câu trả lời đó quyết định chất lượng mọi thứ phía dưới.
+  </div>
+
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     PAGE: BỘ GEN NỀN TẢNG
+══════════════════════════════════════════════════════════ -->
+<div class="page" id="page-gen">
+<div style="padding:24px">
+
+  <div class="ph">
+    <div class="ph-left">
+      <div class="eyebrow">Mã GEN 0955613345</div>
+      <h1>Bộ GEN Nền Tảng</h1>
+      <p>Con người là tác nhân kích hoạt mọi cải tiến. Trước khi dùng bất kỳ công cụ TPS nào, cần kiểm tra lớp nền GEN.</p>
+    </div>
+    <div class="ph-actions">
+      <button class="btn btn-primary" onclick="openGenCheckin()">Check-in tuần này</button>
+    </div>
+  </div>
+
+  <!-- HUYEN KHONG -->
+  <div class="gen-layer" style="border-color:var(--purple);margin-bottom:20px; background: #faf5ff;">
+    <div class="gen-layer-title" style="color:var(--purple)">0 · Tinh Thần Huyền Không — Nền của toàn bộ hệ thống</div>
+    <div class="quote" style="border-color:var(--purple)">
+      <div class="quote-text">Hòa đồng với tất cả mà không có vấn đề gì cả — và không có vấn đề gì mà vẫn hòa đồng với tất cả.</div>
+      <div class="quote-src">Vô Ngã · Vị Tha · Nền của mọi vòng Kaizen thật sự</div>
+    </div>
+    <div class="quote" style="border-color:var(--blue)">
+      <div class="quote-text">Trong TPS, Taiichi Ohno nói: "Dữ liệu quan trọng, nhưng tôi tin tưởng vào sự kiện hơn." Sự kiện chỉ thấy được khi tâm không có thành kiến. Huyền Không là nền tảng của Genchi Genbutsu.</div>
+    </div>
+  </div>
+
+  <!-- 5 PHAP -->
+  <div class="grid2">
+    <div>
+      <div class="gen-layer" style="border-color:#10b98144">
+        <div class="gen-layer-title" style="color:var(--green2)">Định Pháp × CI</div>
+        <div class="ck-list" id="gen-dinh-checks"></div>
+        <div class="mt12">
+          <div class="fs11 col-text3 mb4 fw600">Công cụ TPS tương ứng:</div>
+          <div class="flex-wrap">
+            <span class="tl-tool">Hoshin Kanri</span>
+            <span class="tl-tool">A3 Strategy</span>
+            <span class="tl-tool">VSM Future State</span>
+            <span class="tl-tool">OKR CI</span>
+          </div>
+        </div>
+      </div>
+      <div class="gen-layer" style="border-color:#8b5cf644">
+        <div class="gen-layer-title" style="color:var(--purple)">Cương Pháp × CI</div>
+        <div class="ck-list" id="gen-cuong-checks"></div>
+        <div class="mt12">
+          <div class="fs11 col-text3 mb4 fw600">Công cụ TPS tương ứng:</div>
+          <div class="flex-wrap">
+            <span class="tl-tool">Leader Standard Work</span>
+            <span class="tl-tool">Team Charter CI</span>
+            <span class="tl-tool">6 Hoà check-in</span>
+            <span class="tl-tool">Audit CI</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="gen-layer" style="border-color:#3b82f644">
+        <div class="gen-layer-title" style="color:var(--blue2)">Hành Pháp × CI</div>
+        <div class="ck-list" id="gen-hanh-checks"></div>
+        <div class="mt12">
+          <div class="fs11 col-text3 mb4 fw600">Công cụ TPS tương ứng:</div>
+          <div class="flex-wrap">
+            <span class="tl-tool">PDCA / DMAIC</span>
+            <span class="tl-tool">A3 Problem Solving</span>
+            <span class="tl-tool">9 Bước tự học</span>
+            <span class="tl-tool">Kaizen Blitz</span>
+          </div>
+        </div>
+      </div>
+      <div class="gen-layer" style="border-color:#d9770644">
+        <div class="gen-layer-title" style="color:var(--gold2)">Hộ Pháp × CI</div>
+        <div class="ck-list" id="gen-ho-checks"></div>
+        <div class="mt12">
+          <div class="fs11 col-text3 mb4 fw600">Công cụ TPS tương ứng:</div>
+          <div class="flex-wrap">
+            <span class="tl-tool">5S + Visual Mgmt</span>
+            <span class="tl-tool">SOP / SWS</span>
+            <span class="tl-tool">4 Điểm NL</span>
+            <span class="tl-tool">Thư viện 3 gốc</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAM PHAP - 6 HOA -->
+  <div class="gen-layer mt16" style="border-color:#ef444444">
+    <div class="gen-layer-title" style="color:var(--red2)">Tâm Pháp × 6 Hoà — Chẩn đoán sức khoẻ đội nhóm CI</div>
+    <div class="alert alert-gold" style="margin-bottom:16px">
+      <b>Tiến trình mâu thuẫn:</b> Lý Sự (sóng ngầm) → Sinh Sự (dậy sóng) → Quân Sự (bão tố) → Hậu Sự (đổ vỡ). Chẩn đoán đúng tầng để điều trị đúng — không dùng "thuốc mạnh" cho bệnh nhẹ.
+    </div>
+    <div id="luchoa-grid" class="grid2"></div>
+    <div class="mt16">
+      <div class="fs11 col-text3 fw600" style="margin-bottom:10px">Check-in 6 Hoà tuần này (nhóm CI)</div>
+      <div id="luchoa-checkin" class="grid2"></div>
+    </div>
+  </div>
+
+  <!-- 9 BUOC -->
+  <div class="card mt16">
+    <div class="card-head">
+      <div class="card-title">9 Bước Tự Học — PDCA của cá nhân</div>
+    </div>
+    <div class="card-body">
+      <div id="buoc9-list" class="gap12"></div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     PAGE: GEMBA PAIN-POINT BOARD
+══════════════════════════════════════════════════════════ -->
+<div class="page" id="page-gemba">
+<div style="padding:24px">
+
+  <div class="ph">
+    <div class="ph-left">
+      <div class="eyebrow">Gemba Pain-Point Board</div>
+      <h1>Bảng Khảo Sát Bất Mãn Hiện Trường</h1>
+      <p>Voice of the Employee = chỉ dấu kỹ thuật. Bất mãn của công nhân không phải cảm tính — đó là Mura/Muri đang tích tụ. Ghi nhận và phân tích để CI đúng gốc.</p>
+    </div>
+    <div class="ph-actions">
+      <button class="btn btn-primary" onclick="openAddPainpoint()">+ Thêm Pain-point</button>
+      <button class="btn" onclick="openImport()">Import mẫu</button>
+    </div>
+  </div>
+
+  <div class="alert alert-gold">
+    <b>KPN = (Tác động S × Tần suất O) / Độ khó E</b> · S,O,E thang 1–5 · KPN≥15: Quick Win (24-48h) · 5≤KPN&lt;15: Lean/6Sigma · KPN&lt;5+mâu thuẫn: TRIZ
+  </div>
+
+  <div class="card mt16">
+    <div class="card-head">
+      <div class="card-title">Pain-point Board <span class="tag badge-gray" id="pp-count">0</span></div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <select id="filter-3m" class="field" style="padding:6px 12px;font-size:13px" onchange="renderPainpoints()">
+          <option value="">Tất cả 3M</option>
+          <option value="Mura">Mura</option>
+          <option value="Muri">Muri</option>
+          <option value="Muda">Muda</option>
+        </select>
+        <select id="filter-status" class="field" style="padding:6px 12px;font-size:13px" onchange="renderPainpoints()">
+          <option value="">Tất cả trạng thái</option>
+          <option value="Backlog">Backlog</option>
+          <option value="In Progress">In Progress</option>
+          <option value="Done">Done</option>
+        </select>
+      </div>
+    </div>
+    <div class="tbl-wrap" style="border:none">
+      <table>
+        <thead><tr>
+          <th>ID</th><th>Công đoạn</th><th>Mô tả bất mãn</th><th>3M</th>
+          <th title="Severity">S</th><th title="Occurrence">O</th><th title="Effort">E</th>
+          <th>KPN</th><th>Phân luồng</th><th>Hướng giải quyết</th>
+          <th>GEN Layer</th><th>Trạng thái</th><th>Hành động</th>
+        </tr></thead>
+        <tbody id="pp-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     PAGE: KPN & PHÂN LUỒNG
+══════════════════════════════════════════════════════════ -->
+<div class="page" id="page-kpn">
+<div style="padding:24px">
+
+  <div class="ph">
+    <div class="ph-left">
+      <div class="eyebrow">KPN & Governance Workflow</div>
+      <h1>Phân Luồng Xử Lý Ý Tưởng</h1>
+      <p>Dòng chảy từ Pain-point → Phân loại → Thẩm quyền phê duyệt → Triển khai. Không có ý tưởng nào bị tắc nghẽn tại Backlog quá 7 ngày.</p>
+    </div>
+  </div>
+
+  <div class="grid3">
+    <div class="stat stat-red">
+      <div class="stat-label">Cấp 1 · Quick Wins (KPN≥15)</div>
+      <div class="stat-val col-red" id="kpn-c1">0</div>
+      <div class="stat-sub">Tổ trưởng duyệt · 24-48h · Kaizen/5S/Poka-Yoke</div>
+    </div>
+    <div class="stat stat-blue">
+      <div class="stat-label">Cấp 2 · Lean/6σ (5≤KPN&lt;15)</div>
+      <div class="stat-val col-blue2" id="kpn-c2">0</div>
+      <div class="stat-sub">CI Manager · Green/Black Belt · DMAIC</div>
+    </div>
+    <div class="stat stat-teal">
+      <div class="stat-label">Cấp 3 · TRIZ (KPN&lt;5+mâu thuẫn)</div>
+      <div class="stat-val" style="color:var(--teal)" id="kpn-c3">0</div>
+      <div class="stat-sub">Giám đốc · Master BB · Đột phá công nghệ</div>
+    </div>
+  </div>
+
+  <div class="grid3 mt16">
+    <!-- C1 -->
+    <div class="card">
+      <div class="card-head" style="border-top:3px solid var(--red)">
+        <div>
+          <div class="card-title col-red">Cấp 1 · Quick Wins</div>
+          <div class="card-sub">KPN ≥ 15.0</div>
+        </div>
+      </div>
+      <div class="card-body gap12" id="kpn-c1-list">
+        <div class="empty-state"><div>Chưa có</div></div>
+      </div>
+    </div>
+    <!-- C2 -->
+    <div class="card">
+      <div class="card-head" style="border-top:3px solid var(--blue)">
+        <div>
+          <div class="card-title col-blue2">Cấp 2 · Lean / Six Sigma</div>
+          <div class="card-sub">5.0 ≤ KPN &lt; 15.0</div>
+        </div>
+      </div>
+      <div class="card-body gap12" id="kpn-c2-list">
+        <div class="empty-state"><div>Chưa có</div></div>
+      </div>
+    </div>
+    <!-- C3 -->
+    <div class="card">
+      <div class="card-head" style="border-top:3px solid var(--teal)">
+        <div>
+          <div class="card-title" style="color:var(--teal)">Cấp 3 · R&D / TRIZ</div>
+          <div class="card-sub">KPN &lt; 5.0 + mâu thuẫn kỹ thuật</div>
+        </div>
+      </div>
+      <div class="card-body gap12" id="kpn-c3-list">
+        <div class="empty-state"><div>Chưa có</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GEN LAYER CHO KPN -->
+  <div class="gen-layer mt16" style="border-color:#10b98144">
+    <div class="gen-layer-title" style="color:var(--green2)">GEN Layer · Phân luồng không phải chỉ là kỹ thuật</div>
+    <div class="grid2">
+      <div>
+        <div class="fs11 col-text2 fw600" style="margin-bottom:8px">Cấp 1 Quick Win cần thêm:</div>
+        <div class="gap8">
+          <div class="ck-item"><div class="ck-box"></div><div><div class="ck-main">Kiến Hoà: Tổ trưởng và công nhân cùng hiểu vấn đề — không phải 1 người quyết định</div></div></div>
+          <div class="ck-item"><div class="ck-box"></div><div><div class="ck-main">Khẩu Hoà: Giải thích lý do thay đổi bằng ái ngữ — không ra lệnh</div></div></div>
+          <div class="ck-item"><div class="ck-box"></div><div><div class="ck-main">Lợi Hoà: Kết quả Quick Win được chia sẻ cho cả tổ — không chỉ báo cáo lên</div></div></div>
+        </div>
+      </div>
+      <div>
+        <div class="fs11 col-text2 fw600" style="margin-bottom:8px">Cấp 2-3 cần thêm:</div>
+        <div class="gap8">
+          <div class="ck-item"><div class="ck-box"></div><div><div class="ck-main">9 bước bước 5: Trí tuệ tập thể — thu góc nhìn đa chiều trước khi chốt giải pháp</div></div></div>
+          <div class="ck-item"><div class="ck-box"></div><div><div class="ck-main">Định Pháp: Dự án có gắn với mục tiêu CI tổ chức không — không phải "dự án ngoài lề"</div></div></div>
+          <div class="ck-item"><div class="ck-box"></div><div><div class="ck-main">1 Triết lý: Ai sẽ là người đi trước thắp đuốc nhân rộng sau khi dự án thành công?</div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     PAGE: 4 GIAI ĐOẠN
+══════════════════════════════════════════════════════════ -->
+<div class="page" id="page-phases">
+<div style="padding:24px">
+
+  <div class="ph">
+    <div class="ph-left">
+      <div class="eyebrow">Dòng chảy Tiến hóa Hệ thống</div>
+      <h1>4 Giai Đoạn Tiến Hóa Sản Xuất</h1>
+      <p>Lộ trình tuyến tính từ hỗn loạn đến đột phá. Mỗi giai đoạn có lớp GEN tương ứng — không chỉ là công cụ kỹ thuật.</p>
+    </div>
+  </div>
+
+  <!-- TIMELINE -->
+  <div class="timeline">
+    <div class="tl-step">
+      <div class="tl-num" style="color:var(--gold)">01</div>
+      <div class="tl-name">Khai Sáng &amp; Hiện Hình</div>
+      <div class="tl-desc">Nhìn thấy rác ẩn. Phá vỡ trạng thái vô hình của lãng phí tại hiện trường.</div>
+      <div class="tl-tools">
+        <span class="tl-tool">5S</span>
+        <span class="tl-tool">Visual Mgmt</span>
+        <span class="tl-tool">Gemba Walk</span>
+        <span class="tl-tool">TIMWOODS</span>
+        <span class="tl-tool">Pain-Point Board</span>
+      </div>
+    </div>
+    <div class="tl-step">
+      <div class="tl-num" style="color:var(--blue)">02</div>
+      <div class="tl-name">Ổn Định &amp; Kiểm Soát</div>
+      <div class="tl-desc">Trói buộc sự biến động. Đưa quy trình về trạng thái ổn định thống kê.</div>
+      <div class="tl-tools">
+        <span class="tl-tool">TPM / OEE</span>
+        <span class="tl-tool">SPC</span>
+        <span class="tl-tool">X-bar/R chart</span>
+        <span class="tl-tool">AM / PM</span>
+      </div>
+    </div>
+    <div class="tl-step">
+      <div class="tl-num" style="color:var(--green)">03</div>
+      <div class="tl-name">Tối Ưu &amp; Tinh Gọn</div>
+      <div class="tl-desc">Gọt dũa dòng chảy giá trị. Takt Time, SMED, Six Sigma DMAIC.</div>
+      <div class="tl-tools">
+        <span class="tl-tool">Lean / Pull</span>
+        <span class="tl-tool">SMED</span>
+        <span class="tl-tool">DMAIC</span>
+        <span class="tl-tool">DOE / ANOVA</span>
+        <span class="tl-tool">Cpk &gt; 1.67</span>
+      </div>
+    </div>
+    <div class="tl-step">
+      <div class="tl-num" style="color:var(--purple)">04</div>
+      <div class="tl-name">Đột Phá Sáng Tạo</div>
+      <div class="tl-desc">Đập tan giới hạn vật lý. TRIZ từ chối sự thỏa hiệp — IFR không trade-off.</div>
+      <div class="tl-tools">
+        <span class="tl-tool">TRIZ / IFR</span>
+        <span class="tl-tool">40 Nguyên lý</span>
+        <span class="tl-tool">Ma trận mâu thuẫn</span>
+        <span class="tl-tool">R&amp;D</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- DETAIL CARDS -->
+  <div class="gap16 mt16" id="phase-cards"></div>
+
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     PAGE: KAIZEN LOG
+══════════════════════════════════════════════════════════ -->
+<div class="page" id="page-kaizen">
+<div style="padding:24px">
+
+  <div class="ph">
+    <div class="ph-left">
+      <div class="eyebrow">Kaizen Log</div>
+      <h1>Nhật Ký Cải Tiến</h1>
+      <p>Mỗi Kaizen nhỏ đều được ghi lại — dù thành công hay thất bại. "Thất bại = bài học" không phải khẩu hiệu — là cơ chế dữ liệu. Theo 9 bước bước 9: Tổng hợp cải tiến.</p>
+    </div>
+    <div class="ph-actions">
+      <button class="btn btn-primary" onclick="openAddKaizen()">+ Ghi Kaizen mới</button>
+    </div>
+  </div>
+
+  <div class="grid4">
+    <div class="stat stat-green">
+      <div class="stat-label">Tổng Kaizen</div>
+      <div class="stat-val col-green" id="kz-total">0</div>
+    </div>
+    <div class="stat stat-gold">
+      <div class="stat-label">Thành công</div>
+      <div class="stat-val col-gold" id="kz-success">0</div>
+    </div>
+    <div class="stat stat-red">
+      <div class="stat-label">Đang triển khai</div>
+      <div class="stat-val col-red" id="kz-inprog">0</div>
+    </div>
+    <div class="stat stat-blue">
+      <div class="stat-label">Bài học rút ra</div>
+      <div class="stat-val col-blue2" id="kz-lessons">0</div>
+    </div>
+  </div>
+
+  <div class="card mt16">
+    <div class="tbl-wrap" style="border:none">
+      <table>
+        <thead><tr>
+          <th>Ngày</th><th>Pain-point ref</th><th>Hành động Kaizen</th>
+          <th>Trước</th><th>Sau</th><th>Bài học / GEN</th><th>Trạng thái</th><th></th>
+        </tr></thead>
+        <tbody id="kz-tbody">
+          <tr><td colspan="8" class="empty-state">Chưa có Kaizen nào được ghi nhận</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     PAGE: BÁO CÁO
+══════════════════════════════════════════════════════════ -->
+<div class="page" id="page-report">
+<div style="padding:24px">
+
+  <div class="ph">
+    <div class="ph-left">
+      <div class="eyebrow">Báo cáo & Xuất dữ liệu</div>
+      <h1>Tổng Kết CI</h1>
+      <p>Kết quả cải tiến phải được chuẩn hóa vào SWS. Báo cáo CI 1 trang — ai cũng đọc được trong 2 phút.</p>
+    </div>
+    <div class="ph-actions">
+      <button class="btn btn-primary" onclick="exportReport()">Xuất báo cáo CSV</button>
+      <button class="btn" onclick="printPage()">In trang này</button>
+    </div>
+  </div>
+
+  <div id="report-content"></div>
+
+</div>
+</div>
+
+</div><!-- end main -->
+</div><!-- end shell -->
+
+<!-- ══════════════════════════════════════════════════════════
+     MODALS
+══════════════════════════════════════════════════════════ -->
+
+<!-- ADD PAIN-POINT -->
+<div class="modal-bg" id="modal-add-pp">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-title">+ Thêm Pain-point mới</div>
+      <button class="btn btn-icon" onclick="closeModal('modal-add-pp')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="gap12">
+        <div class="form-row c2">
+          <div class="field"><label>Công đoạn / Trạm</label><input id="pp-station" placeholder="VD: Trạm lắp ráp IC, Công đoạn hàn..."></div>
+          <div class="field"><label>Người ghi nhận</label><input id="pp-reporter" placeholder="Tên công nhân / tổ trưởng"></div>
+        </div>
+        <div class="field"><label>Mô tả bất mãn / khó khăn cụ thể</label><textarea id="pp-desc" placeholder="Mô tả chi tiết: tình huống xảy ra, cảm giác khó, tần suất gặp..."></textarea></div>
+        <div class="form-row c2">
+          <div class="field"><label>Phân loại 3M</label>
+            <select id="pp-3m">
+              <option value="">-- Chọn --</option>
+              <option value="Mura">Mura — Biến động/Không đồng đều</option>
+              <option value="Muri">Muri — Quá tải (người/máy)</option>
+              <option value="Muda">Muda — Lãng phí vô ích</option>
+            </select>
+          </div>
+          <div class="field"><label>Hướng giải quyết sơ bộ</label><input id="pp-solution" placeholder="Quick fix / công cụ dự kiến..."></div>
+        </div>
+        <div class="form-row c3">
+          <div class="field">
+            <label>S — Tác động (1-5)</label>
+            <select id="pp-s">
+              <option value="1">1 · Nhỏ, không dừng chuyền</option>
+              <option value="2">2 · Ảnh hưởng cục bộ</option>
+              <option value="3">3 · Lỗi CL, dừng &lt;5 phút</option>
+              <option value="4">4 · Dừng chuyền &gt;5 phút</option>
+              <option value="5">5 · Tai nạn / lỗi đến KH</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>O — Tần suất (1-5)</label>
+            <select id="pp-o">
+              <option value="1">1 · Hiếm (1 lần/tháng)</option>
+              <option value="2">2 · Vài lần/tháng</option>
+              <option value="3">3 · Hàng tuần</option>
+              <option value="4">4 · Vài lần/tuần</option>
+              <option value="5">5 · Liên tục mỗi ca</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>E — Độ khó giải quyết (1-5)</label>
+            <select id="pp-e">
+              <option value="1">1 · Rất dễ, Quick Win 24h</option>
+              <option value="2">2 · Dễ, 1 tuần</option>
+              <option value="3">3 · Vừa, cần liên phòng</option>
+              <option value="4">4 · Khó, thay đổi lớn</option>
+              <option value="5">5 · Rất khó, đổi công nghệ</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label>GEN Layer — Liên kết với bộ GEN (chọn điểm cần chú ý)</label>
+          <select id="pp-gen">
+            <option value="Hành Pháp">Hành Pháp — Cần cải tiến quy trình thao tác</option>
+            <option value="Hộ Pháp">Hộ Pháp — Thiếu công cụ / tài nguyên</option>
+            <option value="Định Pháp">Định Pháp — Mục tiêu CI chưa rõ</option>
+            <option value="Cương Pháp">Cương Pháp — Kỷ luật / cam kết yếu</option>
+            <option value="Tâm Pháp">Tâm Pháp — Văn hóa / tinh thần đội nhóm</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Mâu thuẫn kỹ thuật TRIZ (nếu có)</label>
+          <input id="pp-triz" placeholder="VD: Tăng tốc độ → tăng nhiệt → nứt sản phẩm. Để trống nếu không có.">
+        </div>
+        <div id="pp-kpn-preview" class="alert alert-gold" style="display:none"></div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn" onclick="closeModal('modal-add-pp')">Hủy</button>
+      <button class="btn btn-primary" onclick="savePainpoint()">Lưu Pain-point</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADD KAIZEN -->
+<div class="modal-bg" id="modal-add-kz">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-title">Ghi Kaizen mới</div>
+      <button class="btn btn-icon" onclick="closeModal('modal-add-kz')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="gap12">
+        <div class="form-row c2">
+          <div class="field"><label>Pain-point liên quan (ID)</label><input id="kz-pp-ref" placeholder="PP-001, PP-002..."></div>
+          <div class="field"><label>Ngày thực hiện</label><input type="date" id="kz-date"></div>
+        </div>
+        <div class="field"><label>Hành động Kaizen cụ thể</label><textarea id="kz-action" placeholder="Mô tả thay đổi đã thực hiện..."></textarea></div>
+        <div class="form-row c2">
+          <div class="field"><label>Trạng thái trước (số liệu)</label><input id="kz-before" placeholder="VD: OEE 72%, thời gian setup 45 phút..."></div>
+          <div class="field"><label>Trạng thái sau (số liệu)</label><input id="kz-after" placeholder="VD: OEE 85%, setup 8 phút..."></div>
+        </div>
+        <div class="field"><label>Bài học rút ra (9 bước bước 9)</label><textarea id="kz-lesson" placeholder="Điều gì hoạt động? Điều gì không? Vòng PDCA tiếp theo bắt đầu từ đây..."></textarea></div>
+        <div class="field"><label>GEN insight</label><input id="kz-gen" placeholder="Kaizen này liên quan đến Định/Cương/Hành/Hộ/Tâm Pháp điểm nào?"></div>
+        <div class="field"><label>Trạng thái</label>
+          <select id="kz-status">
+            <option value="In Progress">In Progress</option>
+            <option value="Thành công">Thành công</option>
+            <option value="Cần xem xét lại">Cần xem xét lại</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn" onclick="closeModal('modal-add-kz')">Hủy</button>
+      <button class="btn btn-primary" onclick="saveKaizen()">Lưu Kaizen</button>
+    </div>
+  </div>
+</div>
+
+<!-- GEN CHECK-IN -->
+<div class="modal-bg" id="modal-gen-checkin">
+  <div class="modal" style="width:480px">
+    <div class="modal-head">
+      <div class="modal-title">Check-in GEN tuần này</div>
+      <button class="btn btn-icon" onclick="closeModal('modal-gen-checkin')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="fs11 col-text2 fw600" style="margin-bottom:12px">Tự đánh giá 6 Hoà của nhóm CI tuần này (1=Yếu, 5=Tốt)</div>
+      <div class="gap12" id="gen-checkin-form"></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn" onclick="closeModal('modal-gen-checkin')">Hủy</button>
+      <button class="btn btn-primary" onclick="saveGenCheckin()">Lưu Check-in</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════
+// DATA STORE (Đã chuyển sang API)
+// ══════════════════════════════════════════════════════
+let DB = { painpoints: [], kaizens: [], genCheckins: [], genChecks: {dinh:[],cuong:[],hanh:[],ho:[]}, ppCounter: 0, kzCounter: 0 };
+
+async function saveDB() {
+  try {
+    localStorage.setItem('genci_production_db', JSON.stringify(DB));
+  } catch(e) { console.error('Lỗi lưu CSDL', e); }
+}
+
+async function loadDB() {
+  try {
+    const raw = localStorage.getItem('genci_production_db');
+    if (raw) {
+      const data = JSON.parse(raw);
+      DB = data;
+      // Khôi phục counter để tạo ID tự động tăng
+      DB.ppCounter = DB.painpoints.length ? Math.max(...DB.painpoints.map(p => parseInt(p.id.split('-')[1]) || 0)) : 0;
+      DB.kzCounter = DB.kaizens.length ? Math.max(...DB.kaizens.map(k => parseInt(k.id.split('-')[1]) || 0)) : 0;
+    }
+    renderDashboard();
+  } catch(e) { console.error('Lỗi tải CSDL', e); }
+}
+
+// ══════════════════════════════════════════════════════
+// DATA CONSTANTS
+// ══════════════════════════════════════════════════════
+const GEN_CHECKS = {
+  dinh:[
+    'Mục tiêu CI tuần này rõ ràng, có thể đo được',
+    'Mọi người biết tại sao mình làm CI này (không chỉ vì được yêu cầu)',
+    'Định Pháp nhóm nhất quán với Định Pháp tổ chức lớn'
+  ],
+  cuong:[
+    'Cam kết CI tuần này được giữ đúng',
+    'Không có ai nói một đằng làm một nẻo trong nhóm CI',
+    'Thưởng/phạt CI được thực thi công bằng'
+  ],
+  hanh:[
+    'Có ít nhất 1 Kaizen nhỏ được thực hiện thực tế (không chỉ trên giấy)',
+    '9 bước: có học hỏi và tổng hợp sau mỗi hành động CI',
+    'Kế hoạch CI theo C.Người-C.Việc-T.Gian được theo dõi sát'
+  ],
+  ho:[
+    'Công cụ và tài nguyên CI đủ để thực hiện kế hoạch tuần này',
+    'Tài liệu CI được cập nhật và ai cũng truy cập được',
+    'Không có ý tưởng CI nào bị tắc nghẽn vì thiếu phương tiện'
+  ]
+};
+
+const LUCHOA = [
+  {n:'Thân Hoà', desc:'Chung sống hòa hợp, cùng Gemba, cùng làm CI — không ai đứng ngoài nhìn', ci:'Cùng Gemba Walk — không phải chỉ 1 người đi báo cáo'},
+  {n:'Kiến Hoà', desc:'Cùng ngôn ngữ CI, cùng phương pháp — đàm luận tìm cái đúng, không tranh luận tìm người đúng', ci:'Đào tạo CI cùng nền: PDCA, A3, KPN — ai cũng hiểu'},
+  {n:'Khẩu Hoà', desc:'Lời nói chân-thiện-mỹ. Feedback CI bằng ái ngữ, không phán xét người', ci:'Báo lỗi sản xuất = hành động dũng cảm, không phải tội lỗi'},
+  {n:'Ý Hoà', desc:'Mục tiêu CI chung từ trong tim — không phải áp đặt từ trên xuống', ci:'OKR CI được đội cùng xây dựng, không chỉ nhận xuống'},
+  {n:'Giới Hoà', desc:'Tự giác giữ kỷ luật CI — không cần nhắc liên tục', ci:'Cương Pháp CI = tự nguyện vì hiểu, không phải sợ phạt'},
+  {n:'Lợi Hoà', desc:'Thành quả CI nhìn thấy người khác (cửa sổ). Lỗi CI nhìn thấy lỗi ở mình (tấm gương)', ci:'Kết quả CI thuộc về toàn tổ — không tích lũy cho 1 người'}
+];
+
+const BUOC9 = [
+  {n:1,t:'Tiếp nhận',d:'Đọc kỹ báo cáo pain-point, quan sát Gemba trọn vẹn',ci:'Gemba Walk: quan sát 30 phút, không phán xét'},
+  {n:2,t:'Tách lớp',d:'Phân tích 3M: đây là Mura, Muri hay Muda? Gốc rễ là gì?',ci:'5 Whys: hỏi Tại sao 5 lần trước khi kết luận'},
+  {n:3,t:'Tổng hợp',d:'Gói gọn vấn đề trong 1-2 câu — test: người khác đọc có hiểu không?',ci:'A3 phần Problem Statement — ngắn gọn, rõ ràng'},
+  {n:4,t:'Tự vấn',d:'Giải pháp tôi đang nghĩ có đang bị ảnh hưởng bởi thành kiến không?',ci:'Reflection: tôi có đang "giải pháp trước khi hiểu vấn đề"?'},
+  {n:5,t:'Trí tuệ tập thể',d:'Thu góc nhìn công nhân, kỹ thuật, bảo trì trước khi quyết',ci:'A3 review: chia sẻ với người làm trực tiếp trước'},
+  {n:6,t:'Thống nhất',d:'Chốt giải pháp — ai làm gì, khi nào, đo bằng gì',ci:'Action plan CI: cụ thể, có deadline, có người chịu trách nhiệm'},
+  {n:7,t:'Thực hành',d:'Làm thật, ghi số liệu thật — dù kết quả tốt hay xấu',ci:'Kaizen: thực hiện, đo trước/sau, không đợi hoàn hảo'},
+  {n:8,t:'Theo dõi',d:'So sánh kết quả thực tế với kỳ vọng — không tô hồng',ci:'PDCA Check: số liệu thật, không phải báo cáo đẹp'},
+  {n:9,t:'Tổng hợp cải tiến',d:'Vòng PDCA tiếp theo bắt đầu từ bài học vòng này',ci:'Kaizen Log: ghi bài học dù thành công hay thất bại'}
+];
+
+const PHASES = [
+  {
+    n:'01', col:['var(--gold)','#fef3c7','#fde68a'],
+    title:'Khai Sáng & Hiện Hình (Visibility)',
+    sub:'Nhìn thấy rác ẩn — phá vỡ trạng thái vô hình của lãng phí',
+    desc:'5S không phải dọn vệ sinh — là công cụ sàng lọc cấu trúc để mọi bất thường đập vào mắt trong 3 giây. Gemba Walk có checklist TIMWOODS. Pain-points thu từ công nhân → Bảng khảo sát bất mãn → phân loại 3M.',
+    tools:['5S + Visual Management','Gemba Walk (TIMWOODS checklist)','Pain-Point Board + KPN','Andon System'],
+    gen:'Tâm Pháp: Trước khi nhìn thấy lãng phí bên ngoài, phải nhìn thấy điểm mù bên trong. Huyền Không: quan sát Gemba không thành kiến. Thân Hoà: cùng đi Gemba — không phải 1 người đi báo cáo.',
+    checks:['5S đã được triển khai đủ 5 bước (không phải chỉ dọn dẹp)','Gemba Walk định kỳ có checklist TIMWOODS','Pain-Point Board có tại mỗi xưởng, được cập nhật real-time','Công nhân tự tin ghi pain-point mà không sợ bị phán xét']
+  },
+  {
+    n:'02', col:['var(--blue)','#dbeafe','#bfdbfe'],
+    title:'Ổn Định & Kiểm Soát (Stability)',
+    sub:'Trói buộc sự biến động — đưa quy trình về trạng thái ổn định thống kê',
+    desc:'TPM ổn định phần cứng: AM (bảo trì tự quản) + PM (kế hoạch), nâng OEE. SPC kiểm soát phần mềm: biểu đồ X-bar/R phát hiện special causes trước khi tạo lỗi. Không tối ưu được quy trình biến động vô độ.',
+    tools:['TPM: AM + PM → OEE','SPC: X-bar/R charts, Control Limits','Process Capability (Cp, Cpk)','Root Cause Analysis'],
+    gen:'Cương Pháp: Bảo trì tự quản (AM) = Giới Hoà — công nhân tự giác bảo dưỡng máy. Định Pháp: OEE target rõ ràng, nhất quán với chiến lược. 9 bước bước 8: theo dõi đánh giá — biểu đồ SPC là công cụ.',
+    checks:['AM schedule được thực hiện đủ, không bỏ sót','OEE được đo và hiển thị tại hiện trường','Biểu đồ SPC được vận hành thật — không chỉ treo cho đẹp','Cpk của quy trình trọng yếu ≥ 1.33']
+  },
+  {
+    n:'03', col:['var(--green)','#d1fae5','#a7f3d0'],
+    title:'Tối Ưu & Tinh Gọn (Optimization)',
+    sub:'Gọt dũa dòng chảy giá trị — tỷ lệ lỗi về phần triệu',
+    desc:'Đồng bộ Takt Time. SMED: chuyển Internal Setup → External, ép thời gian dừng máy < 10 phút. DMAIC cho bài toán đa biến. DOE tối ưu Process Window. Cpk > 1.67 = < 3.4 DPMO.',
+    tools:['Takt Time + Pull System','SMED (Internal → External setup)','DMAIC + DOE + ANOVA','Value Stream Mapping'],
+    gen:'Hành Pháp: đây là vùng Kaizen Blitz và DMAIC. 9 bước bước 6-7: thống nhất hành động → thực hành kỷ luật. 1 Triết lý: kết quả SMED thành công → người đi trước thắp đuốc nhân rộng sang dây chuyền khác.',
+    checks:['Takt Time được tính và hiển thị tại từng trạm','SMED: đã phân tích Internal/External setup','Ít nhất 1 DMAIC project hoàn thành với dữ liệu thật','Yokoten: có cơ chế nhân rộng Kaizen thành công']
+  },
+  {
+    n:'04', col:['var(--purple)','#ede9fe','#ddd6fe'],
+    title:'Đột Phá Sáng Tạo (Breakthrough)',
+    sub:'Đập tan giới hạn vật lý — TRIZ từ chối sự thỏa hiệp',
+    desc:'Lean/6Sigma chạm ngưỡng bão hòa kỹ thuật. TRIZ định hình IFR: hệ thống tự thực hiện chức năng mà không sinh tác dụng có hại. Ma trận mâu thuẫn Altshuller → 40 nguyên lý sáng tạo → thiết kế lại công nghệ.',
+    tools:['IFR (Ideal Final Result)','Ma trận mâu thuẫn Altshuller','40 Nguyên lý sáng tạo TRIZ','Substance-Field Analysis'],
+    gen:'Định Pháp đột phá: tầm nhìn vượt thoát — không còn là CI incremental mà là thay đổi cuộc chơi. Huyền Không thực sự: từ chối thỏa hiệp (trade-off) vì tin rằng mâu thuẫn có thể được triệt tiêu hoàn toàn. 9 bước bước 4: Tự vấn sâu nhất — IFR là gì?',
+    checks:['Đã xác định ít nhất 1 mâu thuẫn kỹ thuật cốt lõi','Đã định nghĩa IFR bằng ngôn ngữ TRIZ','Đã tra cứu Ma trận mâu thuẫn Altshuller','Có chuyên gia TRIZ hoặc kế hoạch đào tạo']
+  }
+];
+
+// ══════════════════════════════════════════════════════
+// NAV
+// ══════════════════════════════════════════════════════
+const PAGE_LABELS = {
+  dashboard:'Dashboard',gemba:'Gemba Pain-Point Board',
+  kpn:'KPN & Phân luồng',phases:'4 Giai đoạn Tiến hóa',
+  kaizen:'Kaizen Log',report:'Báo cáo',gen:'Bộ GEN Nền Tảng'
+};
+function nav(p){
+  document.querySelectorAll('.page').forEach(el=>el.classList.remove('on'));
+  document.querySelectorAll('.sb-item').forEach(el=>el.classList.remove('on'));
+  document.getElementById('page-'+p)?.classList.add('on');
+  document.querySelector(`[onclick="nav('${p}')"]`)?.classList.add('on');
+  document.getElementById('tb-page').textContent = PAGE_LABELS[p]||p;
+  if(p==='dashboard') renderDashboard();
+  if(p==='gemba') renderPainpoints();
+  if(p==='kpn') renderKPN();
+  if(p==='phases') renderPhases();
+  if(p==='kaizen') renderKaizen();
+  if(p==='report') renderReport();
+  if(p==='gen') renderGen();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ══════════════════════════════════════════════════════
+// KPN CALC
+// ══════════════════════════════════════════════════════
+function calcKPN(s,o,e){ return e>0 ? Math.round((s*o/e)*10)/10 : 0 }
+function getPhase(kpn, hasTriz){
+  if(kpn>=15) return {label:'Cấp 1 · Quick Win',cls:'phase-1',tag:'Q-WIN'}
+  if(kpn>=5) return {label:'Cấp 2 · Lean/6σ',cls:'phase-2',tag:'L6S'}
+  if(hasTriz) return {label:'Cấp 3 · TRIZ',cls:'phase-4',tag:'TRIZ'}
+  return {label:'Cấp 3 · R&D',cls:'phase-3',tag:'R&D'}
+}
+function get3MCls(m){
+  if(m==='Mura') return 'm-mura'
+  if(m==='Muri') return 'm-muri'
+  return 'm-muda'
+}
+function getKPNcls(k){ return k>=15?'kpn-high':k>=5?'kpn-med':'kpn-low' }
+
+// ══════════════════════════════════════════════════════
+// DASHBOARD
+// ══════════════════════════════════════════════════════
+function renderDashboard(){
+  const pps = DB.painpoints;
+  const qw = pps.filter(p=>p.kpn>=15).length;
+  const l6 = pps.filter(p=>p.kpn>=5&&p.kpn<15).length;
+  const triz = pps.filter(p=>p.kpn<5&&p.triz).length;
+  document.getElementById('ds-total').textContent = pps.length;
+  document.getElementById('ds-qw').textContent = qw;
+  document.getElementById('ds-l6').textContent = l6;
+  document.getElementById('ds-triz').textContent = triz;
+  document.getElementById('tb-total').textContent = pps.length+' Pain-points';
+  document.getElementById('tb-quick').textContent = qw+' Quick Wins';
+
+  // 3M
+  const mura=pps.filter(p=>p.m3==='Mura').length;
+  const muri=pps.filter(p=>p.m3==='Muri').length;
+  const muda=pps.filter(p=>p.m3==='Muda').length;
+  document.getElementById('dash-3m').innerHTML = pps.length===0
+    ? '<div class="empty-state"><div class="ico">📊</div>Chưa có dữ liệu</div>'
+    : `<div class="gap12">
+        ${bar3m('Mura (Biến động)',mura,pps.length,'var(--blue)')}
+        ${bar3m('Muri (Quá tải)',muri,pps.length,'var(--gold)')}
+        ${bar3m('Muda (Lãng phí)',muda,pps.length,'var(--red)')}
+      </div>`;
+
+  // GEN check
+  const lastCheckin = DB.genCheckins[DB.genCheckins.length-1];
+  document.getElementById('dash-gen').innerHTML = lastCheckin
+    ? `<div class="gap12">${LUCHOA.map((h,i)=>{
+        const score = lastCheckin.scores?.[i]||0;
+        const col = score>=4?'var(--green)':score>=3?'var(--gold)':'var(--red)';
+        return `<div class="flex-between"><span class="fs11 fw600 col-text2">${h.n}</span><div class="flex" style="gap:8px"><div style="font-family:var(--mono);font-size:15px;font-weight:600;color:${col}">${score||'—'}</div><div style="width:70px;height:5px;background:var(--border);border-radius:3px;overflow:hidden"><div style="width:${(score/5)*100}%;height:100%;background:${col};border-radius:3px"></div></div></div></div>`
+      }).join('')}</div>`
+    : '<div class="empty-state"><div class="ico">🧘</div>Chưa check-in tuần này — <a style="color:var(--gold);cursor:pointer;font-weight:700" onclick="nav(\'gen\')">Check-in →</a></div>';
+
+  // recent table
+  const recent = [...pps].slice(-5).reverse();
+  document.getElementById('dash-tbody').innerHTML = recent.length===0
+    ? `<tr><td colspan="7" class="empty-state">Chưa có dữ liệu — <a style="color:var(--gold);cursor:pointer;font-weight:700" onclick="nav('gemba')">Thêm pain-point đầu tiên →</a></td></tr>`
+    : recent.map(p=>ppRow(p,true)).join('');
+}
+
+function bar3m(label,count,total,col){
+  const pct = total>0?Math.round(count/total*100):0;
+  return `<div>
+    <div class="flex-between" style="margin-bottom:6px"><span class="fs11 col-text2 fw600">${label}</span><span class="text-mono fs11 fw600">${count}</span></div>
+    <div class="prog-track"><div class="prog-fill" style="width:${pct}%;background:${col}"></div></div>
+  </div>`;
+}
+
+// ══════════════════════════════════════════════════════
+// GEN PAGE
+// ══════════════════════════════════════════════════════
+function renderGen(){
+  ['dinh','cuong','hanh','ho'].forEach(k=>{
+    const el = document.getElementById(`gen-${k}-checks`);
+    if(!el) return;
+    el.innerHTML = GEN_CHECKS[k].map((c,i)=>{
+      const done = DB.genChecks[k]?.[i];
+      return `<div class="ck-item${done?' done':''}" onclick="toggleGenCheck('${k}',${i})">
+        <div class="ck-box">${done?'✓':''}</div>
+        <div><div class="ck-main">${c}</div></div>
+      </div>`;
+    }).join('');
+  });
+
+  document.getElementById('luchoa-grid').innerHTML = LUCHOA.map(h=>`
+    <div style="padding:14px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);box-shadow:0 1px 2px rgba(0,0,0,0.02)">
+      <div class="fw600 fs11" style="color:var(--teal);margin-bottom:4px;font-size:14px">${h.n}</div>
+      <div class="fs11 col-text2" style="margin-bottom:8px;font-weight:500;line-height:1.5">${h.desc}</div>
+      <div class="fs11" style="color:var(--teal);font-weight:600;padding:6px 10px;background:#14b8a61a;border-radius:4px">${h.ci}</div>
+    </div>`).join('');
+
+  document.getElementById('luchoa-checkin').innerHTML = LUCHOA.map((h,i)=>{
+    const last = DB.genCheckins[DB.genCheckins.length-1];
+    const s = last?.scores?.[i]||0;
+    const col=s>=4?'var(--green)':s>=3?'var(--gold)':s>0?'var(--red)':'var(--text3)';
+    return `<div class="flex-between" style="padding:10px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);box-shadow:0 1px 2px rgba(0,0,0,0.02)">
+      <span class="fs11 col-text2 fw600">${h.n}</span>
+      <span style="font-family:var(--mono);font-size:16px;font-weight:700;color:${col}">${s||'—'}</span>
+    </div>`;
+  }).join('');
+
+  document.getElementById('buoc9-list').innerHTML = BUOC9.map(b=>`
+    <div style="display:grid;grid-template-columns:36px 1fr;gap:12px;padding:12px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);box-shadow:0 1px 2px rgba(0,0,0,0.02)">
+      <div style="font-family:var(--mono);font-size:20px;font-weight:700;color:var(--purple);line-height:1.2">${b.n}</div>
+      <div>
+        <div class="fs11 fw600" style="margin-bottom:4px;font-size:14px">${b.t}</div>
+        <div class="fs11 col-text3" style="margin-bottom:6px;font-weight:500;line-height:1.5">${b.d}</div>
+        <div class="fs11" style="color:var(--purple);font-weight:600;padding:4px 8px;background:#8b5cf61a;border-radius:4px">${b.ci}</div>
+      </div>
+    </div>`).join('');
+}
+
+function toggleGenCheck(k,i){
+  if(!DB.genChecks[k]) DB.genChecks[k]=[];
+  DB.genChecks[k][i] = !DB.genChecks[k][i];
+  saveDB(); renderGen();
+}
+
+function openGenCheckin(){
+  document.getElementById('gen-checkin-form').innerHTML = LUCHOA.map((h,i)=>{
+    const last = DB.genCheckins[DB.genCheckins.length-1];
+    const s = last?.scores?.[i]||3;
+    return `<div class="flex-between" style="padding:12px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r)">
+      <div><div class="fs11 fw600" style="font-size:14px;margin-bottom:2px">${h.n}</div><div class="fs11 col-text3" style="font-weight:500">${h.ci}</div></div>
+      <select id="ci-score-${i}" style="width:80px;padding:6px 8px;font-size:14px;font-weight:600;background:var(--bg4);border:1px solid var(--line2);border-radius:var(--r);color:var(--text);outline:none">
+        ${[1,2,3,4,5].map(v=>`<option value="${v}" ${v===s?'selected':''}>${v}</option>`).join('')}
+      </select>
+    </div>`;
+  }).join('');
+  openModal('modal-gen-checkin');
+}
+
+function saveGenCheckin(){
+  const scores = LUCHOA.map((_,i)=>parseInt(document.getElementById(`ci-score-${i}`)?.value||3));
+  DB.genCheckins.push({date:new Date().toLocaleDateString('vi'),scores});
+  saveDB(); closeModal('modal-gen-checkin'); renderGen(); renderDashboard();
+}
+
+// ══════════════════════════════════════════════════════
+// PAIN-POINTS
+// ══════════════════════════════════════════════════════
+function openAddPainpoint(){
+  document.getElementById('pp-station').value='';
+  document.getElementById('pp-reporter').value='';
+  document.getElementById('pp-desc').value='';
+  document.getElementById('pp-3m').value='';
+  document.getElementById('pp-solution').value='';
+  document.getElementById('pp-s').value='3';
+  document.getElementById('pp-o').value='3';
+  document.getElementById('pp-e').value='3';
+  document.getElementById('pp-triz').value='';
+  document.getElementById('pp-kpn-preview').style.display='none';
+  openModal('modal-add-pp');
+  ['pp-s','pp-o','pp-e'].forEach(id=>document.getElementById(id).onchange=updateKPNPreview);
+  updateKPNPreview();
+}
+
+function updateKPNPreview(){
+  const s=parseInt(document.getElementById('pp-s').value)||3;
+  const o=parseInt(document.getElementById('pp-o').value)||3;
+  const e=parseInt(document.getElementById('pp-e').value)||3;
+  const kpn=calcKPN(s,o,e);
+  const ph=getPhase(kpn,false);
+  const el=document.getElementById('pp-kpn-preview');
+  el.style.display='block';
+  el.textContent=`KPN = (${s} × ${o}) / ${e} = ${kpn} → ${ph.label}`;
+}
+
+function savePainpoint(){
+  const station=document.getElementById('pp-station').value.trim();
+  const desc=document.getElementById('pp-desc').value.trim();
+  if(!station||!desc){alert('Vui lòng điền Công đoạn và Mô tả');return;}
+  const s=parseInt(document.getElementById('pp-s').value)||3;
+  const o=parseInt(document.getElementById('pp-o').value)||3;
+  const e=parseInt(document.getElementById('pp-e').value)||3;
+  const kpn=calcKPN(s,o,e);
+  const triz=document.getElementById('pp-triz').value.trim();
+  DB.ppCounter++;
+  DB.painpoints.push({
+    id:'PP-'+String(DB.ppCounter).padStart(3,'0'),
+    station, desc,
+    m3:document.getElementById('pp-3m').value,
+    s,o,e,kpn, triz,
+    solution:document.getElementById('pp-solution').value,
+    gen:document.getElementById('pp-gen').value,
+    status:'Backlog',
+    date:new Date().toLocaleDateString('vi')
+  });
+  saveDB(); closeModal('modal-add-pp');
+  renderPainpoints(); renderDashboard(); renderKPN();
+}
+
+function renderPainpoints(){
+  const f3m=document.getElementById('filter-3m')?.value||'';
+  const fst=document.getElementById('filter-status')?.value||'';
+  let pps=[...DB.painpoints];
+  if(f3m) pps=pps.filter(p=>p.m3===f3m);
+  if(fst) pps=pps.filter(p=>p.status===fst);
+  document.getElementById('pp-count').textContent=pps.length;
+  document.getElementById('pp-tbody').innerHTML = pps.length===0
+    ? '<tr><td colspan="13" class="empty-state">Chưa có pain-point nào phù hợp bộ lọc</td></tr>'
+    : pps.map(p=>ppRow(p,false)).join('');
+}
+
+function ppRow(p,short){
+  const ph=getPhase(p.kpn,!!p.triz);
+  const status_col = p.status==='Done'?'col-green':p.status==='In Progress'?'col-gold':'col-text3';
+  if(short) return `<tr>
+    <td class="td-mono">${p.id}</td>
+    <td class="fw600">${p.station}</td>
+    <td style="max-width:200px;font-size:14px">${p.desc.substring(0,60)}${p.desc.length>60?'...':''}</td>
+    <td><span class="${get3MCls(p.m3)}">${p.m3}</span></td>
+    <td class="td-num ${getKPNcls(p.kpn)}">${p.kpn}</td>
+    <td><span class="phase-tag ${ph.cls}">${ph.tag}</span></td>
+    <td class="${status_col} fs11 fw600">${p.status}</td>
+  </tr>`;
+  return `<tr>
+    <td class="td-mono">${p.id}</td>
+    <td><div class="fw600">${p.station}</div><div class="fs11 col-text3 mt4">${p.date}</div></td>
+    <td style="max-width:220px;line-height:1.5"><div class="fs11">${p.desc}</div>${p.triz?`<div class="fs11 col-text3 mt8">TRIZ: ${p.triz}</div>`:''}</td>
+    <td><span class="${get3MCls(p.m3)}">${p.m3||'—'}</span></td>
+    <td class="td-num">${p.s}</td><td class="td-num">${p.o}</td><td class="td-num">${p.e}</td>
+    <td class="td-num ${getKPNcls(p.kpn)}">${p.kpn}</td>
+    <td><span class="phase-tag ${ph.cls}">${ph.label}</span></td>
+    <td class="fs11 col-text2" style="max-width:160px;line-height:1.5">${p.solution||'—'}</td>
+    <td><span class="gen-badge" style="background:#10b98112;color:var(--green2);border-color:#10b98133;font-size:11px">${p.gen||'—'}</span></td>
+    <td><span class="${status_col} fs11 fw600">${p.status}</span></td>
+    <td>
+      <div style="display:flex;gap:4px;">
+        <button class="btn btn-sm btn-green" onclick="changeStatus('${p.id}')">→</button>
+        <button class="btn btn-sm btn-red" onclick="deletePP('${p.id}')">✕</button>
+      </div>
+    </td>
+  </tr>`;
+}
+
+function changeStatus(id){
+  const p=DB.painpoints.find(x=>x.id===id);
+  if(!p) return;
+  const seq=['Backlog','In Progress','Done'];
+  const idx=seq.indexOf(p.status);
+  p.status=seq[(idx+1)%seq.length];
+  saveDB(); renderPainpoints(); renderDashboard();
+}
+
+function deletePP(id){
+  if(!confirm('Xóa pain-point '+id+'?')) return;
+  DB.painpoints=DB.painpoints.filter(p=>p.id!==id);
+  saveDB(); renderPainpoints(); renderDashboard(); renderKPN();
+}
+
+function openImport(){
+  const samples=[
+    {station:'Trạm Lắp ráp IC',desc:'Thiết bị gắp khó định vị, công nhân phải cúi sát mắt nhìn liên tục gây mỏi',m3:'Muri',s:4,o:5,e:1,solution:'Quick Win: Lắp thêm thấu kính phóng đại và dải LED chuẩn hóa góc chiếu',gen:'Hộ Pháp',triz:''},
+    {station:'Công đoạn Hàn',desc:'Thời gian gia nhiệt không ổn định giữa các lô hàng, phải chờ máy đủ nhiệt',m3:'Mura',s:3,o:4,e:3,solution:'Lean/6σ: DOE tìm khoảng nhiệt tối ưu, chuẩn hóa nhà cung ứng',gen:'Hành Pháp',triz:''},
+    {station:'Kiểm tra Ngoại quan',desc:'Khuôn đồ gá quá nặng, mỗi lần thay khuôn mất 45 phút dừng chuyền',m3:'Muda',s:4,o:3,e:2,solution:'SMED: Thiết kế lại chốt định vị nhanh, chuyển setup nội vi → ngoại vi',gen:'Hành Pháp',triz:''},
+    {station:'Trạm Rửa siêu âm',desc:'Bể rửa thường xuyên bám cặn bẩn, tỷ lệ nhiễm tạp chất tăng vọt',m3:'Muri',s:5,o:4,e:5,solution:'TRIZ: Triệt tiêu bể rửa vật lý, nghiên cứu rửa khô bằng sóng xung kích',gen:'Hộ Pháp',triz:'Tăng sạch độ → tăng nước/hóa chất → ô nhiễm thứ cấp'}
+  ];
+  if(!confirm(`Import ${samples.length} mẫu từ SOP minh họa?`)) return;
+  samples.forEach(s=>{
+    DB.ppCounter++;
+    DB.painpoints.push({
+      id:'PP-'+String(DB.ppCounter).padStart(3,'0'),
+      date:new Date().toLocaleDateString('vi'),
+      status:'Backlog',
+      reporter:'Import mẫu',
+      kpn:calcKPN(s.s,s.o,s.e),
+      ...s
+    });
+  });
+  saveDB(); renderPainpoints(); renderDashboard(); renderKPN();
+}
+
+// ══════════════════════════════════════════════════════
+// KPN
+// ══════════════════════════════════════════════════════
+function renderKPN(){
+  const pps=DB.painpoints;
+  const c1=pps.filter(p=>p.kpn>=15);
+  const c2=pps.filter(p=>p.kpn>=5&&p.kpn<15);
+  const c3=pps.filter(p=>p.kpn<5&&p.triz);
+  document.getElementById('kpn-c1').textContent=c1.length;
+  document.getElementById('kpn-c2').textContent=c2.length;
+  document.getElementById('kpn-c3').textContent=c3.length;
+  const render=(el,list,col)=>{
+    document.getElementById(el).innerHTML = list.length===0
+      ? '<div class="empty-state"><div>Chưa có</div></div>'
+      : list.map(p=>`<div style="padding:12px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);box-shadow:0 1px 2px rgba(0,0,0,0.02)">
+          <div class="flex-between"><span class="td-mono fs11">${p.id}</span><span class="td-num" style="color:${col};font-size:18px">${p.kpn}</span></div>
+          <div class="fs11 fw600 mt8" style="font-size:14px">${p.station}</div>
+          <div class="fs11 col-text3 mt4" style="line-height:1.5">${p.desc.substring(0,80)}${p.desc.length>80?'...':''}</div>
+          <div class="flex-between mt12">
+            <span class="${get3MCls(p.m3)}">${p.m3}</span>
+            <span class="fs11 col-text3 fw600">${p.status}</span>
+          </div>
+        </div>`).join('');
+  };
+  render('kpn-c1-list',c1,'var(--red2)');
+  render('kpn-c2-list',c2,'var(--blue2)');
+  render('kpn-c3-list',c3,'var(--teal)');
+}
+
+// ══════════════════════════════════════════════════════
+// PHASES
+// ══════════════════════════════════════════════════════
+function renderPhases(){
+  document.getElementById('phase-cards').innerHTML = PHASES.map(p=>`
+    <div class="card">
+      <div class="card-head" style="border-top:3px solid ${p.col[0]}">
+        <div>
+          <div class="card-title" style="color:${p.col[0]}">Giai đoạn ${p.n} · ${p.title}</div>
+          <div class="card-sub" style="font-weight:600">${p.sub}</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="grid2">
+          <div>
+            <div class="fs11 col-text2 fw600" style="margin-bottom:8px;font-size:14px">Mô tả & Nguyên lý</div>
+            <div class="fs11 col-text2" style="line-height:1.7;margin-bottom:16px;font-weight:500">${p.desc}</div>
+            <div class="flex-wrap">${p.tools.map(t=>`<span class="tl-tool">${t}</span>`).join('')}</div>
+          </div>
+          <div>
+            <div class="fs11 col-text2 fw600" style="margin-bottom:8px;font-size:14px">GEN Layer tương ứng</div>
+            <div class="quote" style="border-color:${p.col[0]};background:${p.col[1]};margin:0 0 16px 0;box-shadow:none">
+              <div class="quote-text" style="color:#111827">${p.gen}</div>
+            </div>
+            <div class="fs11 col-text2 fw600" style="margin:10px 0 8px;font-size:14px">Checklist triển khai</div>
+            <div class="ck-list">${p.checks.map(c=>`<div class="ck-item"><div class="ck-box"></div><div><div class="ck-main">${c}</div></div></div>`).join('')}</div>
+          </div>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+// ══════════════════════════════════════════════════════
+// KAIZEN LOG
+// ══════════════════════════════════════════════════════
+function openAddKaizen(){
+  document.getElementById('kz-pp-ref').value='';
+  document.getElementById('kz-date').value=new Date().toISOString().split('T')[0];
+  document.getElementById('kz-action').value='';
+  document.getElementById('kz-before').value='';
+  document.getElementById('kz-after').value='';
+  document.getElementById('kz-lesson').value='';
+  document.getElementById('kz-gen').value='';
+  document.getElementById('kz-status').value='In Progress';
+  openModal('modal-add-kz');
+}
+
+function saveKaizen(){
+  const action=document.getElementById('kz-action').value.trim();
+  if(!action){alert('Vui lòng mô tả hành động Kaizen');return;}
+  DB.kzCounter++;
+  const lesson=document.getElementById('kz-lesson').value.trim();
+  DB.kaizens.push({
+    id:'KZ-'+String(DB.kzCounter).padStart(3,'0'),
+    date:document.getElementById('kz-date').value,
+    ppRef:document.getElementById('kz-pp-ref').value,
+    action, lesson,
+    before:document.getElementById('kz-before').value,
+    after:document.getElementById('kz-after').value,
+    gen:document.getElementById('kz-gen').value,
+    status:document.getElementById('kz-status').value
+  });
+  saveDB(); closeModal('modal-add-kz'); renderKaizen(); renderDashboard();
+}
+
+function renderKaizen(){
+  const kzs=DB.kaizens;
+  const success=kzs.filter(k=>k.status==='Thành công').length;
+  const inprog=kzs.filter(k=>k.status==='In Progress').length;
+  const lessons=kzs.filter(k=>k.lesson).length;
+  document.getElementById('kz-total').textContent=kzs.length;
+  document.getElementById('kz-success').textContent=success;
+  document.getElementById('kz-inprog').textContent=inprog;
+  document.getElementById('kz-lessons').textContent=lessons;
+  document.getElementById('kz-tbody').innerHTML = kzs.length===0
+    ? '<tr><td colspan="8" class="empty-state">Chưa có Kaizen nào — hãy ghi ngay hôm nay</td></tr>'
+    : [...kzs].reverse().map(k=>{
+        const col=k.status==='Thành công'?'col-green':k.status==='In Progress'?'col-gold':'col-red';
+        return `<tr>
+          <td class="td-mono fs11">${k.date}</td>
+          <td class="td-mono fs11 fw600">${k.ppRef||'—'}</td>
+          <td style="max-width:220px;font-size:14px;line-height:1.5">${k.action}</td>
+          <td class="fs11 col-text3 fw600">${k.before||'—'}</td>
+          <td class="fs11 col-green fw600">${k.after||'—'}</td>
+          <td style="max-width:200px;line-height:1.5"><div class="fs11 col-text2">${k.lesson||'—'}</div>${k.gen?`<div class="fs11 col-gold mt8 fw600">${k.gen}</div>`:''}</td>
+          <td class="${col} fs11 fw600">${k.status}</td>
+          <td><button class="btn btn-sm btn-red" onclick="deleteKZ('${k.id}')">✕</button></td>
+        </tr>`;
+      }).join('');
+}
+
+function deleteKZ(id){
+  if(!confirm('Xóa?')) return;
+  DB.kaizens=DB.kaizens.filter(k=>k.id!==id);
+  saveDB(); renderKaizen();
+}
+
+// ══════════════════════════════════════════════════════
+// REPORT
+// ══════════════════════════════════════════════════════
+function renderReport(){
+  const pps=DB.painpoints;
+  const kzs=DB.kaizens;
+  const done=pps.filter(p=>p.status==='Done').length;
+  const pct=pps.length?Math.round(done/pps.length*100):0;
+  document.getElementById('report-content').innerHTML = `
+    <div class="grid4">
+      <div class="stat stat-gold"><div class="stat-label">Pain-points</div><div class="stat-val col-gold">${pps.length}</div></div>
+      <div class="stat stat-green"><div class="stat-label">Đã giải quyết</div><div class="stat-val col-green">${done}</div><div class="stat-sub col-green fw600 mt4">${pct}% hoàn thành</div></div>
+      <div class="stat stat-teal"><div class="stat-label">Kaizen thực hiện</div><div class="stat-val" style="color:var(--teal)">${kzs.length}</div></div>
+      <div class="stat stat-blue"><div class="stat-label">Bài học rút ra</div><div class="stat-val col-blue2">${kzs.filter(k=>k.lesson).length}</div></div>
+    </div>
+    <div class="card mt16">
+      <div class="card-head"><div class="card-title">Top Pain-points theo KPN</div></div>
+      <div class="tbl-wrap" style="border:none">
+        <table>
+          <thead><tr><th>ID</th><th>Công đoạn</th><th>3M</th><th>KPN</th><th>Phân luồng</th><th>Trạng thái</th></tr></thead>
+          <tbody>${[...pps].sort((a,b)=>b.kpn-a.kpn).slice(0,10).map(p=>{
+            const ph=getPhase(p.kpn,!!p.triz);
+            return `<tr>
+              <td class="td-mono">${p.id}</td><td class="fw600">${p.station}</td>
+              <td><span class="${get3MCls(p.m3)}">${p.m3}</span></td>
+              <td class="td-num ${getKPNcls(p.kpn)}">${p.kpn}</td>
+              <td><span class="phase-tag ${ph.cls}">${ph.label}</span></td>
+              <td class="fs11 fw600">${p.status}</td>
+            </tr>`;
+          }).join('')||'<tr><td colspan="6" class="empty-state">Chưa có dữ liệu</td></tr>'}</tbody>
+        </table>
+      </div>
+    </div>
+    <div class="card mt16">
+      <div class="card-head"><div class="card-title">Kaizen Log tóm tắt</div></div>
+      <div class="tbl-wrap" style="border:none">
+        <table>
+          <thead><tr><th>ID</th><th>Ngày</th><th>Hành động</th><th>Trước → Sau</th><th>Bài học GEN</th><th>Trạng thái</th></tr></thead>
+          <tbody>${kzs.map(k=>`<tr>
+            <td class="td-mono">${k.id}</td>
+            <td class="td-mono fs11">${k.date}</td>
+            <td class="fs11" style="font-size:14px;line-height:1.5">${k.action.substring(0,60)}...</td>
+            <td class="fs11 col-text3 fw600">${k.before||'—'} → <span class="col-green">${k.after||'—'}</span></td>
+            <td class="fs11 col-gold fw600">${k.gen||'—'}</td>
+            <td class="fs11 fw600">${k.status}</td>
+          </tr>`).join('')||'<tr><td colspan="6" class="empty-state">Chưa có Kaizen</td></tr>'}</tbody>
+        </table>
+      </div>
+    </div>`;
+}
+
+function exportReport(){
+  const pps=DB.painpoints;
+  const headers=['ID','Ngày','Công đoạn','Người ghi','Mô tả','3M','S','O','E','KPN','Phân luồng','Giải pháp','GEN Layer','Trạng thái'];
+  const rows=pps.map(p=>{
+    const ph=getPhase(p.kpn,!!p.triz);
+    return [p.id,p.date,p.station,p.reporter||'',`"${p.desc}"`,p.m3,p.s,p.o,p.e,p.kpn,ph.label,`"${p.solution||''}"`,p.gen,p.status];
+  });
+  const csv=[headers,...rows].map(r=>r.join(',')).join('\n');
+  const blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=`sproduction_gen_ci_${new Date().toISOString().slice(0,10)}.csv`;
+  a.click();
+}
+
+function printPage(){ window.print(); }
+
+// ══════════════════════════════════════════════════════
+// MODAL UTILS
+// ══════════════════════════════════════════════════════
+function openModal(id){ document.getElementById(id).classList.add('on') }
+function closeModal(id){ document.getElementById(id).classList.remove('on') }
+document.querySelectorAll('.modal-bg').forEach(el=>el.addEventListener('click',e=>{if(e.target===el)el.classList.remove('on')}));
+
+// ══════════════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════════════
+document.getElementById('tb-date').textContent = new Date().toLocaleDateString('vi',{weekday:'short',day:'numeric',month:'numeric',year:'numeric'});
+loadDB();
+renderDashboard();
+</script>
+</body>
+</html>

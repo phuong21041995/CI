@@ -1,0 +1,67 @@
+/* ════════════════════════════════════════════════════════════
+   theme.css — Gen thị giác của OpEx Hub
+   Bảng màu: giấy dó · mực nho · y vàng cà sa · lá trà
+   Tinh thần: trầm, ấm, tĩnh — một nơi để chiêm nghiệm,
+   không phải một bảng điều khiển.
+   ════════════════════════════════════════════════════════════ */
+
+:root {
+  /* ── Nền & giấy ── */
+  --paper:        #f4f0e6;  /* giấy dó, nền chính */
+  --paper-warm:   #efe9da;  /* giấy ngả vàng, nền phụ */
+  --paper-deep:   #e7dfca;  /* viền giấy, đường phân */
+
+  /* ── Mực ── */
+  --ink:          #2b2622;  /* mực nho đậm, chữ chính */
+  --ink-soft:     #5c5246;  /* mực nhạt, chữ phụ */
+  --ink-faint:    #8a7d6c;  /* mực rất nhạt, chú thích */
+
+  /* ── Nhấn ── */
+  --ochre:        #b8893b;  /* y vàng cà sa — màu nhấn chính */
+  --ochre-deep:   #8f6627;  /* hổ phách đậm — hover */
+  --ochre-soft:   #ecdfc4;  /* nền nhấn rất nhạt */
+  --tea:          #5e6f53;  /* lá trà — màu phụ, dùng cho tuệ giác */
+  --tea-soft:     #e3e6da;  /* nền lá trà nhạt */
+
+  /* ── Trạng thái ── */
+  --ok:           #5e6f53;
+  --warn:         #a3552b;
+
+  /* ── Hình khối ── */
+  --r-sm: 6px;
+  --r:    10px;
+  --r-lg: 16px;
+
+  /* ── Chữ ── */
+  /* Display: Noto Serif — gợi sách kinh, văn bản trang trọng.
+     Body:    Be Vietnam Pro — đọc tiếng Việt rõ, hiện đại vừa phải.
+     Hai vai tách bạch: serif cho tiêu đề & tuệ giác, sans cho nội dung. */
+  --font-display: 'Noto Serif', Georgia, 'Times New Roman', serif;
+  --font-body:    'Be Vietnam Pro', system-ui, -apple-system, sans-serif;
+
+  /* ── Đổ bóng: rất nhẹ, như bóng giấy chồng giấy ── */
+  --shadow-sm: 0 1px 2px rgba(43, 38, 34, 0.06);
+  --shadow:    0 4px 14px rgba(43, 38, 34, 0.07);
+  --shadow-lg: 0 14px 40px rgba(43, 38, 34, 0.10);
+
+  --sidebar-w: 296px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper:      #211d19;
+    --paper-warm: #262019;
+    --paper-deep: #342d24;
+    --ink:        #ece3d3;
+    --ink-soft:   #c2b6a3;
+    --ink-faint:  #8d8170;
+    --ochre:      #d4a352;
+    --ochre-deep: #e3b766;
+    --ochre-soft: #3a2f1e;
+    --tea:        #9aae8a;
+    --tea-soft:   #2b3326;
+    --shadow-sm:  0 1px 2px rgba(0,0,0,0.3);
+    --shadow:     0 4px 14px rgba(0,0,0,0.35);
+    --shadow-lg:  0 14px 40px rgba(0,0,0,0.45);
+  }
+}

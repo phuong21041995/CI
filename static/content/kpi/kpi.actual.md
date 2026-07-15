@@ -1,0 +1,20 @@
+# Thực chiến — KPI & Performance Management
+# Kịch bản tịnh hóa hệ thống đo lường và phương pháp bẻ gãy bẫy rập thành tích ảo.
+
+@ Đo lường Nhân Quả bằng cặp chỉ số Leading và Lagging Indicator
+- Bối cảnh thực tế: Để giải quyết bài toán sụt giảm sản lượng do lỗi trích xuất tệp tin PLIST và MAS/OC, Ban giám đốc FDI áp một KPI dứt khoát cho phòng Kỹ thuật: "Tỷ lệ lỗi file cấu hình phải giảm xuống dưới 0.1% vào cuối tháng". Đến cuối tháng, chỉ số báo cáo vẫn Đỏ rực. Trưởng phòng Kỹ thuật phân trần do nhân sự ca đêm quá tải, còn Giám đốc thì nổi giận vì Quả đã chín muộn và không thể cứu vãn dòng tiền.
+- Bẫy rập thường gặp: Ám ảnh bởi chỉ số theo sau (Lagging Indicator) và buông lỏng chỉ số dẫn dắt (Leading Indicator). Chỉ số cuối tháng là cái Quả thuộc về quá khứ, vĩnh viễn không thể vặn ngược thời gian để sửa chữa. Kẻ vô minh chỉ biết khóc than trước cái Quả; người trí tuệ phải tập trung kiểm soát chặt chẽ cái Nhân gieo trồng trong từng sát-na hiện tại.
+- Hành động thực chiến: Tái cấu trúc bộ đo lường sang cặp chỉ số Nhân - Quả đồng đẳng. Giữ chỉ số lỗi file làm Lagging Indicator, nhưng bổ sung ngay 2 Leading Indicators có thể can thiệp hàng ngày: 1) Số lượng hàm validate tự động được cập nhật vào code Python; 2) Tỷ lệ kỹ sư hoàn thành khóa Microlearning về lookup đa sheet. Tiến hành Check-in liên tục hàng tuần thay vì chờ đến cuối tháng.
+- Kết quả thực: Phản hiện và xử lý điểm nghẽn năng lực ngay từ tuần đầu tiên, chuyển trạng thái từ cứu hỏa sang phòng hộ chủ động, đưa chỉ số chất lượng cán đích xanh sớm trước 10 ngày.
+
+@ Đập tan bệnh "Thành tích xanh, Công ty lỗ" bằng Strategy Map
+- Bối cảnh thực tế: Một nhà máy công nghiệp sở hữu bảng Dashboard chằng chịt hơn 100 chỉ số KPI. Cuối năm, báo cáo hiệu suất của tất cả các phòng ban đều đạt 100% màu Xanh (RAG Status) để nhận thưởng, nhưng tổng kết tài chính toàn công ty vẫn báo lỗ nặng.
+- Bẫy rập thường gặp: Sự tham lam dữ liệu vụn vặt và hội chứng đo lường những gì dễ đo chứ không đo thứ quan trọng. Khi chữ "Key" trong KPI bị lãng quên, các phòng ban sẽ tự vẽ ra các chỉ số an toàn, lờ đi bức tranh tổng thể của tổ chức. Đây là sự dối trá che đậy sự yếu hèn của hệ thống.
+- Hành động thực chiến: Dùng tuệ giác viên mĩ của sơ đồ Strategy Map (Balanced Scorecard) để thanh lọc hệ thống. Cắt bỏ 80% KPI rác, chỉ giữ lại 3 KPI cốt lõi cho mỗi tầng và nối chúng bằng sợi dây nhân quả duyên khởi xuôi dòng: Tầng Học tập (Năng lực viết mã tự động hóa của kỹ sư) -> tác động lên Tầng Quy trình (Tốc độ đối chiếu file MAS/OC) -> tác động lên Tầng Khách hàng (Mức độ hài lòng của đối tác KR Eng) -> quyết định Tầng Tài chính (Biên lợi nhuận của nhà máy).
+- Kết quả thực: Bảng mục tiêu phẳng vuông vắn, triệt tiêu hoàn toàn tình trạng tối ưu hóa cục bộ, căn chỉnh mọi nỗ lực cá nhân đồng tâm hướng về True North vĩ đại.
+
+@ Văn hóa Andon đối ứng trạng thái Đỏ (RAG Status) trên Dashboard
+- Bối cảnh thực tế: Hệ thống quản trị hiển thị một chỉ số vận hành chuyển sang sắc Đỏ (không đạt) trên màn hình trung tâm. Kỹ sư trưởng lập tức tìm cách sửa số liệu trên file Excel hoặc đổ lỗi cho thiết bị của phòng ban khác để tránh bị bêu tên trong cuộc họp Performance Review.
+- Bẫy rập thường gặp: Biến KPI thành công cụ trừng phạt và đi săn phù thủy. Khi màu Đỏ bị gắn liền với tâm Sân Hận và sự chỉ trích, nhân viên sẽ chọn cách giấu kín sai lỗi, tạo ra ảo giác bình yên giả tạo trước khi hệ thống sụp đổ hoàn toàn.
+- Hành động thực chiến: Nhúng triết lý đèn cảnh báo Andon của TPS vào văn hóa RAG Status. Tuyên bố công khai: Màu Đỏ trên Dashboard không phải là bằng chứng để trừng phạt, mà là lời kêu gọi sự chú ý, là cơ duyên để kích hoạt tâm từ bi gỡ khó. Khi KPI chuyển Đỏ, cấp trên bắt buộc phải bước xuống hiện trường (Gemba), thực hiện Coaching tại trận để cùng nhân viên tìm nguyên nhân gốc rễ bằng 5 Whys.
+- Kết quả thực: Loại bỏ hoàn toàn tâm lý sợ hãi, xây dựng môi trường an toàn tâm lý tuyệt đối, giúp tốc độ gỡ lỗi hệ thống tăng 300% và duy trì thành quả bền vững.

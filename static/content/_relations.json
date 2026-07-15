@@ -1,0 +1,219 @@
+{
+  "_comment": "Bản đồ quan hệ giữa các công cụ. node: các framework + lõi gen. edge: mối nối. Sửa ở đây để đổi sơ đồ, không cần code. 'kind' của edge: sinh-ra | bổ-trợ | nền-tảng | quy-về.",
+  "legend": {
+    "sinh-ra":  { "label": "Sinh ra / phát triển từ", "color": "#4EBA1E" },
+    "bổ-trợ":   { "label": "Bổ trợ lẫn nhau",        "color": "#CE7E00" },
+    "nền-tảng": { "label": "Làm nền cho",             "color": "#f44336" },
+    "quy-về":   { "label": "Quy về bộ gen",           "color": "#2986cc" }
+  },
+  "nodes": [
+    {
+      "id": "gen",
+      "label": "Bộ Gen",
+      "group": "core",
+      "desc": "Tôn trọng thực tế · Loại bỏ lãng phí · Dữ liệu là sự thật · Con người là trung tâm · Khách hàng định nghĩa giá trị · Chuẩn hóa → Cải tiến → Chuẩn hóa lại · Tư duy hệ thống dài hạn."
+    },
+    {
+      "id": "tps",
+      "label": "TPS",
+      "group": "nền",
+      "desc": "Gốc rễ của toàn bộ tư duy tinh gọn. Ngôi nhà TPS: JIT + Jidoka + Heijunka + Standard Work + Kaizen."
+    },
+    {
+      "id": "lean",
+      "label": "Lean",
+      "group": "hệ",
+      "desc": "Hệ thống hóa TPS cho mọi ngành. 5 nguyên tắc, 8 lãng phí DOWNTIME, VSM, Kanban, SMED."
+    },
+    {
+      "id": "kaizen",
+      "label": "Kaizen",
+      "group": "hệ",
+      "desc": "Động cơ cải tiến liên tục bên trong TPS/Lean. PDCA, Kaizen Event, A3, Suggestion System."
+    },
+    {
+      "id": "6sigma",
+      "label": "Six Sigma",
+      "group": "chất",
+      "desc": "Giảm biến động bằng thống kê. DMAIC, Belt System, Process Capability, Hypothesis Testing."
+    },
+    {
+      "id": "tqm",
+      "label": "TQM",
+      "group": "chất",
+      "desc": "Chất lượng toàn diện — nền tư tưởng cho Six Sigma. Deming 14 điểm, Juran Trilogy, 7 QC Tools, COQ, ISO 9001."
+    },
+    {
+      "id": "kpi",
+      "label": "KPI",
+      "group": "đo",
+      "desc": "Đo lường hiệu suất, soi đường cải tiến. Balanced Scorecard, OKR, Performance Management."
+    },
+    {
+      "id": "hoshin",
+      "label": "Hoshin Kanri",
+      "group": "chiến",
+      "desc": "Dẫn hướng chiến lược, nối mục tiêu với hành động. Catchball, X-Matrix, Bowler Chart."
+    },
+    {
+      "id": "change",
+      "label": "Change Mgmt",
+      "group": "người",
+      "desc": "Đưa con người qua thay đổi. Kotter 8 bước, ADKAR, Kübler-Ross Curve, Resistance Management."
+    },
+    {
+      "id": "hrd",
+      "label": "HRD",
+      "group": "người",
+      "desc": "Phát triển con người & tổ chức học tập. 70-20-10, Kirkpatrick, Coaching, Knowledge Management."
+    },
+    {
+      "id": "scm",
+      "label": "SCM",
+      "group": "vận",
+      "desc": "Mở rộng tư duy tinh gọn ra toàn chuỗi cung ứng. S&OP, Kraljic Matrix, VMI, Bullwhip Effect."
+    },
+    {
+      "id": "i40",
+      "label": "Industry 4.0",
+      "group": "công nghệ",
+      "desc": "Khuếch đại Lean & cải tiến bằng công nghệ số. IoT, AI, Digital Twin, Smart Factory, Predictive Maintenance."
+    },
+    {
+      "id": "pm",
+      "label": "Project Mgmt",
+      "group": "vận",
+      "desc": "Khung cấu trúc để triển khai dự án cải tiến. PMBOK, Agile/Scrum, EVM, Risk Management."
+    },
+    {
+      "id": "ehs",
+      "label": "EHS",
+      "group": "nền",
+      "desc": "Nền móng không thể thiếu — không có an toàn thì không có gì. ISO 45001, ISO 14001, Hierarchy of Controls."
+    }
+  ],
+  "edges": [
+    {
+      "from": "tps", "to": "lean", "kind": "sinh-ra",
+      "note": "Lean là sự đúc kết và phổ quát hóa TPS để áp dụng ngoài Toyota."
+    },
+    {
+      "from": "tps", "to": "kaizen", "kind": "sinh-ra",
+      "note": "Kaizen là linh hồn cải tiến liên tục vốn nằm sẵn trong TPS."
+    },
+    {
+      "from": "lean", "to": "kaizen", "kind": "bổ-trợ",
+      "note": "Lean cần Kaizen làm động cơ; Kaizen cần Lean làm khung hệ thống."
+    },
+    {
+      "from": "lean", "to": "6sigma", "kind": "bổ-trợ",
+      "note": "Lean bỏ lãng phí (tốc độ), Six Sigma giảm dao động (độ chính xác) — hợp thành Lean Six Sigma."
+    },
+    {
+      "from": "tqm", "to": "6sigma", "kind": "sinh-ra",
+      "note": "Six Sigma kế thừa và lượng hóa tư tưởng chất lượng toàn diện của TQM."
+    },
+    {
+      "from": "tqm", "to": "lean", "kind": "bổ-trợ",
+      "note": "TQM và Lean cùng hướng đến chất lượng và loại bỏ lãng phí — hai con đường gặp nhau."
+    },
+    {
+      "from": "kaizen", "to": "tqm", "kind": "bổ-trợ",
+      "note": "Cải tiến liên tục là một trụ cốt của quản lý chất lượng toàn diện."
+    },
+    {
+      "from": "kpi", "to": "hoshin", "kind": "bổ-trợ",
+      "note": "Hoshin biến chiến lược thành mục tiêu; KPI đo xem có đi đúng hướng không."
+    },
+    {
+      "from": "hoshin", "to": "lean", "kind": "nền-tảng",
+      "note": "Hoshin định hướng để mọi nỗ lực Lean cùng phục vụ một chiến lược thống nhất."
+    },
+    {
+      "from": "hoshin", "to": "kaizen", "kind": "nền-tảng",
+      "note": "Hoshin chọn đúng vấn đề cần Kaizen — tránh cải tiến những thứ không quan trọng."
+    },
+    {
+      "from": "change", "to": "lean", "kind": "nền-tảng",
+      "note": "Không quản lý thay đổi thì cải tiến Lean chết yểu vì kháng cự con người."
+    },
+    {
+      "from": "change", "to": "i40", "kind": "nền-tảng",
+      "note": "Chuyển đổi số thất bại 70% vì con người — Change Management là điều kiện tiên quyết."
+    },
+    {
+      "from": "hrd", "to": "kaizen", "kind": "nền-tảng",
+      "note": "Con người được phát triển mới đủ năng lực và ý chí đề xuất cải tiến mỗi ngày."
+    },
+    {
+      "from": "hrd", "to": "change", "kind": "bổ-trợ",
+      "note": "Phát triển con người và dẫn dắt thay đổi là hai mặt của cùng một triết lý: con người đi trước."
+    },
+    {
+      "from": "hrd", "to": "tqm", "kind": "bổ-trợ",
+      "note": "TQM cần mọi người tham gia — HRD xây dựng năng lực chất lượng cho toàn tổ chức."
+    },
+    {
+      "from": "lean", "to": "scm", "kind": "sinh-ra",
+      "note": "Tư duy dòng chảy & kéo của Lean mở rộng ra toàn chuỗi cung ứng: Lean Supply Chain."
+    },
+    {
+      "from": "kpi", "to": "scm", "kind": "bổ-trợ",
+      "note": "Chuỗi cung ứng vận hành và được tối ưu nhờ các chỉ số đo lường xuyên suốt (OTIF, Fill Rate...)."
+    },
+    {
+      "from": "i40", "to": "lean", "kind": "bổ-trợ",
+      "note": "Industry 4.0 khuếch đại Lean: IoT thay thế quan sát thủ công, AI tối ưu dòng chảy, Digital Twin mô phỏng VSM."
+    },
+    {
+      "from": "i40", "to": "scm", "kind": "bổ-trợ",
+      "note": "Công nghệ số (IoT, AI, Blockchain) biến chuỗi cung ứng thành mạng lưới thông minh, minh bạch, tự thích nghi."
+    },
+    {
+      "from": "i40", "to": "tqm", "kind": "bổ-trợ",
+      "note": "AI và Computer Vision nâng tầm kiểm soát chất lượng — phát hiện lỗi nhanh và chính xác hơn mắt người."
+    },
+    {
+      "from": "pm", "to": "kaizen", "kind": "nền-tảng",
+      "note": "Mỗi Kaizen Event hay dự án DMAIC đều cần khung PM để quản lý phạm vi, tiến độ và nguồn lực."
+    },
+    {
+      "from": "pm", "to": "hoshin", "kind": "bổ-trợ",
+      "note": "Improvement Priorities trong Hoshin được triển khai thành công khi có cấu trúc PM rõ ràng."
+    },
+    {
+      "from": "pm", "to": "i40", "kind": "nền-tảng",
+      "note": "Dự án chuyển đổi số phức tạp, đa phòng ban — không có PM tốt thì không landing được."
+    },
+    {
+      "from": "ehs", "to": "lean", "kind": "nền-tảng",
+      "note": "Safety là nền móng của TPS House — Lean không thể vận hành bền vững trên nền tảng không an toàn."
+    },
+    {
+      "from": "ehs", "to": "tqm", "kind": "bổ-trợ",
+      "note": "TQM mở rộng khái niệm chất lượng sang cả an toàn và môi trường — EHS là một chiều của quality toàn diện."
+    },
+    {
+      "from": "ehs", "to": "hrd", "kind": "bổ-trợ",
+      "note": "Văn hóa an toàn được xây dựng qua đào tạo và phát triển con người — EHS và HRD cùng chung mục tiêu."
+    },
+    {
+      "from": "kpi", "to": "ehs", "kind": "bổ-trợ",
+      "note": "EHS được quản lý bằng Leading & Lagging Indicators — LTIFR, Near Miss Rate, Compliance Rate."
+    },
+
+    { "from": "tps",    "to": "gen", "kind": "quy-về" },
+    { "from": "lean",   "to": "gen", "kind": "quy-về" },
+    { "from": "kaizen", "to": "gen", "kind": "quy-về" },
+    { "from": "6sigma", "to": "gen", "kind": "quy-về" },
+    { "from": "tqm",    "to": "gen", "kind": "quy-về" },
+    { "from": "kpi",    "to": "gen", "kind": "quy-về" },
+    { "from": "hoshin", "to": "gen", "kind": "quy-về" },
+    { "from": "change", "to": "gen", "kind": "quy-về" },
+    { "from": "hrd",    "to": "gen", "kind": "quy-về" },
+    { "from": "scm",    "to": "gen", "kind": "quy-về" },
+    { "from": "i40",    "to": "gen", "kind": "quy-về" },
+    { "from": "pm",     "to": "gen", "kind": "quy-về" },
+    { "from": "ehs",    "to": "gen", "kind": "quy-về" }
+  ]
+}

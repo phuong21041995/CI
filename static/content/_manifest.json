@@ -1,0 +1,48 @@
+{
+  "_comment": "Khai báo toàn bộ chủ đề. Thêm chủ đề mới = thêm một khối vào đây + đặt file <id>.md (và tùy chọn <id>.insight.md) vào thư mục content/. Không cần sửa code.",
+  "groups": [
+    {
+      "label": "Lõi",
+      "items": [
+	    { "id": "cam_nang",  "label": "Cẩm nang", "icon": "book",     "tag": "Cốt tủy",  "core": true, "desc": "Khám phá bộ GEN gốc rễ", "render": "pdf" },
+        { "id": "thau-triet",  "label": "Thấu triệt", "icon": "eye",     "tag": "Cốt tủy",  "core": true, "desc": "Con đường nâng tầm doanh nghiệp: con người đi trước, công cụ theo sau. Ba lớp gen – nguyên lý – tuệ giác.", "render": "essay" },
+        { "id": "lien-ket",    "label": "Liên kết",   "icon": "mindmap", "tag": "Hệ thống", "core": true, "desc": "Bản đồ quan hệ giữa toàn bộ công cụ — cái nào sinh ra cái nào, bổ trợ ra sao, tất cả quy về bộ gen.", "render": "relations" },
+        { "id": "kiem-chung",  "label": "Kiểm chứng", "icon": "seal",    "tag": "Tự test",  "core": true, "desc": "Kiểm tra sự hiểu, khả năng ứng dụng và năng lực nối các công cụ thành một hệ.", "render": "quiz" },
+        { "id": "soi-tam",     "label": "Soi tâm",    "icon": "lotus",   "tag": "Tự vấn",   "core": true, "desc": "Nơi tự vấn mình, ghi lại chiêm nghiệm và nhìn lại hành trình.", "render": "contemplate" }
+      ]
+    },
+    {
+      "label": "Nền tảng & Hệ thống",
+      "items": [
+        { "id": "tps",    "label": "Toyota Production System", "icon": "car",     "tag": "Nền tảng", "desc": "Kiến trúc gốc của Lean & Kaizen. Ngôi nhà TPS, 3M, Just-In-Time, Jidoka, 14 nguyên tắc Toyota Way." },
+        { "id": "lean",   "label": "Lean Manufacturing",       "icon": "factory", "tag": "Hệ thống", "desc": "5 nguyên tắc Lean, 8 lãng phí DOWNTIME, VSM, Kanban, SMED, TPM, Just-In-Time." },
+        { "id": "kaizen", "label": "Kaizen",                   "icon": "trend",   "tag": "Cải tiến", "desc": "Cải tiến liên tục từng bước nhỏ. PDCA, Kaizen Event, A3 Report, hệ thống đề xuất cải tiến." }
+      ]
+    },
+    {
+      "label": "Chất lượng & Đo lường",
+      "items": [
+        { "id": "tqm",    "label": "TQM",               "icon": "seal-check", "tag": "Chất lượng", "desc": "Deming 14 điểm, Juran Trilogy, 7 QC Tools, Cost of Quality, ISO 9001, SPC." },
+        { "id": "6sigma", "label": "Six Sigma",          "icon": "chart",      "tag": "Chất lượng", "desc": "DMAIC, Belt System, công cụ thống kê, kiểm định giả thuyết, năng lực quy trình." },
+        { "id": "kpi",    "label": "KPI & Performance",  "icon": "target",     "tag": "Đo lường",   "desc": "Balanced Scorecard, OKR, vòng quản lý hiệu suất, 360-degree Feedback, Dashboard." }
+      ]
+    },
+    {
+      "label": "Con người & Chiến lược",
+      "items": [
+        { "id": "hrd",    "label": "HRD & Learning Org",  "icon": "users",          "tag": "Con người", "desc": "5 nguyên lý Peter Senge, ADDIE, Kirkpatrick, Coaching, Knowledge Management." },
+        { "id": "change", "label": "Change Management",   "icon": "arrows-clockwise","tag": "Con người", "desc": "Kotter 8 bước, ADKAR, Kübler-Ross Change Curve, quản lý kháng cự, củng cố thay đổi." },
+        { "id": "hoshin", "label": "Hoshin Kanri",         "icon": "compass",        "tag": "Chiến lược","desc": "Catchball, X-Matrix, Bowler Chart, cascade mục tiêu từ chiến lược đến hành động." }
+      ]
+    },
+    {
+      "label": "Vận hành & Mở rộng",
+      "items": [
+        { "id": "scm", "label": "Supply Chain Management",          "icon": "truck",        "tag": "Vận hành",    "desc": "S&OP, Kraljic Matrix, VMI, Bullwhip Effect, Lean Supply Chain, Supply Chain Resilience." },
+        { "id": "i40", "label": "Industry 4.0 & Digital Transformation", "icon": "cpu",   "tag": "Công nghệ",   "desc": "IoT, AI, Digital Twin, Smart Factory, Predictive Maintenance, Digital Lean." },
+        { "id": "pm",  "label": "Project Management",               "icon": "kanban",       "tag": "Vận hành",    "desc": "PMBOK, Agile/Scrum, WBS, Critical Path, EVM, Risk Management, quản lý dự án cải tiến." },
+        { "id": "ehs", "label": "Environment, Health & Safety",     "icon": "shield-check", "tag": "Nền tảng",    "desc": "ISO 45001, ISO 14001, Hierarchy of Controls, Safety Culture, JSA, EHS KPIs." }
+      ]
+    }
+  ]
+}

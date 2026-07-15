@@ -1,0 +1,1282 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bộ GEN CI — Trí Tuệ Việt Nam</title>
+<!-- Đổi sang font Quicksand -->
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* LIGHT THEME VARIABLES */
+  --bg: #f0f2f5;
+  --bg2: #ffffff;
+  --bg3: #f9fafb;
+  --border: #e5e7eb;
+  --border2: #d1d5db;
+  --text: #111827;
+  --text2: #4b5563;
+  --text3: #6b7280;
+  
+  --gold: #d97706;
+  --gold2: #b45309;
+  --green: #10b981;
+  --purple: #8b5cf6;
+  --blue: #3b82f6;
+  --orange: #f97316;
+  --red: #ef4444;
+  --teal: #0d9488;
+  
+  --r: 10px;
+  --r2: 8px;
+  --font-body: 'Quicksand', sans-serif;
+  --font-display: 'Quicksand', sans-serif;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 15px; /* Tăng từ 14px lên 15px */
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* SCROLLBAR */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 4px; }
+
+/* LAYOUT */
+.sidebar {
+  position: fixed;
+  left: 0; top: 0; bottom: 0;
+  width: 260px; /* Rộng hơn 1 chút cho font to */
+  background: var(--bg2);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+  overflow-y: auto;
+}
+.main {
+  margin-left: 260px;
+  min-height: 100vh;
+  padding: 2.5rem;
+  max-width: calc(100% - 260px);
+}
+
+/* SIDEBAR CONTENT */
+.sidebar-logo {
+  padding: 1.5rem 1.25rem 1rem;
+  border-bottom: 1px solid var(--border);
+}
+.sidebar-logo .title {
+  font-family: var(--font-display);
+  font-size: 17px; /* Tăng font */
+  font-weight: 700;
+  color: var(--gold2);
+  line-height: 1.3;
+}
+.sidebar-logo .sub {
+  font-size: 12px;
+  color: var(--text3);
+  margin-top: 6px;
+  font-weight: 500;
+}
+
+.hk-pill {
+  margin: 1.5rem 1.25rem 1rem;
+  background: #f3f4f6; /* Sáng sủa hơn */
+  border: 1px solid #e5e7eb;
+  border-radius: var(--r2);
+  padding: 10px 12px;
+}
+.hk-pill .num { font-size: 20px; font-weight: 700; color: var(--purple); line-height: 1; }
+.hk-pill .txt { font-size: 12px; color: var(--text2); margin-top: 4px; line-height: 1.4; font-weight: 500;}
+
+.nav-section {
+  padding: 0.5rem 0;
+  flex: 1;
+}
+.nav-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  color: var(--text3);
+  padding: 8px 1.25rem 6px;
+  text-transform: uppercase;
+}
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 1.25rem;
+  cursor: pointer;
+  font-size: 14px; /* Tăng font */
+  font-weight: 600;
+  color: var(--text2);
+  transition: all .15s;
+  border-left: 3px solid transparent;
+  text-decoration: none;
+}
+.nav-item:hover { background: var(--bg3); color: var(--text); }
+.nav-item.active { color: var(--text); border-left-color: var(--gold); background: var(--bg3); }
+.nav-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+/* LEVEL SWITCHER */
+.level-bar {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+.level-btn {
+  padding: 6px 16px;
+  border-radius: 20px;
+  border: 1px solid var(--border2);
+  background: var(--bg2);
+  color: var(--text2);
+  font-size: 13px;
+  font-family: var(--font-body);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .15s;
+}
+.level-btn:hover { border-color: var(--gold); color: var(--gold); background: #fffbeb;}
+.level-btn.on { background: var(--gold); border-color: var(--gold); color: #fff; }
+
+/* PAGE HEADER */
+.page-header {
+  margin-bottom: 2.5rem;
+}
+.page-eyebrow {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+.page-title {
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.2;
+}
+.page-desc {
+  font-size: 15px;
+  color: var(--text2);
+  margin-top: 10px;
+  max-width: 680px;
+  line-height: 1.6;
+  font-weight: 500;
+}
+
+/* CARDS */
+.card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+.card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  cursor: pointer;
+  transition: background .15s;
+  user-select: none;
+}
+.card-head:hover { background: var(--bg3); }
+.card-head-left { display: flex; align-items: center; gap: 14px; }
+.card-color-bar { width: 4px; height: 44px; border-radius: 2px; flex-shrink: 0; }
+.card-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; margin-bottom: 4px; }
+.card-name { font-size: 17px; font-weight: 700; font-family: var(--font-display); color: var(--text); }
+.card-sub { font-size: 13px; color: var(--text3); margin-top: 2px; font-weight: 500;}
+.card-tags { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+.tag { font-size: 11px; padding: 3px 10px; border-radius: 12px; font-weight: 600; white-space: nowrap; }
+.chevron { color: var(--text3); font-size: 14px; transition: transform .2s; margin-left: 10px; }
+.chevron.open { transform: rotate(180deg); }
+
+.card-body { display: none; border-top: 1px solid var(--border); }
+.card-body.open { display: block; }
+
+.card-tabs { display: flex; border-bottom: 1px solid var(--border); background: var(--bg3); }
+.ctab {
+  padding: 12px 20px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text3);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all .15s;
+  font-family: var(--font-body);
+  background: transparent;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  margin-bottom: -1px;
+}
+.ctab:hover { color: var(--text2); }
+.ctab.on { color: var(--text); border-bottom-color: var(--gold); background: var(--bg2); }
+
+.tab-content { padding: 20px; }
+
+/* CHECKLIST */
+.checklist { display: flex; flex-direction: column; gap: 10px; }
+.check-item {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 12px 16px;
+  border-radius: var(--r2);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: all .15s;
+  background: var(--bg2);
+}
+.check-item:hover { border-color: var(--border2); background: var(--bg3); }
+.check-item.done { opacity: .6; background: var(--bg); }
+.check-box {
+  width: 20px; height: 20px;
+  border-radius: 4px;
+  border: 1px solid var(--border2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 2px;
+  font-size: 12px;
+  transition: all .15s;
+  color: #fff;
+  background: var(--bg2);
+}
+.check-item.done .check-box { background: var(--green); border-color: var(--green); }
+.check-item.done .check-main { text-decoration: line-through; color: var(--text3); }
+.check-main { font-size: 15px; font-weight: 600; color: var(--text); line-height: 1.4; }
+.check-sub { font-size: 13px; color: var(--text2); margin-top: 4px; line-height: 1.5; font-weight: 500;}
+
+/* TOOLS */
+.tool-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.tool-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  padding: 16px;
+  transition: border-color .15s;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+}
+.tool-card:hover { border-color: var(--border2); }
+.tool-icon { font-size: 24px; margin-bottom: 8px; }
+.tool-name { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+.tool-desc { font-size: 13px; color: var(--text2); line-height: 1.5; font-weight: 500;}
+
+/* INSIGHT */
+.insight {
+  border-radius: var(--r2);
+  padding: 14px 18px;
+  font-size: 14px;
+  color: var(--text2);
+  line-height: 1.7;
+  margin-bottom: 16px;
+  border-left: 3px solid;
+  font-style: italic;
+  font-weight: 500;
+  background: var(--bg3);
+}
+
+/* GEN BADGES */
+.gen-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border); }
+.gen-chip {
+  display: flex; align-items: center; gap: 6px;
+  padding: 4px 12px; border-radius: 12px;
+  font-size: 12px; font-weight: 600;
+  border: 1px solid;
+}
+.gen-chip .dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+
+/* REFLECT */
+.reflect-section { display: flex; flex-direction: column; gap: 12px; }
+.reflect-label { font-size: 14px; font-weight: 600; color: var(--text2); }
+.reflect-area {
+  width: 100%;
+  min-height: 100px;
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  border-radius: var(--r2);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 14px;
+  padding: 12px 14px;
+  resize: vertical;
+  transition: border-color .15s;
+  line-height: 1.6;
+  font-weight: 500;
+}
+.reflect-area:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.1); }
+.reflect-area::placeholder { color: var(--text3); }
+.btn-row { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; }
+.btn {
+  padding: 10px 20px;
+  border-radius: var(--r2);
+  font-size: 13px;
+  font-weight: 700;
+  font-family: var(--font-body);
+  cursor: pointer;
+  border: 1px solid var(--border2);
+  background: var(--bg2);
+  color: var(--text2);
+  transition: all .15s;
+}
+.btn:hover { border-color: var(--text2); color: var(--text); background: var(--bg3); }
+.btn-gold {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: #fff;
+}
+.btn-gold:hover { background: var(--gold2); border-color: var(--gold2); color: #fff;}
+.saved-note {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  padding: 12px 16px;
+  font-size: 14px;
+  color: var(--text2);
+  line-height: 1.6;
+  white-space: pre-wrap;
+  font-weight: 500;
+}
+.saved-label { font-size: 11px; color: var(--text3); font-weight: 700; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 6px; }
+
+/* PROGRESS */
+.progress-wrap { margin-bottom: 2rem; }
+.prog-top { display: flex; justify-content: space-between; font-size: 13px; font-weight: 600; color: var(--text3); margin-bottom: 8px; }
+.prog-track { height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
+.prog-fill { height: 100%; background: linear-gradient(90deg, var(--green), var(--teal)); border-radius: 3px; transition: width .4s ease; }
+
+/* SPECIAL PAGES */
+.gen-overview { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.25rem; }
+.gen-block {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 20px;
+  transition: border-color .15s;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+.gen-block:hover { border-color: var(--border2); }
+.gen-block-num { font-size: 36px; font-weight: 700; font-family: var(--font-display); line-height: 1; margin-bottom: 8px; }
+.gen-block-title { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+.gen-block-desc { font-size: 14px; color: var(--text2); line-height: 1.6; font-weight: 500; }
+.gen-block-items { margin-top: 12px; display: flex; flex-direction: column; gap: 6px; }
+.gen-block-item { font-size: 13px; color: var(--text2); font-weight: 600; padding-left: 12px; position: relative; line-height: 1.5; }
+.gen-block-item::before { content: '·'; position: absolute; left: 0; color: var(--gold); font-size: 18px; line-height: 0.8; }
+
+/* FRACTAL VIZ */
+.fractal-row { display: flex; gap: 10px; align-items: stretch; margin-bottom: 1.25rem; flex-wrap: wrap; }
+.fractal-cell {
+  flex: 1; min-width: 140px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  padding: 16px;
+}
+.fractal-cell .level-name { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--text3); margin-bottom: 8px; }
+.fractal-cell .pháp-name { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+.fractal-cell .pháp-detail { font-size: 13px; font-weight: 500; color: var(--text2); line-height: 1.5; }
+
+/* CONFLICT MAP */
+.conflict-flow { display: flex; gap: 0; margin: 1.5rem 0; overflow-x: auto; padding-bottom: 10px;}
+.conflict-stage {
+  flex: 1; min-width: 160px;
+  padding: 16px;
+  position: relative;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+}
+.conflict-stage::after {
+  content: '→';
+  position: absolute;
+  right: -12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--border2);
+  font-size: 20px;
+  z-index: 1;
+}
+.conflict-stage:last-child::after { display: none; }
+.cs-label { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+.cs-vn { font-size: 12px; font-weight: 600; color: var(--text3); margin-bottom: 8px; }
+.cs-desc { font-size: 13px; font-weight: 500; color: var(--text2); line-height: 1.5; }
+.cs-cause { font-size: 12px; font-weight: 600; color: var(--gold); margin-top: 10px; padding-top: 8px; border-top: 1px dashed var(--border); line-height: 1.4; }
+
+/* SECTION TITLE */
+.section-h { font-size: 13px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--text3); margin-bottom: 12px; margin-top: 24px; }
+.section-h:first-child { margin-top: 0; }
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .sidebar { width: 100%; height: auto; position: relative; border-right: none; border-bottom: 1px solid var(--border); }
+  .main { margin-left: 0; max-width: 100%; padding: 1.5rem; }
+  .tool-grid { grid-template-columns: 1fr; }
+}
+
+/* ANIMATIONS */
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.animate { animation: fadeIn .3s ease; }
+
+/* QUOTE */
+.quote-block {
+  border-left: 4px solid var(--gold);
+  padding: 16px 20px;
+  margin: 1.5rem 0;
+  background: var(--bg2);
+  border-radius: 0 var(--r2) var(--r2) 0;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+.quote-text { font-family: var(--font-display); font-style: italic; font-weight: 600; color: var(--text); font-size: 15px; line-height: 1.7; }
+.quote-source { font-size: 13px; font-weight: 600; color: var(--text3); margin-top: 8px; }
+
+/* TRIẾT LÝ STEPS */
+.tl-steps { display: flex; flex-direction: column; gap: 10px; }
+.tl-step {
+  display: flex; gap: 16px; align-items: flex-start;
+  padding: 14px 18px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+}
+.tl-num { width: 28px; height: 28px; border-radius: 50%; background: var(--gold); color: #fff; font-size: 14px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.tl-text { font-size: 15px; color: var(--text); font-weight: 700; line-height: 1.5; }
+.tl-desc { font-size: 13px; font-weight: 500; color: var(--text2); margin-top: 4px; line-height: 1.5; }
+
+/* 4 ĐIỂM TABLE */
+.diem-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.diem-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  padding: 20px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+.diem-num { font-size: 28px; font-weight: 700; font-family: var(--font-display); line-height: 1; }
+.diem-title { font-size: 15px; font-weight: 700; color: var(--text); margin: 6px 0 8px; }
+.diem-items { display: flex; flex-direction: column; gap: 6px; margin-top: 8px; }
+.diem-item { font-size: 13px; font-weight: 500; color: var(--text2); line-height: 1.5; padding-left: 14px; position: relative; }
+.diem-item::before { content: '→'; position: absolute; left: 0; color: var(--text3); font-size: 11px; }
+</style>
+</head>
+<body>
+<!-- Nút quay lại trang chủ -->
+<a href="/" style="
+    position: fixed; 
+    top: 5px; 
+    right: 20px; 
+    padding: 8px 16px; 
+    background: var(--bg1); 
+    border: 1px solid var(--line);
+    border-radius: var(--r);
+    text-decoration: none;
+    color: var(--text2);
+    font-weight: 600;
+    font-family: var(--sans);
+    box-shadow: 0 2px 6px rgba(0,0,234,1);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    Về trang chủ
+</a>
+<!-- SIDEBAR -->
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <div class="title">Bộ GEN CI<br>Trí Tuệ Việt Nam</div>
+    <div class="sub">0955613345 · Mã Gen Chuyển Hóa</div>
+  </div>
+  <!-- Inline styles updated for light theme -->
+  <div style="margin:16px 16px 8px;border:1px solid var(--border);border-radius:8px;overflow:hidden">
+    <div style="background:var(--bg);padding:8px 14px;font-size:11px;letter-spacing:.08em;color:var(--text3);text-transform:uppercase;font-weight:700">Bộ ứng dụng GEN-CI</div>
+    <a href="GEN-CI-Hoc-va-Ren.html" style="display:flex;align-items:center;gap:10px;padding:10px 14px;text-decoration:none;font-size:14px;color:var(--gold2);background:var(--bg2);border-left:3px solid var(--purple);font-family:inherit">
+      <span style="font-size:18px">📖</span>
+      <span><span style="font-weight:700;display:block;line-height:1.2;color:var(--text)">Học & Rèn</span><span style="font-size:11px;color:var(--purple);font-weight:600">Tầng Người · Bộ GEN</span></span>
+    </a>
+    <a href="GEN-CI-Van-Hanh.html" style="display:flex;align-items:center;gap:10px;padding:10px 14px;text-decoration:none;font-size:14px;color:var(--text2);background:var(--bg3);border-left:3px solid transparent;font-family:inherit">
+      <span style="font-size:18px">⚙️</span>
+      <span><span style="font-weight:700;display:block;line-height:1.2">Vận Hành</span><span style="font-size:11px;color:var(--text3);font-weight:600">Tầng Công Cụ · TPS</span></span>
+    </a>
+  </div>
+
+  <div class="hk-pill">
+    <div class="num">0</div>
+    <div class="txt">Tinh thần Huyền Không · Vô Ngã · Vị Tha</div>
+  </div>
+  <div class="nav-section">
+    <div class="nav-label">Tổng quan</div>
+    <a class="nav-item active" onclick="showPage('overview')">
+      <span class="nav-dot" style="background:var(--gold)"></span> Bộ GEN đầy đủ
+    </a>
+    <div class="nav-label">05 Pháp CI</div>
+    <a class="nav-item" onclick="showPage('dinh')">
+      <span class="nav-dot" style="background:var(--green)"></span> Định Pháp
+    </a>
+    <a class="nav-item" onclick="showPage('cuong')">
+      <span class="nav-dot" style="background:var(--purple)"></span> Cương Pháp
+    </a>
+    <a class="nav-item" onclick="showPage('hanh')">
+      <span class="nav-dot" style="background:var(--blue)"></span> Hành Pháp
+    </a>
+    <a class="nav-item" onclick="showPage('ho')">
+      <span class="nav-dot" style="background:var(--gold)"></span> Hộ Pháp
+    </a>
+    <a class="nav-item" onclick="showPage('tam')">
+      <span class="nav-dot" style="background:var(--red)"></span> Tâm Pháp
+    </a>
+    <div class="nav-label">Mã GEN</div>
+    <a class="nav-item" onclick="showPage('buoc9')">
+      <span class="nav-dot" style="background:var(--purple)"></span> 9 Bước Tự Học
+    </a>
+    <a class="nav-item" onclick="showPage('thoiquen')">
+      <span class="nav-dot" style="background:var(--blue)"></span> 5 Thói Quen
+    </a>
+    <a class="nav-item" onclick="showPage('luchoa')">
+      <span class="nav-dot" style="background:#b45309"></span> 6 Hoà
+    </a>
+    <a class="nav-item" onclick="showPage('trietly')">
+      <span class="nav-dot" style="background:#78350f"></span> 1 Triết Lý
+    </a>
+    <a class="nav-item" onclick="showPage('loithe')">
+      <span class="nav-dot" style="background:#15803d"></span> 3 Lời Thề
+    </a>
+    <a class="nav-item" onclick="showPage('4diem')">
+      <span class="nav-dot" style="background:#4d7c0f"></span> 4 Điểm Phân Tích
+    </a>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<main class="main" id="mainContent"></main>
+
+<script>
+// ─── DATA ────────────────────────────────────────────────────────────────────
+const LEVELS = ['Cá nhân','Dự án nhỏ','Dự án lớn','Cộng đồng','Đất nước'];
+const COLORS = { dinh:'var(--green)', cuong:'var(--purple)', hanh:'var(--blue)', ho:'var(--gold)', tam:'var(--red)' };
+
+const PHAP = {
+  dinh: {
+    label:'Định Pháp', sub:'Định hướng · Tầm nhìn · Mục tiêu · Sứ mệnh',
+    insight: [
+      'Hầu hết CI thất bại không phải vì thiếu công cụ — mà vì người làm không biết tại sao mình làm. Đây là vấn đề Định Pháp.',
+      'Dự án thiếu Định Pháp rõ ràng: mỗi tuần một hướng, năng lượng phân tán, không ai biết mình đang đi về đâu.',
+      'Tổ chức thiếu Định Pháp: OKR đẹp trên giấy nhưng không ai thật sự tin vào nó, không ai nhắc lại khi khó khăn.',
+      'Cộng đồng thiếu Định Pháp: tập hợp đông nhưng rã đám nhanh vì không có sứ mệnh chung thật sự.',
+      'Quốc gia thiếu Định Pháp: chính sách thay đổi theo nhiệm kỳ, không có tầm nhìn vượt thế hệ.',
+    ],
+    gens:['9 bước: 1-4','5 Pháp','5 Thói quen'],
+    levels:[
+      {
+        qs:['Ý nghĩa CI này với cuộc đời tôi là gì? (3 gốc rễ nào?)','Mục tiêu cải tiến cụ thể 90 ngày tới?','Tôi đang chữa triệu chứng hay đang xử lý gốc rễ?','Vấn đề này sinh ra từ đâu? Tiếp diễn sẽ đi về đâu?'],
+        tools:[{i:'📄',n:'Nhật ký Định Pháp',d:'1 trang A4 viết tay: Vấn đề — Tại sao — Mục tiêu — 3 gốc rễ'},{i:'🗺',n:'Gemba Walk',d:'Đi ra hiện trường, quan sát 30 phút, không phán xét, chỉ ghi'},{i:'🎯',n:'5 Whys',d:'Hỏi Tại sao 5 lần — tìm gốc rễ thật của vấn đề'},{i:'🧭',n:'VSM tương lai',d:'Vẽ trạng thái lý tưởng của quy trình — 1 trang bằng tay'}],
+        checks:['Xác định 1 vấn đề CI cụ thể của bản thân|Ví dụ: thói quen, năng suất, kỹ năng, sức khỏe...','Viết ra: vấn đề này ảnh hưởng tới ai, như thế nào?|Bản thân? Gia đình? Công việc?','Tự vấn (9 bước bước 4): Tại sao tôi muốn giải quyết cái này?|Vì sợ hay vì tình yêu thật sự?','Viết mục tiêu CI 30-90 ngày — đo được, có thời hạn|Cụ thể, không mơ hồ','Kiểm tra: mục tiêu phục vụ Giới-Định-Tuệ điểm nào?|3 gốc rễ bền vững'],
+        reflect:'Vấn đề CI của tôi là gì và tôi muốn đạt được điều gì?|Mô tả vấn đề cụ thể — Ảnh hưởng ra sao — Mục tiêu 90 ngày tới...'
+      },
+      {
+        qs:['Tầm nhìn dự án CI sau 6 tháng trông như thế nào?','Sợi chỉ đỏ xuyên suốt dự án là gì — không được để đứt?','Mục tiêu CI từng tháng theo Con Người-Công Việc-Thời Gian?','Nhóm có đồng lòng với Định Pháp này không — thật hay diễn?'],
+        tools:[{i:'📋',n:'A3 Định Pháp',d:'1 trang: Tầm nhìn — Sứ mệnh — Mục tiêu — Sợi chỉ đỏ'},{i:'🎯',n:'OKR đơn giản',d:'1 mục tiêu lớn + 3 kết quả đo được cho dự án CI'},{i:'🗺',n:'VSM tương lai',d:'Bản đồ dòng giá trị: hiện tại vs lý tưởng'},{i:'🤝',n:'Kickoff session',d:'Họp Định Pháp: mọi người thật sự hiểu và đồng thuận'}],
+        checks:['Viết A3 Định Pháp dự án — 1 trang, tất cả cùng đọc|Tầm nhìn, sứ mệnh, mục tiêu rõ ràng','Xác định sợi chỉ đỏ: 1 câu súc tích định nghĩa dự án CI|Câu này không thay đổi dù hoàn cảnh thay đổi','Lập mục tiêu theo C.Người-C.Việc-T.Gian từng tháng|Ai làm gì, khi nào, đo bằng gì','Kiểm tra: nhóm đồng thuận thật hay chỉ gật đầu cho qua?|Kiến hoà — cùng văn hóa CI, ngôn ngữ chung'],
+        reflect:'Tầm nhìn và sợi chỉ đỏ của dự án CI là gì?|Tầm nhìn 6 tháng: ...\nSợi chỉ đỏ: ...\nMục tiêu tháng 1: ...'
+      },
+      {
+        qs:['Chiến lược CI tổ chức có gói trong 1 câu ngắn không?','Mục tiêu 3-5 năm và lộ trình từng giai đoạn?','CI tổ chức hướng về giá trị cộng đồng nào?','Lãnh đạo có thật sự sống theo Định Pháp không?'],
+        tools:[{i:'🏁',n:'Hoshin Kanri',d:'Policy Deployment theo 5 Pháp — từ tầm nhìn xuống hành động'},{i:'📊',n:'Strategy A3',d:'Chiến lược CI cấp lãnh đạo — 1 trang, rõ ràng'},{i:'⚖️',n:'Balanced Scorecard',d:'4 góc nhìn CI: Tài chính, Khách hàng, Quy trình, Học hỏi'},{i:'🗓',n:'CI Roadmap',d:'Lộ trình 3-5 năm với milestones rõ ràng'}],
+        checks:['Hoshin Kanri: chiến lược CI từ trên xuống nhất quán|Từ tầm nhìn → bộ phận → cá nhân','Viết Strategy A3 cấp lãnh đạo — 1 trang|Ai đọc cũng hiểu ngay','Kiểm tra: lãnh đạo có nhắc lại Định Pháp khi khó khăn không?|Hành vi lãnh đạo là thước đo thật nhất','CI gắn với giá trị cộng đồng, không chỉ lợi nhuận|Phụng sự vô điều kiện'],
+        reflect:'Chiến lược CI tổ chức của tôi trong 1 câu là gì?|Câu chiến lược: ...\nMục tiêu năm 1: ...\nMục tiêu 3 năm: ...'
+      },
+      {
+        qs:['Tầm nhìn CI cộng đồng phục vụ ai, bao nhiêu người?','Mô hình fractal: cá nhân → dự án → cộng đồng có đồng dạng?','Sứ mệnh CI có hướng về Giới-Định-Tuệ bền vững không?','Người đi trước đã thắp đuốc chưa — có gương mẫu thật không?'],
+        tools:[{i:'🌐',n:'Bản đồ tác động',d:'Ai được hưởng lợi từ CI cộng đồng này, đo ra sao'},{i:'🔮',n:'Mô hình fractal',d:'Kiểm tra đồng dạng 5 Pháp qua 3 cấp: cá nhân-dự án-cộng đồng'},{i:'📜',n:'Tuyên ngôn sứ mệnh',d:'1 trang súc tích: Tại sao cộng đồng CI này tồn tại'},{i:'🕯',n:'Gương mẫu',d:'Ai là người đi trước thắp đuốc — câu chuyện thật'}],
+        checks:['Viết tuyên ngôn sứ mệnh CI cộng đồng — 1 trang|Ai đọc cũng cảm được','Kiểm tra fractal: cá nhân trong cộng đồng có đồng dạng?|Cá nhân yếu thì dự án cũng yếu','Xác định người đi trước thắp đuốc — có câu chuyện thật|1 triết lý: làm gương trước khi dạy','CI cộng đồng hướng về Lợi hoà — thành quả cho mọi người|Không phải cho một nhóm lãnh đạo'],
+        reflect:'Sứ mệnh CI cộng đồng của tôi là gì?|Phục vụ ai: ...\nThay đổi gì: ...\nĐo bằng gì: ...'
+      },
+      {
+        qs:['Tầm nhìn CI quốc gia hướng về nền văn minh nào?','CI có gắn với bản sắc văn hóa dân tộc không?','Định Pháp quốc gia: Tại sao cải tiến — để phụng sự điều gì?','Mã GEN CI Việt Nam là gì — có thể nhân bản ra toàn xã hội?'],
+        tools:[{i:'🏛',n:'Mã GEN CI Việt Nam',d:'Bộ khung tích hợp bản sắc Việt + Phật pháp + CI thế giới'},{i:'📚',n:'Tầm nhìn 50 năm',d:'CI quốc gia: không phải nhiệm kỳ mà là thế hệ'},{i:'🌱',n:'Nền văn minh CI',d:'Giới-Định-Tuệ làm gốc, không phải GDP làm đích'},{i:'🇻🇳',n:'Lộ trình quốc gia',d:'10-20-50 năm CI theo 5 Pháp, nhân rộng từ làng đến nước'}],
+        checks:['Mã GEN CI Việt Nam: tích hợp văn hóa bản địa|Không sao chép — sáng tạo từ gốc rễ','Tầm nhìn vượt thế hệ: không phải nhiệm kỳ|CI quốc gia cần thế hệ F1, F2, F3','Giới-Định-Tuệ là kim chỉ nam, không phải tăng trưởng|Nền văn minh CI khác đế chế CI','Nhân bản từ cá nhân ra: mọi công dân đều có thể CI|Fractal từ 1 người → đất nước'],
+        reflect:'Tầm nhìn nền văn minh CI Việt Nam của tôi là gì?|Trong 50 năm tới, Việt Nam sẽ là: ...\nĐiều tôi có thể đóng góp ngay hôm nay: ...'
+      }
+    ]
+  },
+  cuong: {
+    label:'Cương Pháp', sub:'Cam kết · Kỷ luật · Giới luật · Nội quy · Lời thề',
+    insight:[
+      'Cương Pháp là cái neo. Môi trường luôn có lý do để trì hoãn CI — đơn hàng gấp, họp liên miên, người bệnh. Không có Cương Pháp, mọi kế hoạch sẽ sập sau tuần đầu.',
+      'Nhóm thiếu Cương Pháp: ai cũng đồng ý trong họp, ra ngoài ai làm theo ý mình. Lý sự bắt đầu từ đây.',
+      'Tổ chức thiếu Cương Pháp: chính sách CI ban hành rồi không ai giám sát, lãnh đạo nói một đằng làm một nẻo.',
+      'Cộng đồng thiếu Cương Pháp: nội quy có nhưng không ai giữ — vì không có Giới hoà, không có tự giác.',
+      'Quốc gia thiếu Cương Pháp: luật pháp CI ban hành nhưng thực thi yếu, không nhất quán từ trên xuống.',
+    ],
+    gens:['5 Pháp','6 Hoà','3 Lời thề','5 Thói quen'],
+    levels:[
+      {
+        qs:['Hành vi nào tôi cam kết KHÔNG vi phạm trong hành trình CI?','Tôi có giữ lời hứa tự rèn mỗi ngày không — thật sự?','6 Hoà bản thân: thân-kiến-khẩu-ý-giới-lợi hoà điểm nào?','3 Lời thề: tôi đang sống đúng lời thề nào, sai lời thề nào?'],
+        tools:[{i:'✍️',n:'4 Lời hứa từ tâm',d:'Viết tay, dán chỗ thấy mỗi ngày, đọc sáng trước khi làm'},{i:'📅',n:'Habit tracker 21 ngày',d:'Chấm thật mỗi ngày — không tô hồng, không bỏ trống'},{i:'⚖️',n:'6 Hoà tự kiểm',d:'Cuối tuần: 6 chiều tự chấm 1-5, xem mình mất hoà điểm nào'},{i:'📖',n:'3 Lời thề',d:'Đọc lại mỗi sáng, soi vào hành động tối qua'}],
+        checks:['Viết 3 cam kết CI cụ thể — tôi sẽ giữ bằng gì?|Không mơ hồ: "mỗi ngày 20 phút CI, dù bận"','Xác định 5 giới CI: hành vi tuyệt đối không vi phạm|Không trì hoãn, không đổ lỗi, không tự dối','6 Hoà tự kiểm: điểm nào đang mất hoà trong tôi?|Khẩu hoà — tôi nói về CI thế nào với người khác?','Đọc lại 3 Lời thề: tôi đang trung thực đến đâu với mình?|Trung thực đến tận cùng — không tự dối'],
+        reflect:'3 cam kết CI của tôi và cách tôi sẽ giữ chúng:|Cam kết 1: ...\nCam kết 2: ...\nCam kết 3: ...\nCơ chế tự kiểm: ...'
+      },
+      {
+        qs:['Quy định hành vi nhóm CI là gì — kèm thưởng/phạt rõ?','6 Hoà nhóm: ai đang mất hoà ở điểm nào — Lý sự hay Sinh sự?','Cam kết CI được ký kết và công khai chưa?','Ai trong nhóm đang kéo Cương Pháp xuống — và tại sao?'],
+        tools:[{i:'📋',n:'Team Charter CI',d:'1 trang: Cam kết + Quy tắc + Thưởng/Phạt minh bạch'},{i:'🌊',n:'6 Hoà check-in',d:'Tuần 1 lần: 6 chiều tự đánh giá, chia sẻ nhóm'},{i:'⏱',n:'Daily standup',d:'15 phút: Hôm qua làm gì? Hôm nay cam kết gì? Vướng gì?'},{i:'🔔',n:'Trigger nhắc nhở',d:'Cài nhắc nhở cố định cho cả nhóm — giờ CI chung'}],
+        checks:['Viết Team Charter CI — ai ký tên vào?|Cam kết công khai > cam kết thầm lặng','Thưởng/phạt CI có rõ ràng, nhất quán không?|Đi muộn phạt 50k — ví dụ từ tài liệu','6 Hoà check-in tuần đầu: nhóm đang ở đâu?|Chẩn đoán trước khi trị','Kiến hoà: nhóm có ngôn ngữ CI chung chưa?|Cùng hiểu PDCA, A3, Kaizen nghĩa là gì'],
+        reflect:'Team Charter CI của nhóm — cam kết và quy tắc:|Cam kết nhóm: ...\nQuy tắc: ...\nThưởng/phạt: ...'
+      },
+      {
+        qs:['Leader Standard Work — lãnh đạo có chuẩn mực CI không?','Hệ thống khen thưởng có đúng hành vi CI thật không?','Cương Pháp tổ chức có nhất quán từ trên xuống không?','Audit CI định kỳ — ai kiểm tra, kiểm tra gì?'],
+        tools:[{i:'👑',n:'Leader Standard Work',d:'Lãnh đạo có lịch CI hàng ngày — không thể vắng không lý do'},{i:'📄',n:'CI Policy',d:'Văn bản hóa cam kết CI tổ chức — ai cũng có bản copy'},{i:'🔍',n:'Audit CI định kỳ',d:'Kiểm tra hành vi CI thực tế — kẹp 55613'},{i:'🏆',n:'Hệ thống khen thưởng',d:'Khen đúng hành vi CI, không chỉ khen kết quả CI'}],
+        checks:['LSW: lãnh đạo có Gemba walk định kỳ không?|Hành vi lãnh đạo = văn hóa tổ chức','CI Policy được văn bản hóa và mọi người có bản?|Không phải truyền miệng','Audit CI định kỳ: ai kiểm tra thực tế không phải báo cáo?|Số liệu thật > báo cáo đẹp','Khen thưởng CI: khen hành vi liên tục > khen kết quả 1 lần|Kẹp 55613: khen thường xuyên, nhỏ thôi'],
+        reflect:'Cương Pháp CI của tổ chức — điểm mạnh và cần cải thiện:|Đang làm tốt: ...\nCần cải thiện: ...\nKế hoạch 30 ngày: ...'
+      },
+      {
+        qs:['Quy tắc ứng xử CI cộng đồng có hướng về 6 Hoà không?','Văn hóa CI cộng đồng — tự nguyện hay bị ép?','Giới luật CI có phù hợp với đạo lý văn hóa bản địa không?','Cộng đồng CI có cơ chế tự điều chỉnh khi mất hoà không?'],
+        tools:[{i:'📜',n:'Quy tắc 6 Hoà',d:'Bộ quy tắc CI cộng đồng theo 6 nguyên tắc Lục Hoà'},{i:'🤝',n:'Lễ cam kết',d:'Nghi thức công khai cam kết CI cộng đồng — có chứng nhân'},{i:'🪞',n:'Cơ chế Gương',d:'Lỗi chung nhìn vào mình trước — Lợi hoà: cửa sổ và tấm gương'},{i:'🌿',n:'Giới luật bản địa',d:'Tích hợp đạo lý Phật pháp + văn hóa dân tộc vào quy tắc CI'}],
+        checks:['Quy tắc CI cộng đồng tích hợp 6 Hoà|Không phải luật áp đặt — là giá trị tự nguyện','Cộng đồng có cơ chế giải quyết mâu thuẫn Lý sự-Sinh sự?|Trước khi lên Quân sự-Hậu sự','Lợi hoà: thành quả CI thuộc về cộng đồng|Không tích lũy cho một nhóm','Giới hoà: tự giác giữ kỷ luật — có gương mẫu dẫn đầu|1 triết lý: dạy sao thì làm vậy'],
+        reflect:'Cương Pháp CI cộng đồng — điều gì cần xây dựng ngay?|Quy tắc cần có: ...\nCơ chế tự điều chỉnh: ...\nNgười dẫn đầu: ...'
+      },
+      {
+        qs:['Luật pháp, chính sách có tạo môi trường Cương Pháp CI không?','CI quốc gia có cơ chế trách nhiệm công khai không?','Giới luật quốc gia có hướng về Giới-Định-Tuệ không?','Nhất quán lời-việc ở cấp quốc gia — ai giám sát?'],
+        tools:[{i:'⚖️',n:'Khung pháp lý CI',d:'Luật và chính sách CI theo 5 Pháp — nhất quán từ trên xuống'},{i:'📊',n:'Chỉ số hành vi CI',d:'Đo hành vi CI thực tế, không chỉ kết quả đầu ra'},{i:'🔓',n:'Minh bạch công khai',d:'Cam kết CI quốc gia — ai cũng có thể theo dõi, giám sát'},{i:'🏛',n:'Thể chế CI',d:'Cơ quan CI độc lập — không bị ảnh hưởng bởi nhiệm kỳ'}],
+        checks:['Chính sách CI quốc gia nhất quán giữa các nhiệm kỳ?|CI không thể reset theo nhiệm kỳ','Cơ chế giám sát CI công khai — dân có thể tham gia?|Dân chủ CI: mọi người đều là Hộ Pháp','Lãnh đạo quốc gia có thực hành Cương Pháp CI không?|Dạy sao thì làm vậy — từ cấp cao nhất','Giới-Định-Tuệ trong Hiến pháp CI quốc gia?|Không phải thêm vào — mà là gốc rễ'],
+        reflect:'Cương Pháp CI ở cấp quốc gia — điều gì quan trọng nhất?|Điều cần thay đổi ngay: ...\nAi có thể dẫn đầu: ...'
+      }
+    ]
+  },
+  hanh: {
+    label:'Hành Pháp', sub:'Hành động · Kế hoạch · PDCA · Kaizen · 9 Bước',
+    insight:[
+      'Đây là trọng tâm của CI — nhưng chỉ hoạt động khi Định Pháp và Cương Pháp đã vững. Hành Pháp không có gốc rễ là chạy loạn.',
+      '9 bước tự học là PDCA của cá nhân — sâu hơn ở bước tự vấn và trí tuệ tập thể, có ý thức hơn ở tổng hợp cải tiến.',
+      'Sai lầm phổ biến trong sản xuất: nhảy thẳng vào Hành Pháp mà bỏ qua Định-Cương. Kết quả: có hoạt động nhưng không có cải tiến thật.',
+      'Hành Pháp không có Hộ Pháp: người muốn cải tiến nhưng không có công cụ, không có thời gian, không có ngân sách — mệt mỏi rồi bỏ.',
+      'Kaizen quốc gia: mọi công dân đều có thể cải tiến 1 điều nhỏ mỗi ngày — tích lũy thành sức mạnh văn minh.',
+    ],
+    gens:['9 bước','5 Pháp','4 Điểm NL','1 Triết lý'],
+    levels:[
+      {
+        qs:['Công việc CI nhỏ nhất hôm nay tôi sẽ làm là gì?','9 bước: tôi đang ở bước nào? Bước tiếp theo là gì?','Sở trường, đam mê tôi đang dùng vào CI chưa?','Daily log: hôm nay tôi học được gì từ thực tiễn?'],
+        tools:[{i:'🔄',n:'PDCA 1 tuần',d:'A4 chia 4 ô: Plan-Do-Check-Act. Viết tay, dán tại bàn làm việc'},{i:'📓',n:'9 bước bước 7-9',d:'Thực hành kỷ luật → Theo dõi đánh giá → Tổng hợp cải tiến'},{i:'📌',n:'Daily log CI',d:'5 phút cuối ngày: Làm gì? Kết quả? Bài học? Ngày mai?'},{i:'⏱',n:'Pomodoro CI',d:'25 phút tập trung CI + 5 phút nghỉ — 4 vòng/buổi'}],
+        checks:['Xác định 1 thay đổi nhỏ nhất có thể làm ngay hôm nay|Nhỏ nhất có thể — không cần hoàn hảo','PDCA cá nhân tuần này: Plan cụ thể, thử nghiệm nhỏ|Hypothesis: Nếu tôi làm X thì Y sẽ xảy ra','9 bước bước 7: thực hành kỷ luật — cam kết thực hiện|Không phải lý thuyết thêm nữa','Daily log: ghi lại mỗi ngày — 5 phút, không bỏ|Tổng hợp cải tiến sau 7 ngày'],
+        reflect:'Kế hoạch PDCA tuần đầu tiên của tôi:|Plan: ...\nDo (thử nghiệm nhỏ nhất): ...\nCheck (đo bằng gì): ...\nAct (nếu hiệu quả thì): ...'
+      },
+      {
+        qs:['Kế hoạch CI đủ 3 chiều: Con Người-Công Việc-Thời Gian?','4 điểm NL Trí-Nhân-Tài-Vật: điểm mạnh/yếu thật sự là gì?','Nội dung đào tạo CI theo 55613 — ai dạy ai, bằng cách nào?','Cơ chế báo cáo CI: đơn giản, kịp thời, không hành chính?'],
+        tools:[{i:'📋',n:'A3 Problem Solving',d:'8 bước: Vấn đề → Phân tích → Giải pháp → Kế hoạch → Kết quả'},{i:'📌',n:'Kanban CI',d:'3 cột: Backlog → Doing → Done. Vật lý hoặc số'},{i:'📊',n:'4 Điểm NL',d:'Ma trận Trí-Nhân-Tài-Vật: điểm mạnh/yếu + phương án tối ưu'},{i:'📈',n:'Báo cáo CI 1 trang',d:'Tiêu chuẩn nhóm — ai cũng viết được trong 10 phút'}],
+        checks:['A3 Problem Solving cho vấn đề CI trọng tâm|1 vấn đề, 1 trang, 8 bước rõ ràng','Kanban CI nhóm: ai nhìn vào cũng biết đang ở đâu|Visual management thật sự','Phân tích 4 điểm NL: Trí-Nhân-Tài-Vật mạnh/yếu gì?|Tối ưu hóa: Xin-Mua-Mượn-Thuê-Đổi','Đào tạo CI theo 1 triết lý: tôi làm → bạn xem → bạn làm|Không dạy lý thuyết, dạy qua làm'],
+        reflect:'Kế hoạch CI 3 tháng theo C.Người-C.Việc-T.Gian:|Tháng 1: ...\nTháng 2: ...\nTháng 3: ...\nNgười chịu trách nhiệm: ...'
+      },
+      {
+        qs:['Kế hoạch CI 3-6 tháng đủ Người-Việc-Thời gian không?','Hệ thống đào tạo CI theo 55613 triển khai thứ tự ra sao?','Cơ chế Yokoten — nhân rộng CI thành công sang bộ phận khác?','Đo lường CI: chỉ số nào thật, chỉ số nào chỉ đẹp báo cáo?'],
+        tools:[{i:'🏁',n:'Hoshin Kanri',d:'X-Matrix: chiến lược → mục tiêu → hành động → chỉ số'},{i:'📅',n:'CI Roadmap',d:'Gantt 6 tháng: milestones rõ, ai chịu trách nhiệm'},{i:'🎓',n:'Chương trình đào tạo 55613',d:'3 cấp: cơ bản → trung → cao. Mỗi cấp theo 55613'},{i:'🔄',n:'Yokoten',d:'Cơ chế nhân rộng CI thành công — chia sẻ có cấu trúc'}],
+        checks:['Hoshin Kanri: CI gắn với chiến lược tổ chức|Không phải hoạt động ngoài lề','CI Roadmap 6 tháng: milestone rõ, không mơ hồ|Ai chịu trách nhiệm cụ thể','Yokoten: kết quả CI thành công được chia sẻ định kỳ|1 triết lý nhân rộng','Đào tạo CI: người làm được rồi mới dạy|Tôi làm được → Tôi làm bạn xem'],
+        reflect:'CI Roadmap 6 tháng của tổ chức:|Tháng 1-2 (nền tảng): ...\nTháng 3-4 (triển khai): ...\nTháng 5-6 (nhân rộng): ...'
+      },
+      {
+        qs:['Mô hình CI cộng đồng: ai làm gương, ai lan tỏa, ai duy trì?','Cơ chế chia sẻ tri thức CI giữa các nhóm cộng đồng?','CI cộng đồng tạo ra sinh kế thật hay chỉ hoạt động phong trào?','9 bước: cộng đồng có văn hóa tự học tập thể không?'],
+        tools:[{i:'🕯',n:'1 Triết lý nhân rộng',d:'5 bước: Tôi làm → Bạn xem → Tôi xem → Bạn làm → Bạn lan tỏa'},{i:'📚',n:'Thư viện 3 gốc CĐ',d:'5 cấp độ sách CI — mở cho cộng đồng, ai cũng tiếp cận được'},{i:'🌊',n:'Sự kiện CI cộng đồng',d:'Định kỳ chia sẻ kết quả, học hỏi lẫn nhau — tạo đà động lực'},{i:'📊',n:'Đo tác động xã hội',d:'Chỉ số CI cộng đồng: không chỉ hoạt động mà là thay đổi thật'}],
+        checks:['Xác định 3-5 người đi trước thắp đuốc trong cộng đồng|Không cần nhiều — cần đúng người','Thư viện 3 gốc cộng đồng: ai cũng tiếp cận được miễn phí?|Kiến thức là tài sản chung','Sự kiện CI định kỳ: chia sẻ bài học thật, không phải diễn|Câu chuyện CI là văn hóa sống','Đo tác động: có bao nhiêu người thay đổi thật sự?|Không phải số lượng tham gia'],
+        reflect:'Kế hoạch nhân rộng CI ra cộng đồng:|Người đi trước: ...\nCơ chế lan tỏa: ...\nĐo tác động bằng: ...'
+      },
+      {
+        qs:['CI quốc gia có hệ thống học từ thất bại không?','CI được dạy trong trường học như thế nào?','Cơ chế đo CI quốc gia: chỉ số nào thật sự phản ánh?','Mọi công dân có thể CI 1 điều nhỏ mỗi ngày không?'],
+        tools:[{i:'🏫',n:'CI trong giáo dục',d:'9 bước tự học: từ tiểu học → đại học. Tư duy CI từ nhỏ'},{i:'📊',n:'Chỉ số hạnh phúc CI',d:'Giới-Định-Tuệ làm đầu ra — không chỉ GDP'},{i:'🌱',n:'Mô hình CI tự duy trì',d:'Không phụ thuộc viện trợ — tự cấp từ văn hóa bản địa'},{i:'🔬',n:'Học từ thất bại QG',d:'Hệ thống lưu trữ bài học CI quốc gia — mở cho tất cả'}],
+        checks:['CI trong giáo dục: 9 bước tự học là nền tảng|Từ cấp 1: biết đặt câu hỏi Tại sao','Chỉ số CI quốc gia: có đo Tâm Pháp không?|Hạnh phúc, sức khỏe tinh thần, sự tin tưởng','Mọi công dân có thể CI 1 điều mỗi ngày: nền tảng là gì?|Thư viện 3 gốc 5 cấp toàn quốc','Học từ thất bại: hệ thống có khuyến khích báo cáo lỗi không?|Văn hóa Huyền Không: thất bại = bài học'],
+        reflect:'Đóng góp của tôi vào CI quốc gia — bắt đầu từ hôm nay:|1 điều tôi có thể làm ngay: ...\nTác động lên cộng đồng xung quanh: ...'
+      }
+    ]
+  },
+  ho: {
+    label:'Hộ Pháp', sub:'Hậu cần · Công cụ · Tài nguyên · Hệ thống · Thư viện',
+    insight:[
+      'Hộ Pháp không phải mua thêm thiết bị — mà là tổ chức lại những gì đang có. Trí lực là Hộ Pháp quan trọng nhất.',
+      'Nhóm CI thất bại vì thiếu Hộ Pháp: không có template chung, ai làm theo kiểu nấy, báo cáo CI hành chính nặng nề.',
+      'Thư viện 3 gốc 5 cấp: không phải đọc nhiều mà đọc đúng — 1 cuốn đúng thời điểm đúng cấp độ thay đổi tất cả.',
+      'Hộ Pháp tổ chức yếu: SOP CI không ai theo vì không ai hiểu, kiến thức CI không được lưu trữ — cứ mãi phải học lại từ đầu.',
+      'Hộ Pháp quốc gia: hạ tầng tri thức CI phải tới được vùng xa — thư viện số, khóa học miễn phí, ngôn ngữ bản địa.',
+    ],
+    gens:['4 Điểm NL','9 bước: 1-2','5 Pháp','3 Trụ cột'],
+    levels:[
+      {
+        qs:['Phương tiện học và thực hành CI của tôi đã đủ chưa?','Thư viện 3 gốc: tôi đang đọc sách CI ở cấp độ nào?','Công cụ, tri thức nào tôi cần bổ sung ngay?','Kho CI cá nhân: tôi lưu bài học ở đâu, có hệ thống không?'],
+        tools:[{i:'📚',n:'Thư viện 3 gốc cấp 1',d:'Chọn 1 cuốn: Kaizen / Lean / Toyota Way — đọc 20 trang/ngày'},{i:'🗂',n:'Kho CI cá nhân',d:'1 notebook hoặc folder: PDCA / A3 / Số liệu / Bài học'},{i:'📄',n:'SOP 1 trang',d:'Chuẩn hóa cải tiến đầu tiên — ai đọc cũng tự làm được'},{i:'🛠',n:'5S cá nhân',d:'Sắp xếp không gian CI: Seiri-Seiton-Seiso-Seiketsu-Shitsuke'}],
+        checks:['Chọn 1 cuốn sách CI đọc trong 30 ngày — cam kết đọc xong|9 bước bước 1: Tiếp nhận trọn vẹn','Xây kho CI cá nhân: 1 nơi lưu tất cả|Không dùng nhiều ứng dụng — 1 thôi','5S không gian làm việc: gọn gàng = tâm gọn gàng|Hộ Pháp vật lý trước Hộ Pháp số','SOP đầu tiên: chuẩn hóa 1 cải tiến nhỏ đã làm được|Nếu tôi quên, bản này nhắc tôi'],
+        reflect:'Hộ Pháp CI của tôi — có gì và thiếu gì:|Có: ...\nThiếu: ...\nSẽ bổ sung bằng cách: ...'
+      },
+      {
+        qs:['Tài liệu nhóm CI theo Con Người-Quy Trình-Công Cụ đủ chưa?','Bản đồ link và kho dữ liệu CI nhất quán, ai cũng vào được?','Báo cáo CI: đơn giản, kịp thời, không gánh nặng hành chính?','SOP CI nhóm: người mới có tự đọc và làm được không?'],
+        tools:[{i:'🗺',n:'Hộ Pháp canvas',d:'Con Người-Quy Trình-Công Cụ: vẽ ra hiện trạng và lý tưởng'},{i:'📊',n:'Báo cáo CI 1 trang',d:'Ai cũng viết được trong 10 phút, ai cũng đọc được trong 2 phút'},{i:'🗂',n:'Kho tri thức nhóm',d:'Notion/Drive có cấu trúc: SOP / A3 / PDCA / Bài học'},{i:'🔗',n:'Bản đồ link',d:'1 trang tất cả link quan trọng của dự án CI — ai cũng có'}],
+        checks:['Hộ Pháp canvas: Con Người-Quy Trình-Công Cụ đầy đủ?|Thiếu điểm nào, bổ sung ngay','Kho tri thức nhóm: có cấu trúc, ai cũng tìm được?|Tìm tài liệu CI mất bao phút?','Báo cáo CI chuẩn hóa: 1 mẫu cho cả nhóm|Không ai viết dài hơn 1 trang','SOP CI: người mới đọc 30 phút là làm được?|Nếu chưa → SOP chưa đủ tốt'],
+        reflect:'Hộ Pháp nhóm CI — điểm cần cải thiện ngay:|Công cụ thiếu: ...\nQuy trình chưa rõ: ...\nHành động 1 tuần tới: ...'
+      },
+      {
+        qs:['Hệ thống tài liệu CI toàn tổ chức nhất quán từ trên xuống?','SOP CI có rõ ràng, dễ theo, người mới tự học được không?','Hạ tầng CI (tài chính, không gian, số) đủ để vận hành bền vững?','Thư viện 3 gốc nội bộ: có hệ thống học CI cho nhân sự không?'],
+        tools:[{i:'🗂',n:'DMS CI',d:'Document Management System: 3 cấp, ai cũng truy cập được'},{i:'📚',n:'Thư viện CI nội bộ',d:'5 cấp độ: từ cơ bản đến chuyên sâu — theo 55613'},{i:'💰',n:'CI Budget Planning',d:'Ngân sách CI theo Trí-Nhân-Tài-Vật — minh bạch, có kế hoạch'},{i:'🏢',n:'Obeya room',d:'Không gian CI vật lý: bảng Kanban, A3, tiến độ — ai cũng thấy'}],
+        checks:['DMS CI: tài liệu 3 cấp nhất quán — cá nhân, nhóm, tổ chức|Không bị mất kiến thức khi người giỏi nghỉ','Thư viện CI nội bộ theo 55613: ai học gì ở cấp nào?|Lộ trình học rõ ràng','Obeya room: có hồn hay chỉ có bảng?|Tâm Pháp phải hiện diện trong không gian CI','Ngân sách CI: có dòng ngân sách riêng trong tổ chức?|CI không có ngân sách = không được coi trọng thật'],
+        reflect:'Hệ thống Hộ Pháp CI tổ chức — khoảng trống lớn nhất:|Khoảng trống 1: ...\nGiải pháp: ...\nNgân sách/thời gian cần: ...'
+      },
+      {
+        qs:['Hạ tầng tri thức CI cộng đồng: ai cũng tiếp cận được không?','Nguồn lực CI cộng đồng được phân phối công bằng chưa?','Hệ thống hỗ trợ CI người yếm thế: có đủ không?','Lợi hoà: thành quả CI cộng đồng thuộc về ai?'],
+        tools:[{i:'📚',n:'Thư viện 3 gốc CĐ',d:'5 cấp, miễn phí, có phiên bản dễ đọc — ai cũng tiếp cận'},{i:'💚',n:'Quỹ CI cộng đồng',d:'Lợi hoà: thành quả CI tái đầu tư vào cộng đồng'},{i:'🤝',n:'Mạng lưới hỗ trợ',d:'Người đi trước giúp người đi sau — cơ chế có cấu trúc'},{i:'📱',n:'Hạ tầng số CI',d:'App/website CI cộng đồng — đơn giản, tiếng Việt, offline được'}],
+        checks:['Thư viện 3 gốc cộng đồng: tới được vùng xa không?|Không chỉ thành phố lớn','Quỹ CI cộng đồng: có cơ chế Lợi hoà rõ ràng?|Thành quả thuộc về mọi người','Mạng lưới hỗ trợ: người mới có được giúp đỡ ngay không?|1 triết lý: người đi trước thắp đuốc','Hạ tầng số CI: đơn giản đủ cho điện thoại cũ, mạng chậm?|Không chỉ phục vụ người có điều kiện'],
+        reflect:'Hộ Pháp CI cộng đồng — điều cần xây ngay:|Ưu tiên 1: ...\nNguồn lực từ đâu: ...\nAi chịu trách nhiệm: ...'
+      },
+      {
+        qs:['Hạ tầng CI quốc gia: giáo dục, pháp lý, kinh tế đủ chưa?','Thư viện 3 gốc toàn quốc: có tới được mọi làng xã?','Nguồn lực CI quốc gia: bền vững, tự cấp được không?','Mã GEN CI Việt Nam: có thể trao tay cho ai cũng dùng được không?'],
+        tools:[{i:'🏛',n:'Hệ thống thư viện QG',d:'5 cấp theo GEN — từ làng xã đến thành phố, miễn phí'},{i:'💹',n:'CI Economy',d:'Kinh tế CI: CI tạo ra giá trị kinh tế thật, không chỉ tiết kiệm'},{i:'🌐',n:'Mã GEN số hóa',d:'Bộ GEN CI số hóa: app, website, offline — ai cũng dùng được'},{i:'🎓',n:'CI trong giáo dục QG',d:'9 bước tự học trong chương trình quốc gia từ cấp 1'}],
+        checks:['Thư viện 3 gốc: có bản in, bản số, bản audio?|Phục vụ mọi đối tượng, mọi địa bàn','CI trong giáo dục: không phải môn học mà là tư duy|Từ cấp 1: biết quan sát và đặt câu hỏi','Mã GEN CI Việt Nam số hóa: ai cũng cài được, dùng được|Bạn đang dùng nó ngay lúc này','CI Economy: có cơ chế tạo ra giá trị kinh tế thật không?|CI không chỉ tiết kiệm chi phí — CI tạo ra giá trị mới'],
+        reflect:'Đóng góp của tôi vào Hộ Pháp CI quốc gia:|Tôi có thể xây dựng/đóng góp: ...\nBắt đầu từ: ...'
+      }
+    ]
+  },
+  tam: {
+    label:'Tâm Pháp', sub:'Tinh thần · Văn hoá · Thiền · Đạo · Huyền Không · 6 Hoà',
+    insight:[
+      'Tâm Pháp là lớp nền nuôi dưỡng 4 Pháp còn lại. Không có Tâm Pháp vững, mọi thứ sẽ sập khi gặp khó khăn thật sự.',
+      '"Muốn điều chỉnh lại mọi thứ hãy bắt đầu từ Tâm Pháp" — câu này trong tài liệu của bạn là sâu nhất.',
+      'Môi trường sản xuất áp lực nhất không phải từ máy móc — mà từ con người. Tâm Pháp giúp giữ bình tĩnh khi dây chuyền đứng.',
+      'Tổ chức có Tâm Pháp tốt: người ta nói thật trong họp, lỗi được báo cáo trước khi thành thảm họa, mâu thuẫn được giải quyết ở Lý sự chứ không leo thang lên Hậu sự.',
+      'Nền văn minh CI bắt đầu từ Tâm Pháp quốc gia: Giới-Định-Tuệ làm gốc, không phải GDP làm đích.',
+    ],
+    gens:['6 Hoà','5 Thói quen','1 Triết lý','3 Lời thề','5 Pháp'],
+    levels:[
+      {
+        qs:['Tôi làm CI từ sợ hãi hay từ tình yêu thương thật sự?','Thiền tọa hàng ngày: tôi có quan sát được tâm mình không?','Tinh thần Huyền Không: tôi hòa đồng với thất bại CI chưa?','Sống tỉnh thức: tôi có nhận ra khi mình đang kháng cự CI không?'],
+        tools:[{i:'🧘',n:'Thiền Vipassana',d:'10-20 phút mỗi sáng: quan sát hơi thở, quan sát cảm xúc'},{i:'📔',n:'Nhật ký quán tâm',d:'Tối: 1 cảm xúc + 1 bài học CI + 1 điều biết ơn hôm nay'},{i:'📖',n:'3 Lời thề',d:'Đọc lại mỗi sáng, soi vào hành động — trung thực tận cùng'},{i:'🍵',n:'Trà đạo CI',d:'15 phút/tuần: ngồi yên với A3, không làm gì — chỉ quan sát'}],
+        checks:['Thiền tọa 10 phút mỗi sáng: bắt đầu tuần này|Trước khi mở điện thoại, trước khi bắt đầu ngày','Nhật ký quán tâm: ghi mỗi tối 3 điều|Cảm xúc — Bài học — Biết ơn','3 Lời thề: đọc lại và soi vào 7 ngày qua|Trung thực: tôi đang sống đúng lời thề nào?','Kiểm tra: tôi làm CI từ Giới (sợ) hay Định-Tuệ (hiểu)?|Chất lượng động cơ quyết định chất lượng cải tiến'],
+        reflect:'Tâm Pháp CI của tôi — tôi đang ở đâu trong nội tâm:|Tôi đang cảm thấy: ...\nThứ cần buông bỏ: ...\nThứ biết ơn trong CI: ...'
+      },
+      {
+        qs:['Không khí nhóm CI: có niềm vui thật sự trong học hành không?','Nhóm CI đang ở tầng mâu thuẫn nào: Lý sự-Sinh sự-Quân sự?','Tâm Pháp nhóm: ai đang kéo lên, ai đang kéo xuống?','Văn nghệ, thơ ca CI: có tự phát từ lòng người không?'],
+        tools:[{i:'🌊',n:'6 Hoà check-in',d:'Tuần 1 lần: 6 chiều, chia sẻ thật — không đánh giá nhau'},{i:'🏆',n:'Khen thưởng nhỏ',d:'Mỗi tuần khen 1 hành vi CI tốt — nhỏ nhưng cụ thể, thật'},{i:'🎭',n:'Thơ ca CI',d:'Câu chuyện, bài thơ về CI — ai cũng có thể đóng góp'},{i:'🕯',n:'Lễ cam kết CI',d:'Nghi thức nhỏ tuần đầu: nhóm cùng đọc lại Định Pháp'}],
+        checks:['6 Hoà check-in tuần 1: nhóm đang ở đâu?|Chẩn đoán trước, không giả định','Xác định: nhóm đang ở Lý sự hay Sinh sự?|Điều trị đúng tầng — không dùng thuốc mạnh cho bệnh nhẹ','Khen thưởng CI tuần này: ai xứng đáng, vì hành vi gì?|Cụ thể, kịp thời > lớn mà trễ','Câu chuyện CI đầu tiên: ghi lại và chia sẻ|Văn hóa sống trong câu chuyện, không phải trong quy trình'],
+        reflect:'Tâm Pháp nhóm CI — điều tôi quan sát:|Không khí nhóm: ...\nMâu thuẫn đang ở đâu: ...\nCần làm ngay: ...'
+      },
+      {
+        qs:['Văn hóa CI tổ chức: tự nguyện hay bị ép? Thật hay diễn?','Obeya room: có linh hồn hay chỉ có bảng?','Lãnh đạo CI có thật sự sống theo Tâm Pháp hay chỉ nói?','Tổ chức có an toàn tâm lý để báo cáo lỗi không?'],
+        tools:[{i:'🏛',n:'Obeya room',d:'Không gian CI có hồn: thiền góc, cây xanh, câu chuyện CI'},{i:'📿',n:'Thiền định kỳ',d:'Sinh hoạt học đạo hành thiền — không bắt buộc, tự nguyện'},{i:'💬',n:'Câu chuyện CI',d:'Truyền miệng văn hóa: ai kể câu chuyện CI thật nhất?'},{i:'🛡',n:'An toàn tâm lý',d:'Môi trường CI: lỗi = học, không phải lỗi = phạt'}],
+        checks:['Audit Tâm Pháp: quan sát hành lang, không phải họp|Người ta nói gì khi không có sếp?','Obeya room: có góc thiền, có cây, có câu chuyện CI thật?|Không gian phản ánh tâm thức','An toàn tâm lý CI: lần cuối ai đó báo lỗi sớm là khi nào?|Nếu không nhớ → đây là vấn đề lớn','Lãnh đạo: có chia sẻ thất bại CI của mình không?|Gương mẫu thật nhất là thừa nhận lỗi'],
+        reflect:'Tâm Pháp tổ chức CI — câu chuyện thật tôi quan sát:|Câu chuyện CI ý nghĩa nhất gần đây: ...\nĐiều cần thay đổi trong văn hóa: ...'
+      },
+      {
+        qs:['Tâm Pháp CI cộng đồng: có nuôi dưỡng Từ-Bi-Hỉ-Xả không?','Sinh hoạt thiền-đạo cộng đồng: thường xuyên, dễ tham gia?','Văn nghệ CI cộng đồng: có tự phát từ lòng người không?','Cộng đồng CI có bao gồm người yếm thế, người khó khăn?'],
+        tools:[{i:'🙏',n:'Ngày hội CI cộng đồng',d:'Thiền, học, chia sẻ, văn nghệ — định kỳ, ai cũng được đến'},{i:'📿',n:'Nhóm thiền CI',d:'Định kỳ, mở cho tất cả — không phân biệt trình độ'},{i:'🎵',n:'Kho thơ ca CI',d:'Ai cũng đóng góp được — câu chuyện, bài thơ, bài hát CI'},{i:'❤️',n:'Từ bi CI',d:'CI cho người yếm thế: hỗ trợ người khó khăn CI trước'}],
+        checks:['Ngày hội CI cộng đồng: có định kỳ, có ai cũng được đến?|Không phải sự kiện VIP','Nhóm thiền CI: có thật sự mở cho mọi người không?|Không chỉ người giỏi, người có điều kiện','Cộng đồng CI có bao gồm người yếm thế không?|Tứ Nhiếp Pháp: bố thí, ái ngữ, lợi hành, đồng sự','Văn nghệ CI: có xuất phát từ lòng người hay được đặt hàng?|Tự phát = sống thật'],
+        reflect:'Tâm Pháp CI cộng đồng — điều tôi muốn xây dựng:|Hoạt động Tâm Pháp cần có: ...\nAi có thể dẫn dắt: ...'
+      },
+      {
+        qs:['Tâm Pháp quốc gia CI: Giới-Định-Tuệ có là kim chỉ nam không?','Văn hóa CI quốc gia có gốc rễ trong đạo lý bản địa Việt?','Nền văn minh CI hướng về Vô Ngã-Vị Tha, không chỉ tăng trưởng?','Tinh thần Huyền Không: quốc gia có hòa đồng với thất bại CI không?'],
+        tools:[{i:'🌸',n:'Tuyên ngôn văn minh CI',d:'Giới-Định-Tuệ làm gốc — văn bản nền tảng CI quốc gia'},{i:'🏛',n:'Thiền đạo quốc gia',d:'Từ trường học đến cộng đồng: thiền là kỹ năng sống cơ bản'},{i:'📊',n:'Chỉ số hạnh phúc CI',d:'Tâm Pháp là đầu ra thật: sức khỏe tinh thần, niềm tin, hạnh phúc'},{i:'∞',n:'Huyền Không quốc gia',d:'Học từ thất bại: quốc gia không sợ thất bại CI — học và tiến'}],
+        checks:['Tuyên ngôn văn minh CI Việt Nam: Giới-Định-Tuệ làm gốc|Không phải thêm vào — là gốc rễ','Thiền trong giáo dục quốc gia: cấp 1 đến cấp 3|Không phải tôn giáo — là kỹ năng sống','Chỉ số CI quốc gia đo Tâm Pháp: hạnh phúc, tin tưởng|Không chỉ GDP, không chỉ năng suất','Huyền Không quốc gia: có học từ thất bại CI hay che đậy?|Minh bạch là Tâm Pháp cao nhất'],
+        reflect:'Tâm Pháp nền văn minh CI Việt Nam — điều tôi tin:|Giá trị cốt lõi: ...\nĐiều tôi có thể làm ngay hôm nay để nuôi dưỡng Tâm Pháp: ...'
+      }
+    ]
+  }
+};
+
+const GEN_PAGES = {
+  buoc9: {
+    title:'9 Bước Tự Học — Tự Rèn',
+    color:'var(--purple)',
+    desc:'Tiến trình tự học – tự rèn và áp dụng triển khai dự án. Đây là PDCA của cá nhân — sâu hơn ở bước tự vấn và trí tuệ tập thể.',
+    items:[
+      {n:1,t:'Tiếp nhận thông tin',d:'Đọc kỹ, trọn vẹn — không đọc lướt, không vừa đọc vừa phán xét',ci:'Gemba walk: quan sát hiện trường trọn vẹn trước khi nhận xét'},
+      {n:2,t:'Tách lớp thông tin',d:'Phân tích các vấn đề trọng tâm, cốt lõi — không bị ngập trong chi tiết',ci:'5 Whys: tách lớp triệu chứng để tìm gốc rễ thật sự'},
+      {n:3,t:'Tổng hợp thông tin',d:'Tổng hợp lại cốt lõi, xương sống — gói gọn trong 1-2 câu',ci:'VSM: tổng hợp dòng giá trị hiện tại thành bức tranh rõ ràng'},
+      {n:4,t:'Tự vấn bản thân',d:'Đâu là giá trị phù hợp nhất để ứng dụng cho bản thân? Tại sao tôi làm CI này?',ci:'Reflection: hỏi thật — tôi làm CI từ sợ hãi hay từ tình yêu?'},
+      {n:5,t:'Trí tuệ tập thể',d:'Tham vấn thêm đồng đội, chuyên gia để có góc nhìn đa chiều, cặn kẽ',ci:'A3 review: chia sẻ A3 với nhóm trước khi triển khai — thu góc nhìn'},
+      {n:6,t:'Thống nhất hành động',d:'Chốt lại các ý sẽ ứng dụng vào cuộc sống, công việc thực tế',ci:'Action plan CI: ai làm gì, khi nào, đo bằng gì — rõ ràng'},
+      {n:7,t:'Thực hành kỷ luật',d:'Đưa vào thực tế một cách kỷ luật và sát sao — không để lý do cản trở',ci:'Kaizen hàng ngày: 1 cải tiến nhỏ mỗi ngày — dù chỉ 5 phút'},
+      {n:8,t:'Theo dõi đánh giá',d:'Nhìn nhận, đánh giá, phân tích trong quá trình ứng dụng — số liệu thật',ci:'PDCA Check: so sánh kết quả thực tế với kỳ vọng — không tô hồng'},
+      {n:9,t:'Tổng hợp cải tiến',d:'Đúc kết lại sau một thời gian: điều gì cần cải tiến, điều gì cần phát huy',ci:'Retrospective: vòng PDCA tiếp theo bắt đầu từ bài học vòng này'},
+    ]
+  },
+  thoiquen: {
+    title:'5 Thói Quen Thủ Lĩnh',
+    color:'var(--blue)',
+    desc:'Những thói quen sống lành mạnh then chốt để chuyển hóa và lan tỏa. Nền tảng nhân sự CI.',
+    items:[
+      {n:1,t:'Sống hiểu biết',d:'Trau dồi nhận thức, liên tục nâng cấp năng lực bằng 9 bước tự học. Tư duy: "Đâu là lõi của vấn đề?"',ci:'CI: tư duy nhân duyên quả — vấn đề này từ đâu? Tiếp diễn thì sao?'},
+      {n:2,t:'Sống hiệu quả',d:'Lành mạnh thân tâm trí: OKRs + Kaizen + Pomodoro. Nguyên tắc 15 chữ vàng.',ci:'CI: kế hoạch CI hàng ngày/tuần rõ ràng — không có kế hoạch = không có CI thật'},
+      {n:3,t:'Sống nâng đỡ',d:'Tứ Nhiếp Pháp với đồng đội: bố thí, ái ngữ, lợi hành, đồng sự. Lắng nghe và ái ngữ.',ci:'CI: lãnh đạo CI nâng đỡ người khác CI, không chỉ tự CI một mình'},
+      {n:4,t:'Sống cống hiến',d:'Phụng sự cộng đồng với tâm ý trong sáng. Tứ Nhiếp Pháp với mọi người xung quanh.',ci:'CI: thành quả CI là để cống hiến, không phải để khoe — Lợi hoà'},
+      {n:5,t:'Sống tỉnh thức',d:'Quan sát cử chỉ, lời nói, tâm ý của mình. Thiền tọa mỗi ngày. Vipassana.',ci:'CI: tỉnh thức là bước đầu tiên của mọi cải tiến — không thấy thật thì không CI thật'},
+    ]
+  },
+  luchoa: {
+    title:'6 Hoà — Lục Hoà Kính',
+    color:'#b45309',
+    desc:'Từ Bài kinh Kosambīya — Trung Bộ Kinh. Sáu nguyên tắc sống tạo thành tương ái, tương kính, đưa đến hòa đồng, vô tranh luận.',
+  },
+  trietly: {
+    title:'1 Triết Lý — Người Đi Trước Thắp Đuốc',
+    color:'#78350f',
+    desc:'Nguyên lý hòn tuyết lăn. Người đi trước thắp đuốc người đi sau, đi đến đâu lan tỏa đến đó.',
+  },
+  loithe: {
+    title:'3 Lời Thề Từ Tâm',
+    color:'#15803d',
+    desc:'Ba cam kết nền tảng của người thực hành mã GEN. Đọc lại mỗi sáng, soi vào mỗi tối.',
+  },
+  '4diem': {
+    title:'4 Điểm Phân Tích Nguồn Lực',
+    color:'#4d7c0f',
+    desc:'Phương pháp tư duy tổng quan để hiểu rõ các thành phần tác động đến dự án. Nếu đội ngũ cùng dùng phương pháp này thì sẽ có Kiến Hoà rõ ràng.',
+  }
+};
+
+// ─── STATE ───────────────────────────────────────────────────────────────────
+let state = {
+  page: 'overview',
+  level: 0,
+  openCards: {},
+  tabs: {},
+  checks: {},
+  reflections: {},
+  saved: {}
+};
+
+// ─── HELPERS ─────────────────────────────────────────────────────────────────
+function pct(page) {
+  const cards = ['dinh','cuong','hanh','ho','tam'];
+  let total=0, done=0;
+  cards.forEach(id => {
+    const p = PHAP[id];
+    const lv = p.levels[state.level];
+    lv.checks.forEach((c,ci) => {
+      total++;
+      if (state.checks[id+'_'+state.level+'_'+ci]) done++;
+    });
+  });
+  return total ? Math.round(done/total*100) : 0;
+}
+
+function showPage(id) {
+  state.page = id;
+  document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+  document.querySelector(`[onclick="showPage('${id}')"]`)?.classList.add('active');
+  render();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function setLevel(l) {
+  state.level = l;
+  state.openCards = {};
+  render();
+}
+
+function toggleCard(id) {
+  state.openCards[id] = !state.openCards[id];
+  if (!state.tabs[id]) state.tabs[id] = 'check';
+  render();
+}
+
+function setTab(id, t) {
+  state.tabs[id] = t;
+  render();
+}
+
+async function toggleCheck(id, ci) {
+  const key = id+'_'+state.level+'_'+ci;
+  state.checks[key] = !state.checks[key];
+  render();
+  // Lưu trạng thái vào trình duyệt
+  localStorage.setItem('genci_personal_checks', JSON.stringify(state.checks));
+}
+
+async function saveReflect(id) {
+  const ta = document.getElementById('ta_'+id);
+  if (ta) {
+    const content = ta.value;
+    state.reflections[id+'_'+state.level] = content;
+    state.saved[id+'_'+state.level] = content;
+    render();
+    // Lưu dòng tự vấn vào trình duyệt
+    localStorage.setItem('genci_personal_reflections', JSON.stringify(state.reflections));
+  }
+}
+
+// ─── RENDER ───────────────────────────────────────────────────────────────────
+function renderLevelBar() {
+  return `<div class="level-bar">${LEVELS.map((l,i)=>`<button class="level-btn${state.level===i?' on':''}" onclick="setLevel(${i})">${l}</button>`).join('')}</div>`;
+}
+
+function renderProgress() {
+  const p = pct();
+  return `<div class="progress-wrap">
+    <div class="prog-top"><span>Tiến độ 5 Pháp · ${LEVELS[state.level]}</span><span>${p}%</span></div>
+    <div class="prog-track"><div class="prog-fill" style="width:${p}%"></div></div>
+  </div>`;
+}
+
+function renderPhapCard(id) {
+  const p = PHAP[id];
+  const lv = p.levels[state.level];
+  const color = COLORS[id];
+  const isOpen = state.openCards[id];
+  const tab = state.tabs[id] || 'check';
+  const checkCount = lv.checks.filter((_,ci)=>state.checks[id+'_'+state.level+'_'+ci]).length;
+  const genTags = p.gens.map(g=>`<span class="tag" style="background:var(--bg3);color:${color};border:1px solid var(--border2)">${g}</span>`).join('');
+
+  let body = '';
+  if (isOpen) {
+    const insight = `<div class="insight" style="border-color:${color}">${p.insight[state.level]}</div>`;
+
+    let tabContent = '';
+    if (tab === 'check') {
+      tabContent = `<div class="checklist">${lv.checks.map((c,ci)=>{
+        const parts = c.split('|');
+        const done = !!state.checks[id+'_'+state.level+'_'+ci];
+        return `<div class="check-item${done?' done':''}" onclick="toggleCheck('${id}',${ci})">
+          <div class="check-box">${done?'✓':''}</div>
+          <div><div class="check-main">${parts[0]}</div>${parts[1]?`<div class="check-sub">${parts[1]}</div>`:''}</div>
+        </div>`;
+      }).join('')}</div>`;
+    } else if (tab === 'tool') {
+      tabContent = `<div class="tool-grid">${lv.tools.map(t=>`<div class="tool-card"><div class="tool-icon">${t.i}</div><div class="tool-name">${t.n}</div><div class="tool-desc">${t.d}</div></div>`).join('')}</div>`;
+    } else {
+      const rp = lv.reflect.split('|');
+      const saved = state.saved[id+'_'+state.level];
+      tabContent = `<div class="reflect-section">
+        <div class="reflect-label">${rp[0]}</div>
+        <textarea class="reflect-area" id="ta_${id}" placeholder="${rp[1]||''}">${state.reflections[id+'_'+state.level]||''}</textarea>
+        ${saved?`<div><div class="saved-label">Đã lưu</div><div class="saved-note">${saved}</div></div>`:''}
+        <div class="btn-row">
+          <span style="font-size:13px;font-weight:600;color:var(--text3)">${checkCount}/${lv.checks.length} mục hoàn thành</span>
+          <button class="btn btn-gold" onclick="saveReflect('${id}')">Lưu ghi chép</button>
+        </div>
+      </div>`;
+    }
+
+    const genBadges = p.gens.map(g=>`<span class="gen-chip" style="background:var(--bg2);color:${color};border-color:var(--border2)"><span class="dot" style="background:${color}"></span>${g}</span>`).join('');
+
+    body = `<div class="card-body open">
+      <div class="card-tabs">
+        <button class="ctab${tab==='check'?' on':''}" onclick="setTab('${id}','check')">Checklist (${checkCount}/${lv.checks.length})</button>
+        <button class="ctab${tab==='tool'?' on':''}" onclick="setTab('${id}','tool')">Công cụ CI</button>
+        <button class="ctab${tab==='reflect'?' on':''}" onclick="setTab('${id}','reflect')">Ghi chép</button>
+      </div>
+      <div class="tab-content">${insight}${tabContent}<div class="gen-row">${genBadges}</div></div>
+    </div>`;
+  }
+
+  return `<div class="card">
+    <div class="card-head" onclick="toggleCard('${id}')">
+      <div class="card-head-left">
+        <div class="card-color-bar" style="background:${color}"></div>
+        <div>
+          <div class="card-eyebrow" style="color:${color}">${p.label}</div>
+          <div class="card-name">${lv.checks[0]?.split('|')[0]?.substring(0,60)||p.label}...</div>
+          <div class="card-sub">${p.sub}</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;flex-shrink:0">
+        <div class="card-tags">${genTags}</div>
+        <span class="chevron${isOpen?' open':''}">▾</span>
+      </div>
+    </div>
+    ${body}
+  </div>`;
+}
+
+function renderOverview() {
+  const blocks = [
+    {n:'0',t:'Tinh thần Huyền Không',c:'var(--purple)',d:'Nền tảng của toàn bộ hệ thống. Hòa đồng với tất cả mà không có vấn đề gì. Không có vấn đề gì mà vẫn hòa đồng. Vô Ngã · Vị Tha.',items:['Trước mỗi hành động CI — dừng lại 1 nhịp thở','Tôi đang làm CI từ sợ hãi hay từ tình yêu?','Huyền Không không phải mục tiêu — là nền tảng']},
+    {n:'9',t:'Bước Tự Học — Tự Rèn',c:'var(--purple)',d:'PDCA của cá nhân. Tiếp nhận → Tách lớp → Tổng hợp → Tự vấn → Trí tuệ tập thể → Thống nhất → Thực hành → Theo dõi → Cải tiến.',items:['9 bước = 1 vòng CI cá nhân hoàn chỉnh','Bước 4 (Tự vấn) là nơi CI thật bắt đầu','Bước 9 (Tổng hợp) mở ra vòng CI tiếp theo']},
+    {n:'5',t:'Pháp Vận Hành Dự Án',c:'var(--green)',d:'Định · Cương · Hành · Hộ · Tâm. Mô hình bền vững cho mọi dự án. Fractal: nhân bản qua mọi cấp độ.',items:['Tâm Pháp là môi trường nuôi dưỡng 4 Pháp còn lại','Định + Cương = tư tưởng chung → Hành + Hộ nhất quán','Nhìn vào 5 Pháp cá nhân biết phù hợp với dự án không']},
+    {n:'5',t:'Thói Quen Thủ Lĩnh',c:'var(--blue)',d:'Hiểu biết · Hiệu quả · Nâng đỡ · Cống hiến · Tỉnh thức. Nền tảng nhân sự CI.',items:['Sống tỉnh thức = bước đầu tiên của mọi CI thật','5 thói quen = 5 chiều của con người CI toàn diện','Không có 5 thói quen → công cụ CI chỉ là vỏ bọc']},
+    {n:'6',t:'Hoà — Lục Hoà Kính',c:'#b45309',d:'Thân · Kiến · Khẩu · Ý · Giới · Lợi Hoà. Từ Bài kinh Kosambīya. Chẩn đoán và điều trị mâu thuẫn đội nhóm.',items:['Tiến trình mâu thuẫn: Lý sự → Sinh sự → Quân sự → Hậu sự','6 Hoà: chẩn đoán chính xác nhất về sức khoẻ đội nhóm','Tâm từ là nền: mọi Hoà đều xuất phát từ tâm từ ái']},
+    {n:'1',t:'Triết Lý Xây Dựng Cộng Đồng',c:'var(--gold)',d:'Người đi trước làm được thắp đuốc soi sáng hỗ trợ người đi sau. Nguyên lý hòn tuyết lăn.',items:['5 bước: Làm được → Làm bạn xem → Xem bạn làm → Bạn tự làm → Bạn lan tỏa','CI không giữ cho mình — lan ra là bản chất','Coi mỗi việc ta làm đều là sứ mệnh']},
+    {n:'3',t:'Lời Thề Từ Tâm',c:'var(--blue)',d:'Học tập suốt đời · Phụng sự vô điều kiện · Trung thực đến tận cùng.',items:['Đọc lại mỗi sáng, soi vào mỗi tối','Trung thực đến tận cùng = nền của mọi CI thật','3 lời thề là Cương Pháp sâu nhất của cá nhân']},
+    {n:'3',t:'Trụ Cột Văn Hoá Đọc',c:'var(--red)',d:'Thủ Lĩnh VHĐ · Văn Hoá Đọc · Thư Viện 3 Gốc 5 Cấp Độ.',items:['Thư viện 3 gốc 5 cấp: đọc đúng hơn đọc nhiều','Văn hóa đọc = Hộ Pháp tri thức của cá nhân và cộng đồng','1 cuốn đúng thời điểm thay đổi cả hành trình CI']},
+    {n:'4',t:'Điểm Phân Tích Nguồn Lực',c:'#4d7c0f',d:'Bối cảnh · Nguồn lực (Trí-Nhân-Tài-Vật) · Tiêu điểm-Mục tiêu · Kế hoạch-Chiến lược.',items:['Trí lực (Mã GEN) đứng đầu — trước cả nhân lực và tài lực','Nhìn vào Nguồn lực để biết làm gì NGAY BÂY GIỜ','Nhìn vào Mục tiêu để biết nơi ta cần đến']},
+    {n:'5',t:'Cấp Độ Thư Viện 3 Gốc',c:'var(--teal)',d:'Thư viện 5 cấp độ sách tinh hoa phù hợp với mọi đối tượng.',items:['Cấp 1-2: nền tảng CI cá nhân','Cấp 3-4: dự án và tổ chức','Cấp 5: tư duy hệ thống và văn minh CI']},
+  ];
+
+  return `
+  <div class="page-header animate">
+    <div class="page-eyebrow">Mã GEN 0955613345 · Trí Tuệ Việt Nam</div>
+    <div class="page-title">Bộ GEN CI — Nền Văn Minh Cải Tiến</div>
+    <div class="page-desc">Tích hợp Phật pháp · Triết lý Việt · Kaizen thế giới. Từ cá nhân đến đất nước. Thực học, thực hành, thực chứng.</div>
+  </div>
+  ${renderProgress()}
+  ${renderLevelBar()}
+  <div class="quote-block">
+    <div class="quote-text">Hòa đồng với tất cả mà không có vấn đề gì cả — và không có vấn đề gì mà vẫn hòa đồng với tất cả.</div>
+    <div class="quote-source">0 · Tinh thần Huyền Không · Nền của toàn bộ hệ thống</div>
+  </div>
+  <div class="gen-overview">${blocks.map(b=>`<div class="gen-block">
+    <div class="gen-block-num" style="color:${b.c}">${b.n}</div>
+    <div class="gen-block-title">${b.t}</div>
+    <div class="gen-block-desc">${b.d}</div>
+    <div class="gen-block-items">${b.items.map(i=>`<div class="gen-block-item">${i}</div>`).join('')}</div>
+  </div>`).join('')}</div>`;
+}
+
+function renderPhapPage(id) {
+  const p = PHAP[id];
+  const color = COLORS[id];
+  return `
+  <div class="page-header animate">
+    <div class="page-eyebrow" style="color:${color}">05 Pháp CI · ${p.label}</div>
+    <div class="page-title">${p.label}</div>
+    <div class="page-desc">${p.sub}</div>
+  </div>
+  ${renderProgress()}
+  ${renderLevelBar()}
+  ${renderPhapCard(id)}`;
+}
+
+function renderLucHoa() {
+  const c = GEN_PAGES.luchoa.color;
+  const hoas = [
+    {n:'1',t:'Thân Hoà',pali:'Mettaṃ kāyakammaṃ',ung:'Chung sống hòa hợp, hỗ trợ. Hội-họp-học-hành cùng nhau.',goc:'Tâm từ → hành động từ ái. Chung một màu áo, một sứ mệnh.',ci:'CI: cùng đi Gemba, cùng làm Kaizen — không ai đứng ngoài nhìn'},
+    {n:'2',t:'Kiến Hoà',pali:'Diṭṭhi sāmaññnagata',ung:'Cùng thẳng thắn, lý giải quan điểm. Có chung văn hóa, phương pháp và ngôn ngữ.',goc:'Thảo luận thường xuyên về 4 Tứ Diệu Đế, 4 Niệm Xứ, 8 Chánh Đạo.',ci:'CI: cùng hiểu PDCA, A3, VSM — 1 ngôn ngữ CI cho toàn nhóm'},
+    {n:'3',t:'Khẩu Hoà',pali:'Mettaṃ vācākammaṃ',ung:'Lời nói hòa thuận. Đàm luận (tìm cái đúng) chứ không tranh luận (tìm người đúng).',goc:'Lời nói chân-thiện-mỹ: đúng sự thật, tốt mình tốt người, đúng nơi đúng lúc.',ci:'CI: feedback CI phải là Khẩu Hoà — không phán xét người, chỉ cải tiến quy trình'},
+    {n:'4',t:'Ý Hoà',pali:'Mettaṃ manokammaṃ',ung:'Cùng đưa ra mục tiêu chung êkíp.',goc:'Tâm từ → ý nghĩ từ ái với đồng đội, trước mặt cũng như sau lưng.',ci:'CI: mục tiêu CI phải là mục tiêu chung thật — không phải 1 người áp đặt'},
+    {n:'5',t:'Giới Hoà',pali:'Sīla sāmaññnagata',ung:'Tự giác giữ gìn kỷ luật & nhắc nhở đạo đức, trách nhiệm chung.',goc:'Tôn trọng và thương yêu huynh đệ đồng tu, muôn loài.',ci:'CI: Cương Pháp CI không phải ép buộc — là tự giác vì Giới Hoà'},
+    {n:'6',t:'Lợi Hoà',pali:'Lābhadhammikā',ung:'Thành quả đội: nhìn thấy người khác (cửa sổ). Lỗi chung: nhìn thấy lỗi ở mình (tấm gương).',goc:'Sống đơn giản, biết đủ, sẵn sàng chia sẻ lợi ích.',ci:'CI: thành quả CI thuộc về toàn đội — không tích lũy cho 1 người'},
+  ];
+  const conflict = [
+    {t:'Lý Sự',vn:'Sóng ngầm',d:'Mỗi người 1 quan điểm, không có văn hóa đàm luận',c:'Thiếu văn hóa làm việc: hiểu và thương, đàm luận'},
+    {t:'Sinh Sự',vn:'Dậy sóng',d:'Mâu thuẫn ngầm, bằng mặt không bằng lòng, nói xấu sau lưng',c:'Thiếu lý tưởng và mục tiêu chung (Định Pháp yếu)'},
+    {t:'Quân Sự',vn:'Bão tố',d:'Chiến tranh lạnh hoặc khẩu chiến mạnh mẽ, công kích nhau',c:'Thiếu khả năng nhìn lại chính mình (Tâm Pháp yếu)'},
+    {t:'Hậu Sự',vn:'Đổ vỡ',d:'Từ mặt nhau, out team, công kích và đáp trả',c:'Thiếu người thủ lĩnh làm gương, hòa giải'},
+  ];
+  return `
+  <div class="page-header animate">
+    <div class="page-eyebrow" style="color:${c}">Mã GEN · 6 Hoà</div>
+    <div class="page-title">Lục Hoà Kính</div>
+    <div class="page-desc">Từ Bài kinh Kosambīya — Trung Bộ Kinh. Sáu nguyên tắc sống tạo thành tương ái, tương kính, đưa đến hòa đồng, vô tranh luận.</div>
+  </div>
+  <div class="section-h">6 Hoà trong CI</div>
+  <div style="display:flex;flex-direction:column;gap:16px">
+  ${hoas.map(h=>`<div class="card">
+    <div style="padding:16px 20px;display:grid;grid-template-columns:auto 1fr;gap:16px">
+      <div style="width:40px;height:40px;border-radius:50%;background:${c}15;color:${c};display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;font-family:var(--font-display);flex-shrink:0">${h.n}</div>
+      <div>
+        <div style="font-size:16px;font-weight:700;color:var(--text);margin-bottom:4px">${h.t} <span style="font-size:13px;color:var(--text3);font-style:italic;font-weight:500">${h.pali}</span></div>
+        <div style="font-size:14px;font-weight:600;color:var(--text2);margin-bottom:6px">${h.ung}</div>
+        <div style="font-size:13px;color:var(--text3);margin-bottom:8px">${h.goc}</div>
+        <div style="font-size:13px;color:${c};font-weight:600;padding:6px 12px;background:${c}10;border-radius:4px;border-left:3px solid ${c}">${h.ci}</div>
+      </div>
+    </div>
+  </div>`).join('')}
+  </div>
+  <div class="section-h" style="margin-top:32px">Tiến Trình Mâu Thuẫn Đội Nhóm</div>
+  <div class="conflict-flow">
+  ${conflict.map(s=>`<div class="conflict-stage">
+    <div class="cs-label" style="color:${c}">${s.t}</div>
+    <div class="cs-vn">${s.vn}</div>
+    <div class="cs-desc">${s.d}</div>
+    <div class="cs-cause">Nguyên nhân: ${s.c}</div>
+  </div>`).join('')}
+  </div>`;
+}
+
+function renderTrietLy() {
+  const c = GEN_PAGES.trietly.color;
+  return `
+  <div class="page-header animate">
+    <div class="page-eyebrow" style="color:${c}">Mã GEN · 1 Triết Lý</div>
+    <div class="page-title">Người Đi Trước Thắp Đuốc</div>
+    <div class="page-desc">Nguyên lý hòn tuyết lăn. Coi mỗi nơi ta đến đều là gia đình, coi mỗi người ta gặp đều là đồng đội, coi mỗi việc ta làm đều là sứ mệnh.</div>
+  </div>
+  <div class="tl-steps">
+    ${[
+      {n:1,t:'Tôi làm được',d:'Trước khi dạy — phải làm được. CI không phải lý thuyết, phải có thực chứng.'},
+      {n:2,t:'Tôi làm — bạn xem',d:'Làm thật trước mặt người học. Không phải dạy — là làm mẫu.'},
+      {n:3,t:'Tôi xem — bạn làm',d:'Người học thực hành trong khi người dạy quan sát, hỗ trợ, không làm thay.'},
+      {n:4,t:'Bạn tự làm',d:'Người học độc lập hoàn toàn. Đây là mục tiêu thật sự — không phải họ phụ thuộc vào tôi.'},
+      {n:5,t:'Bạn lan tỏa',d:'Người học trở thành người thắp đuốc tiếp theo. Hòn tuyết lăn bắt đầu tự vận động.'},
+    ].map(s=>`<div class="tl-step">
+      <div class="tl-num" style="background:${c}">${s.n}</div>
+      <div><div class="tl-text">${s.t}</div><div class="tl-desc">${s.d}</div></div>
+    </div>`).join('')}
+  </div>
+  <div class="quote-block" style="border-color:${c}">
+    <div class="quote-text">"Phương pháp làm gương là hay lắm. Chúng ta cố giữ lấy mình mà không thiệt gì đâu. Hãy rèn cặp đời ta — dạy sao thì làm vậy."</div>
+    <div class="quote-source">Trích Nghề — Hoàng Đạo Thúy</div>
+  </div>`;
+}
+
+function renderLoiThe() {
+  const c = GEN_PAGES.loithe.color;
+  const thes = [
+    {t:'Học tập suốt đời',sub:'Lấy sự học làm sự nghiệp',d:'Học hỏi từ bất cứ ai không phân biệt sang hèn, già trẻ. Học từ bất cứ điều gì — thuận ý hay nghịch ý. Không thỏa hiệp với lười biếng, dễ duôi.',ci:'CI: mỗi vòng PDCA là 1 bài học — thành công hay thất bại đều học được'},
+    {t:'Phụng sự vô điều kiện',sub:'Lấy giúp người là giúp mình',d:'Không làm tổn thương thân thể và tinh thần người khác. Bảo vệ thiên nhiên, sống đơn giản biết đủ. Phụng sự vô vị lợi, tỉnh thức khi dính mắc ngã mạn.',ci:'CI: kết quả CI không phải để khoe — là để cộng đồng CI đủ mạnh để lan ra'},
+    {t:'Trung thực đến tận cùng',sub:'Lấy hiểu mình để sửa mình',d:'Không nói điều sai với sự thật. Không loan tin chưa biết chắc. Không nói lời gây chia rẽ. Nhất quán giữa lời nói và hành động.',ci:'CI: báo cáo số liệu thật dù xấu — Trung thực là nền của mọi CI bền vững'},
+  ];
+  return `
+  <div class="page-header animate">
+    <div class="page-eyebrow" style="color:${c}">Mã GEN · 3 Lời Thề</div>
+    <div class="page-title">3 Lời Thề Từ Tâm</div>
+    <div class="page-desc">Đọc lại mỗi sáng, soi vào mỗi tối. Đây là Cương Pháp sâu nhất của cá nhân.</div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:16px">
+  ${thes.map((t,i)=>`<div class="card">
+    <div class="card-head" style="cursor:default">
+      <div class="card-head-left">
+        <div style="width:40px;height:40px;border-radius:50%;background:${c}15;color:${c};display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;font-family:var(--font-display);flex-shrink:0">${i+1}</div>
+        <div>
+          <div class="card-name">${t.t}</div>
+          <div class="card-sub">${t.sub}</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body open">
+      <div class="tab-content">
+        <div class="insight" style="border-color:${c};margin-bottom:12px">${t.d}</div>
+        <div style="font-size:13px;font-weight:600;color:${c};padding:10px 14px;background:${c}10;border-radius:4px">${t.ci}</div>
+      </div>
+    </div>
+  </div>`).join('')}
+  </div>`;
+}
+
+function render4Diem() {
+  const c = GEN_PAGES['4diem'].color;
+  return `
+  <div class="page-header animate">
+    <div class="page-eyebrow" style="color:${c}">Mã GEN · 4 Điểm</div>
+    <div class="page-title">4 Điểm Phân Tích Nguồn Lực</div>
+    <div class="page-desc">Phương pháp tư duy tổng quan để hiểu rõ các thành phần tác động đến dự án CI. Nhìn vào Nguồn lực để biết làm gì ngay bây giờ. Nhìn vào Mục tiêu để biết nơi cần đến.</div>
+  </div>
+  <div class="diem-grid">
+    <div class="diem-card">
+      <div class="diem-num" style="color:${c}">1</div>
+      <div class="diem-title">Bối Cảnh</div>
+      <div class="diem-items">
+        <div class="diem-item">Xác định đối tượng phân tích rõ ràng</div>
+        <div class="diem-item">Bối cảnh gần: sát với việc của mình nhất</div>
+        <div class="diem-item">Bối cảnh xa: kinh tế, chính trị, xã hội...</div>
+        <div class="diem-item">Đánh giá cơ hội và thách thức</div>
+        <div class="diem-item" style="color:${c}">CI: Gemba walk + phân tích ngành trước khi CI</div>
+      </div>
+    </div>
+    <div class="diem-card">
+      <div class="diem-num" style="color:${c}">2</div>
+      <div class="diem-title">Nguồn Lực — Trí · Nhân · Tài · Vật</div>
+      <div class="diem-items">
+        <div class="diem-item"><strong>Trí lực:</strong> Mã GEN + kiến thức sát nhất (đứng đầu)</div>
+        <div class="diem-item"><strong>Nhân lực:</strong> Thủ lĩnh CI + đội ngũ + năng lực-thời gian</div>
+        <div class="diem-item"><strong>Tài lực:</strong> Tài chính vận hành CI</div>
+        <div class="diem-item"><strong>Vật lực:</strong> Cơ sở vật chất, hệ thống, quy trình</div>
+        <div class="diem-item">Đánh giá mạnh/yếu + tối ưu hóa: Xin-Mua-Mượn-Thuê-Đổi</div>
+        <div class="diem-item" style="color:${c}">CI: 4 điểm NL = nền của Hộ Pháp và Hành Pháp</div>
+      </div>
+    </div>
+    <div class="diem-card">
+      <div class="diem-num" style="color:${c}">3</div>
+      <div class="diem-title">Tiêu Điểm — Mục Tiêu</div>
+      <div class="diem-items">
+        <div class="diem-item">Mục tiêu mong muốn là gì?</div>
+        <div class="diem-item">Thẩm định: Hòa hợp với văn hóa tổ chức lớn không?</div>
+        <div class="diem-item">Hào hứng: Đội ngũ có thật sự hào hứng không?</div>
+        <div class="diem-item">Hợp lý: Có rõ ràng, đo được không?</div>
+        <div class="diem-item" style="color:${c}">CI: OKR CI = Tiêu điểm · Mục tiêu rõ ràng</div>
+      </div>
+    </div>
+    <div class="diem-card">
+      <div class="diem-num" style="color:${c}">4</div>
+      <div class="diem-title">Kế Hoạch — Chiến Lược</div>
+      <div class="diem-items">
+        <div class="diem-item">Chiến lược gói gọn trong 1 câu súc tích?</div>
+        <div class="diem-item">Các việc cốt lõi cần triển khai + thời gian</div>
+        <div class="diem-item"><strong>Tầm:</strong> hướng đi rõ · <strong>Tứ:</strong> ghim hướng liên tục</div>
+        <div class="diem-item"><strong>Hỷ:</strong> linh hoạt ứng biến · <strong>Lạc:</strong> truyền cảm hứng</div>
+        <div class="diem-item"><strong>Nhất Tâm:</strong> kiên định trên con đường</div>
+        <div class="diem-item" style="color:${c}">CI: Hoshin Kanri = Kế hoạch-Chiến lược CI toàn tổ chức</div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderBuoc9() {
+  const c = GEN_PAGES.buoc9.color;
+  const p = GEN_PAGES.buoc9;
+  return `
+  <div class="page-header animate">
+    <div class="page-eyebrow" style="color:${c}">Mã GEN · 9 Bước</div>
+    <div class="page-title">${p.title}</div>
+    <div class="page-desc">${p.desc}</div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:12px">
+  ${p.items.map(s=>`<div class="card">
+    <div style="padding:16px 20px;display:grid;grid-template-columns:40px 1fr;gap:16px;align-items:start">
+      <div style="width:40px;height:40px;border-radius:50%;background:${c}15;color:${c};display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;font-family:var(--font-display)">${s.n}</div>
+      <div>
+        <div style="font-size:16px;font-weight:700;color:var(--text);margin-bottom:6px">${s.t}</div>
+        <div style="font-size:14px;font-weight:500;color:var(--text2);margin-bottom:8px;line-height:1.6">${s.d}</div>
+        <div style="font-size:13px;font-weight:600;color:${c};padding:6px 12px;background:${c}10;border-radius:4px">${s.ci}</div>
+      </div>
+    </div>
+  </div>`).join('')}
+  </div>`;
+}
+
+function renderThoiQuen() {
+  const c = GEN_PAGES.thoiquen.color;
+  const p = GEN_PAGES.thoiquen;
+  return `
+  <div class="page-header animate">
+    <div class="page-eyebrow" style="color:${c}">Mã GEN · 5 Thói Quen</div>
+    <div class="page-title">${p.title}</div>
+    <div class="page-desc">${p.desc}</div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:12px">
+  ${p.items.map(s=>`<div class="card">
+    <div style="padding:16px 20px;display:grid;grid-template-columns:40px 1fr;gap:16px;align-items:start">
+      <div style="width:40px;height:40px;border-radius:50%;background:${c}15;color:${c};display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;font-family:var(--font-display)">${s.n}</div>
+      <div>
+        <div style="font-size:16px;font-weight:700;color:var(--text);margin-bottom:6px">${s.t}</div>
+        <div style="font-size:14px;font-weight:500;color:var(--text2);margin-bottom:8px;line-height:1.6">${s.d}</div>
+        <div style="font-size:13px;font-weight:600;color:${c};padding:6px 12px;background:${c}10;border-radius:4px">${s.ci}</div>
+      </div>
+    </div>
+  </div>`).join('')}
+  </div>`;
+}
+
+function render() {
+  const el = document.getElementById('mainContent');
+  let html = '';
+  if (state.page === 'overview') html = renderOverview();
+  else if (PHAP[state.page]) html = renderPhapPage(state.page);
+  else if (state.page === 'luchoa') html = renderLucHoa();
+  else if (state.page === 'trietly') html = renderTrietLy();
+  else if (state.page === 'loithe') html = renderLoiThe();
+  else if (state.page === '4diem') html = render4Diem();
+  else if (state.page === 'buoc9') html = renderBuoc9();
+  else if (state.page === 'thoiquen') html = renderThoiQuen();
+  el.innerHTML = html;
+}
+
+async function initData() {
+  try {
+    state.checks = JSON.parse(localStorage.getItem('genci_personal_checks') || '{}');
+    state.reflections = JSON.parse(localStorage.getItem('genci_personal_reflections') || '{}');
+    state.saved = { ...state.reflections };
+  } catch (e) { console.error(e); }
+  render();
+}
+
+initData();
+</script>
+</body>
+</html>

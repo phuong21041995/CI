@@ -1,0 +1,20 @@
+# Thực chiến — HRD & Learning Organization
+# Kịch bản khai phóng tiềm năng nhân sự và phương pháp kiến tạo vòng phản hồi tri thức.
+
+@ Giải cứu đào tạo bốc thuốc sai bệnh (ADDIE - Analysis)
+- Bối cảnh thực tế: Để giải quyết bài toán trễ tiến độ kiểm tra dữ liệu cấu hình MAS/OC files, ban lãnh đạo FDI vội vã chi ngân sách lớn mở lớp đào tạo tập trung "Kỹ năng quản lý thời gian" cho toàn bộ kỹ sư. Tuy nhiên, sau khóa học, tiến độ công việc vẫn giậm chân tại chỗ, năng suất không hề cải thiện.
+- Bẫy rập thường gặp: Làm hời hợt bước Analysis (Phân tích nhu cầu đào tạo và khoảng cách năng lực) trong quy trình ADDIE. Bản ngã của người quản lý thường thích nhìn hiện tượng ở ngọn, vội vã đưa ra pháp môn (Design/Development) mà không quán chiếu sâu sắc căn cơ của học viên. Sai bệnh mà bốc thuốc thì dẫu khóa học có lộng lẫy đến đâu cũng chỉ là vô minh.
+- Hành động thực chiến: Kích hoạt bước Analysis (Chánh Kiến) để tìm "nỗi khổ" thực sự. Tiến hành phân tích khoảng cách năng lực (Competency Gap), phát hiện kỹ sư trễ hạn không phải vì lười hay thiếu quản lý thời gian, mà vì hệ thống có quá nhiều lãng phí do Xử lý thừa (Extra Processing) khi phải đối chiếu thủ công hàng nghìn dòng lệnh. Hủy ngay lớp quản lý thời gian, thay bằng chương trình Microlearning ngắn 15 phút hướng dẫn cách viết script Python tự động lookup đa sheet.
+- Kết quả thực: Giải quyết chính xác khoảng cách năng lực, rút ngắn 85% thời gian xử lý tệp tin, giúp năng suất vọt lên mức tiệm cận 6 Sigma.
+
+@ Vượt chốt chặn hành vi bằng Quản lý trực tiếp (Kirkpatrick Level 3)
+- Bối cảnh thực tế: Nhân sự hoàn thành xuất sắc khóa học "Tư duy hệ thống và Giải quyết vấn đề bằng A3". Bài kiểm tra lý thuyết đạt điểm tối đa (Level 2 - Learning). Tuy nhiên, sau 60 ngày trở lại văn phòng, không một ai áp dụng sơ đồ xương cá hay tư duy vòng phản hồi vào công việc, mọi người vẫn xử lý sự cố theo thói quen cũ.
+- Bẫy rập thường gặp: Nghĩ rằng học xong trên lớp là hành vi tự thay đổi. Quản lý thường phó mặc kết quả cho phòng HR, trong khi bản thân lại tạo áp lực công việc cơ học, không tạo không gian cho nhân viên thử nghiệm cái mới. Nếu bước ra khỏi lớp học mà hành vi vẫn như cũ, thì sự học đó chỉ là vô ích.
+- Hành động thực chiến: Thiết lập chốt chặn tại Cấp độ 3 (Behavior) thông qua vai trò của Quản lý trực tiếp. Sửa đổi cơ chế củng cố (Reinforcement): Yêu cầu mỗi quản lý ca phải dành 10 phút trong buổi họp đầu ca (Toolbox Talk) để nhân viên tự trình bày một cải tiến nhỏ bằng công cụ A3. Đưa chỉ số áp dụng bài học vào tiêu chí đánh giá Individual Development Plan (IDP) của nhân sự.
+- Kết quả thực: Phá vỡ "phòng thủ thói quen" của tổ chức, chuyển hóa tri thức lý thuyết thành năng lực thực chiến, đưa tỷ lệ áp dụng hành vi mới vọt lên 85% sau 90 ngày.
+
+@ Ứng dụng After Action Review (AAR) đoạn diệt lỗi lặp lại
+- Bối cảnh thực tế: Khi luồng dữ liệu trích xuất cấu hình PLIST bị treo do lỗi ký tự lạ từ chuyên gia nước ngoài, nhóm kỹ thuật sửa xong lỗi liền vội vã đóng ca. Hai tuần sau, sự cố tương tự lặp lại ở một dây chuyền khác, gây lãng phí thời gian chờ đợi (Waiting) và trì trệ vận hành.
+- Bẫy rập thường gặp: Học vòng đơn (Single-loop Learning) — chỉ sửa lỗi ở ngọn mà không soi chiếu lại các giả định nền tảng. Tri thức xử lý sự cố bị kẹt lại ở dạng "Tri thức ẩn" (Tacit Knowledge) trong đầu một cá nhân, không được nhúng vào quy trình chung của tổ chức.
+- Hành động thực chiến: Thiết lập vòng phản hồi hoàn hảo bằng công cụ After Action Review (AAR) ngay khi đóng sự cố. Triển khai cuộc họp nhanh 10 phút, mổ xẻ 4 câu hỏi cốt lõi: Dự định làm gì? Thực tế ra sao? Tại sao lệch? Bài học là gì?. Thực hiện pha Externalization trong mô hình SECI: ép viết lại hàm validate tự động vào code Python, lưu tài liệu vào Knowledge Base/Wiki nội bộ của nhà máy.
+- Kết quả thực: Biến tri thức ẩn của một người thành Trí tuệ tường minh (Explicit Knowledge) của tập thể, đoạn diệt hoàn toàn nguy cơ tái diễn lỗi trên toàn bộ hệ thống.

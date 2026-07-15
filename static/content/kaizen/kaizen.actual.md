@@ -1,0 +1,20 @@
+# Thực chiến — Kaizen
+# Kịch bản tịnh hóa hiện trường bằng tư duy tinh gọn và phương pháp giải vây lãng phí từ gốc.
+
+@ Khai phóng hiện trường bằng Gemba Walk và 5 Whys
+- Bối cảnh thực tế: Tại khu vực gá đặt linh kiện cơ khí, tỷ lệ lỗi lệch tọa độ tăng đột biến, làm treo luồng trích xuất file cấu hình MAS/OC. Quản lý ca ngồi trong phòng kính đọc báo cáo và ra lệnh phạt tiền công nhân đứng máy vì lỗi "thiếu cẩn thận". Công nhân sinh tâm lý ức chế, âm thầm che giấu lỗi rác và đổ lỗi cho phôi đầu vào của nhà cung cấp.
+- Bẫy rập thường gặp: Quản lý hiện trường dựa trên những con số vô hồn và tư duy trừng phạt. Báo cáo giấy chỉ là sự trừu tượng hóa của thực tế. Khi xảy ra sự cố, bản ngã của người quản lý thường nôn nóng tìm một "vật tế thần" để quy kết trách nhiệm, biến buổi họp thành nơi săn phù thủy, triệt tiêu hoàn toàn lòng tin và động lực của người lao động.
+- Hành động thực chiến: Kích hoạt Chánh niệm hiện trường bằng Gemba Walk — đi thực tế và nhìn nhận thực tại đúng như nó đang là. Lãnh đạo bước xuống xưởng ca đêm, ngồi cùng công nhân đứng máy để quan sát. Áp dụng tư duy 5 Whys để mổ xẻ hệ thống: "Tại sao lệch tọa độ?" -> "Vì gá kẹp bị rơ" -> "Tại sao rơ?" -> "Vì lò xo định vị bị mỏi" -> "Tại sao không thay?" -> "Vì lịch bảo trì định kỳ chỉ tính theo tháng chứ không tính theo tần suất bấm máy".
+- Kết quả thực: Thay thế lò xo định vị ngay tại chỗ, hủy bỏ lệnh phạt công nhân, chuẩn hóa lại lịch bảo trì dựa trên dữ liệu đếm xung máy; lỗi lệch tọa độ giảm về 0% ngay trong ca làm việc.
+
+@ Tịnh hóa tâm trí và không gian bằng 5S thực chất
+- Bối cảnh thực tế: Để chuẩn bị cho đợt đánh giá ISO và đón tiếp chuyên gia nước ngoài (KR Eng), ban giám đốc phát động chiến dịch tổng vệ sinh toàn nhà máy. Công nhân phải dừng sản xuất 2 ngày để lau chùi, sơn lại vạch kẻ đường. Tuy nhiên, chỉ 1 tuần sau khi đoàn chuyên gia rời đi, hiện trường lại trở về trạng thái bừa bãi, dụng cụ vứt ngổn ngang, file cấu hình PLIST thất lạc lung tung.
+- Bẫy rập thường gặp: Biến 5S thành một sự kiện dọn dẹp phong trào mang tính đối phó để "chấp tướng". Khi tổ chức chỉ tập trung vào cái vỏ bọc sạch sẽ bên ngoài mà không xây dựng được kỷ luật tự giác, hệ thống sẽ rơi vào hội chứng "backsliding" — tuột dốc về lại trạng thái hỗn loạn cũ ngay khi áp lực cưỡng chế biến mất.
+- Hành động thực chiến: Triển khai 5S thực chất để làm sạch tâm trí và môi trường lao động. Thực hiện S1 (Sàng lọc): dứt khoát thanh lý toàn bộ đồ gá lỗi và file config cũ lỗi thời ra khỏi khu vực làm việc. Thực hiện S2 (Sắp xếp): áp dụng Quản lý trực quan (Visual Management), quy định "mỗi thứ có một chỗ, mọi thứ đúng chỗ", vẽ bóng dụng cụ lên bảng treo. Tập trung vào S5 (Sẵn sàng): biến việc kiểm tra 5S thành thói quen 5 phút trước khi giao ca, biến hành động tốt thành phản xạ tự nhiên.
+- Kết quả thực: Thời gian tìm kiếm dụng cụ và file config giảm từ 15 phút xuống còn 10 giây, triệt tiêu hoàn toàn lãng phí di chuyển thừa (Motion) và chờ đợi (Waiting) của kỹ sư.
+
+@ Vận hành Workshop Kaizen Event (Kaizen Blitz) dứt khoát
+- Bối cảnh thực tế: Quy trình luân chuyển và phê duyệt hồ sơ kỹ thuật văn phòng giữa các bộ phận MAS và OC liên tục bị nghẽn cổ chai, kéo dài thời gian chu kỳ (Cycle Time) lên tới 7 ngày, khiến đối tác nước ngoài phàn nàn gay gắt.
+- Bẫy rập thường gặp: Thành lập các ban bệ dự án kéo dài lê thê với những cuộc họp kéo dài từ tuần này sang tháng khác mà không đưa ra được hành động thực tế. Sự trì trệ của văn phòng kỹ thuật thường do tư duy silo — các phòng ban không chịu ngồi lại cùng nhau để đối diện với dòng chảy lãng phí.
+- Hành động thực chiến: Tổ chức một Workshop Kaizen Event tập trung kéo dài đúng 3 ngày với nhóm liên phòng ban. Ngày 1: Bước xuống Gemba, vẽ Sơ đồ chuỗi giá trị (VSM) phẳng đồng đẳng để lột trần toàn bộ các đoạn nghẽn. Ngày 2: Brainstorm giải pháp, dùng tư duy buông bỏ của báo cáo A3 để tinh lọc ý tưởng. Ngày 3: Viết script Python tự động hóa luồng phê duyệt trực tuyến, cắt bỏ 5 bước ký giấy trung gian lãng phí và chuẩn hóa thành SOP mới.
+- Kết quả thực: Thời gian chu kỳ xử lý hồ sơ rút ngắn dứt khoát từ 7 ngày xuống còn 3 tiếng, giải phóng 40% thời gian cho kỹ sư để tập trung vào công tác chuyên môn sâu.
