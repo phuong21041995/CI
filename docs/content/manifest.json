@@ -1,12 +1,18 @@
 {
   "_comment": "Khai báo toàn bộ chủ đề. Thêm chủ đề mới = thêm một khối vào đây + đặt file <id>.md (và tùy chọn <id>.insight.md) vào thư mục content/. Không cần sửa code.",
   "groups": [
+	{
+	  "label": "Tủ Sách Cẩm Nang",
+	  "items": [
+		{ "id": "lean", "label": "Sách Lean Căn Bản", "render": "pdf" },
+		{ "id": "cam_nang", "label": "Sổ tay 5S", "render": "pdf" },
+		{ "id": "kaizen_doc", "label": "Tài liệu Kaizen", "render": "pdf" }
+	  ]
+	}
     {
       "label": "Lõi",
       "items": [
-	    { "id": "cam_nang",  "label": "Cẩm nang", "icon": "book",     "tag": "Cốt tủy",  "core": true, "desc": "Khám phá bộ GEN gốc rễ", "render": "pdf" },
-		{ "id": "lean",  "label": "Lean", "icon": "book",     "tag": "Cốt tủy",  "core": true, "desc": "Khám phá bộ GEN gốc rễ", "render": "pdf" },
-        
+	    
 		{ "id": "thau-triet",  "label": "Thấu triệt", "icon": "eye",     "tag": "Cốt tủy",  "core": true, "desc": "Con đường nâng tầm doanh nghiệp: con người đi trước, công cụ theo sau. Ba lớp gen – nguyên lý – tuệ giác.", "render": "essay" },
         { "id": "lien-ket",    "label": "Liên kết",   "icon": "mindmap", "tag": "Hệ thống", "core": true, "desc": "Bản đồ quan hệ giữa toàn bộ công cụ — cái nào sinh ra cái nào, bổ trợ ra sao, tất cả quy về bộ gen.", "render": "relations" },
         { "id": "kiem-chung",  "label": "Kiểm chứng", "icon": "seal",    "tag": "Tự test",  "core": true, "desc": "Kiểm tra sự hiểu, khả năng ứng dụng và năng lực nối các công cụ thành một hệ.", "render": "quiz" },
