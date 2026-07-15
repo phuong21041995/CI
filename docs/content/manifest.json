@@ -5,7 +5,7 @@
       "label": "Lõi",
       "items": [
 	    { "id": "cam_nang",  "label": "Cẩm nang", "icon": "book",     "tag": "Cốt tủy",  "core": true, "desc": "Khám phá bộ GEN gốc rễ", "render": "pdf" },
-		{ "id": "lean",  "label": "Cẩm nang", "icon": "book",     "tag": "Cốt tủy",  "core": true, "desc": "Khám phá bộ GEN gốc rễ", "render": "pdf" },
+		{ "id": "lean",  "label": "Lean", "icon": "book",     "tag": "Cốt tủy",  "core": true, "desc": "Khám phá bộ GEN gốc rễ", "render": "pdf" },
         
 		{ "id": "thau-triet",  "label": "Thấu triệt", "icon": "eye",     "tag": "Cốt tủy",  "core": true, "desc": "Con đường nâng tầm doanh nghiệp: con người đi trước, công cụ theo sau. Ba lớp gen – nguyên lý – tuệ giác.", "render": "essay" },
         { "id": "lien-ket",    "label": "Liên kết",   "icon": "mindmap", "tag": "Hệ thống", "core": true, "desc": "Bản đồ quan hệ giữa toàn bộ công cụ — cái nào sinh ra cái nào, bổ trợ ra sao, tất cả quy về bộ gen.", "render": "relations" },
