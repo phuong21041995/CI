@@ -232,7 +232,7 @@ async function loadQuizBanks() {
 // ── Khởi động ──
 async function init() {
   try {
-    manifest = JSON.parse(await fetchText('content/_manifest.json'));
+    manifest = JSON.parse(await fetchText('content/manifest.json'));
 	// Thay vì await syncFromServer() thẳng, hãy bọc nó:
 	try {
 	  await store.syncFromServer();
