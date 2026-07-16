@@ -2,13 +2,34 @@
   "_comment": "Khai báo toàn bộ chủ đề. Thêm chủ đề mới = thêm một khối vào đây + đặt file <id>.md (và tùy chọn <id>.insight.md) vào thư mục content/. Không cần sửa code.",
   "groups": [
 	{
-	  "label": "Tủ Sách Cẩm Nang",
-	  "items": [
-		{ "id": "lean", "label": "Sách Lean Căn Bản", "render": "pdf" },
-		{ "id": "cam_nang", "label": "Sổ tay 5S", "render": "pdf" },
-		{ "id": "kaizen_doc", "label": "Tài liệu Kaizen", "render": "pdf" }
-	  ]
-	},
+      "label": "Tủ Sách Cẩm Nang",
+      "items": [
+        { "id": "2.-Bang-kiem-soat-san-xuat", "label": "2. Bảng kiểm soát sản xuất", "render": "pdf" },
+        { "id": "3.-Chuyen-doi-nhanh-Quick-changeover", "label": "3. Chuyển đổi nhanh (SMED)", "render": "pdf" },
+        { "id": "4.-Nang-suat-xanh-Green-Productivity", "label": "4. Năng suất xanh", "render": "pdf" },
+        { "id": "5.-Du-thao-sach-Nghien-cuu-thoi-gian-thao-tac", "label": "5. Nghiên cứu thời gian thao tác", "render": "pdf" },
+        { "id": "5s", "label": "5S", "render": "pdf" },
+        { "id": "7.-Nang-suat-va-Cong-nghiep-4.0", "label": "7. Năng suất và Công nghiệp 4.0", "render": "pdf" },
+        { "id": "7cong_cu", "label": "7 Công cụ", "render": "pdf" },
+        { "id": "8.-Tieu-chuan-ve-quan-ly-doi-moi-sang-tao", "label": "8. Tiêu chuẩn quản lý đổi mới sáng tạo", "render": "pdf" },
+        { "id": "9.-Bo-tri-mat-bang-Layout", "label": "9. Bố trí mặt bằng (Layout)", "render": "pdf" },
+        { "id": "10.-Bay-cong-cu-moi", "label": "10. Bảy công cụ mới", "render": "pdf" },
+        { "id": "11.-Hoat-dong-tieu-chuan-hoa-co-so", "label": "11. Hoạt động tiêu chuẩn hóa cơ sở", "render": "pdf" },
+        { "id": "12.-Quan-ly-an-toan-thong-tin", "label": "12. Quản lý an toàn thông tin", "render": "pdf" },
+        { "id": "13.-He-thong-quan-ly-nang-luc-phong-thu-nghiem", "label": "13. Quản lý năng lực phòng thử nghiệm", "render": "pdf" },
+        { "id": "14.-Dao-tao-trong-cong-nghiep", "label": "14. Đào tạo trong công nghiệp", "render": "pdf" },
+        { "id": "15.-He-thong-quan-lý-tieu-chuan-chat-luong", "label": "15. Quản lý tiêu chuẩn chất lượng", "render": "pdf" },
+        { "id": "16.-San-xuat-dung-thoi-diem", "label": "16. Sản xuất đúng thời điểm (JIT)", "render": "pdf" },
+        { "id": "18.-Cam-nang-cong-cu-ky-thuat", "label": "18. Cẩm nang công cụ kỹ thuật", "render": "pdf" },
+        { "id": "cam_nang", "label": "Cẩm nang chung", "render": "pdf" },
+        { "id": "he_thong_quan_ly", "label": "Hệ thống quản lý", "render": "pdf" },
+        { "id": "lang_phi", "label": "Lãng phí", "render": "pdf" },
+        { "id": "lean2", "label": "Lean", "render": "pdf" },
+        { "id": "nang_suat", "label": "Năng suất", "render": "pdf" },
+        { "id": "phong_chong_sai_loi", "label": "Phòng chống sai lỗi (Poka-Yoke)", "render": "pdf" },
+        { "id": "tqm2", "label": "TQM", "render": "pdf" }
+      ]
+    },
     {
       "label": "Lõi",
       "items": [
