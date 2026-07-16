@@ -4,7 +4,7 @@
 	{
 	  "label": "Tủ Sách Cẩm Nang",
 	  "items": [
-		{ "id": "lean", "label": "Sách Lean Căn Bản", "render": "pdf" },
+		{ "id": "lean2", "label": "Sách Lean Căn Bản", "render": "pdf" },
 		{ "id": "cam_nang", "label": "Sổ tay 5S", "render": "pdf" },
 		{ "id": "kaizen_doc", "label": "Tài liệu Kaizen", "render": "pdf" }
 	  ]
