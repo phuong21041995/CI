@@ -6,16 +6,15 @@ import * as views from './views.js';
 import * as store from './journal.js';
 import { icon } from './icons.js';
 
-const state = { view: 'mindmap' };   // chế độ xem chủ đề mặc định
+const state = { view: 'mindmap' };
 const quizState = { mode: 'mc', scope: '__all' };
 let quizBanks = null;
 let manifest = null;
-let allTopics = [];                  // phẳng hóa từ manifest
-const mdCache = new Map();           // id -> markdown nội dung
-const insightCache = new Map();      // id -> Map tuệ giác
-let searchCorpus = null;             // dựng lười cho tìm kiếm
+let allTopics = [];
+const mdCache = new Map();
+const insightCache = new Map();
+let searchCorpus = null;
 
-// ── Tiện ích ──
 window.toast = function (msg, isErr = false) {
   const t = document.getElementById('toast');
   t.querySelector('span').textContent = msg;
@@ -33,12 +32,10 @@ async function fetchText(path) {
 
 function findTopic(id) { return allTopics.find(t => t.id === id) || null; }
 
-// ── Tải nội dung một chủ đề (markdown + tuệ giác), có cache ──
 const actualCache = new Map();
-const legendCache = new Map(); // Bộ nhớ tạm cho file truyền thuyết
+const legendCache = new Map();
 
 async function loadTopicContent(id) {
-  // Đường dẫn mới: content/tên_chủ_đề/tên_file.ext
   const basePath = `content/${id}/${id}`;
 
   if (!mdCache.has(id)) mdCache.set(id, await fetchText(`${basePath}.md`));
@@ -51,7 +48,7 @@ async function loadTopicContent(id) {
     try { actualCache.set(id, await fetchText(`${basePath}.actual.md`)); }
     catch { actualCache.set(id, null); }
   }
-  if (!legendCache.has(id)) { // Bắt file legend
+  if (!legendCache.has(id)) {
     try { legendCache.set(id, await fetchText(`${basePath}.legend.md`)); }
     catch { legendCache.set(id, null); }
   }
@@ -63,7 +60,6 @@ async function loadTopicContent(id) {
   };
 }
 
-// ── Dựng sidebar từ manifest ──
 function buildSidebar() {
   const nav = document.getElementById('nav');
   let html = `
@@ -73,10 +69,15 @@ function buildSidebar() {
       </ul>
     </div>
     
-    <!-- LỐI VÀO LIÊN THÔNG: Nhúng trực tiếp hai tệp HTML của bộ GEN -->
+    <!-- LỐI VÀO LIÊN THÔNG VÀ TỦ SÁCH MỚI -->
     <div class="nav-group">
       <div class="nav-group-label">Hệ Thống GEN-CI</div>
       <ul class="nav-list">
+        <li>
+          <a href="book.html" class="nav-item" style="display:flex; align-items:center; width:100%; padding:9px 14px; font-size:0.9rem; color:var(--brand-primary); font-weight:600;">
+            ${spanIc('book')} <span style="flex:1; margin-left:11px;">Tủ Sách Cẩm Nang (PDF)</span>
+          </a>
+        </li>
         <li>
           <a href="GEN-CI-Hoc-va-Ren.html" class="nav-item" style="display:flex; align-items:center; width:100%; padding:9px 14px; font-size:0.9rem; color:var(--ink-soft);">
             ${spanIc('feather')} <span style="flex:1; margin-left:11px;">Mã GEN — Học & Rèn</span>
@@ -90,7 +91,6 @@ function buildSidebar() {
       </ul>
     </div>`;
 
- 
   for (const g of manifest.groups) {
     html += `<div class="nav-group"><div class="nav-group-label">${g.label}</div><ul class="nav-list">`;
     for (const t of g.items) {
@@ -106,6 +106,7 @@ function buildSidebar() {
   nav.querySelectorAll('[data-route]').forEach(b =>
     b.addEventListener('click', () => navigate(b.dataset.route)));
 }
+
 function spanIc(name) { return `<span class="ic">${icon(name)}</span>`; }
 
 function setActive(route) {
@@ -113,7 +114,6 @@ function setActive(route) {
     b.classList.toggle('active', b.dataset.route === route));
 }
 
-// ── Định tuyến qua URL hash (deep-link được, F5 không mất chỗ) ──
 function navigate(route) {
   if (location.hash.slice(2) !== route) { location.hash = '#/' + route; }
   else render(route);
@@ -128,7 +128,6 @@ async function render(route) {
   const topic = findTopic(route);
   if (!topic) { views.renderHome(manifest, navigate); return; }
 
-  // Trang lõi
   if (topic.render === 'essay') {
     try {   const md = await fetchText(`content/${topic.id}/${topic.id}.md`);   views.renderEssay(topic, md); }
     catch { main_error(topic.label); }
@@ -138,29 +137,24 @@ async function render(route) {
 
   if (topic.render === 'relations') {
     try {
-      const data = JSON.parse(await fetchText('content/_relations.json'));
+      const data = JSON.parse(await fetchText('content/relations.json')); // Dùng tên file không có dấu _
       await views.renderRelations(topic, data);
     } catch { main_error(topic.label); }
     return;
   }
-// Thêm vào ngay dưới đoạn xử lý trang essay (khoảng dòng 132)
-   if (topic.render === 'pdf') {
-    views.renderPDF(topic, `content/cam_nang/pdf/${topic.id}.pdf`);
-    return;
-  }
+
   if (topic.render === 'quiz') {
     const banks = await loadQuizBanks();
     if (!banks.length) {
       document.getElementById('main-inner').innerHTML =
         `<div class="page-head"><h1 class="page-title">${topic.label}</h1>
-         <p class="page-desc">Chưa có kho câu hỏi nào. Hãy tạo file <code>content/&lt;id&gt;.quiz.md</code> cho các chủ đề.</p></div>`;
+         <p class="page-desc">Chưa có kho câu hỏi nào.</p></div>`;
       return;
     }
     views.renderQuiz(topic, banks, quizState);
     return;
   }
 
-// Trang framework
   try {
     const { md, insights, actual, legend } = await loadTopicContent(topic.id);
     views.renderTopic(topic, md, insights, actual, legend, state);
@@ -172,29 +166,21 @@ async function render(route) {
 function main_error(label) {
   document.getElementById('main-inner').innerHTML =
     `<div class="page-head"><h1 class="page-title">${label}</h1>
-     <p class="page-desc">Chưa đọc được nội dung. Hãy chắc rằng file <code>content/${label}</code> tồn tại,
-     và anh đang mở qua <code>http://localhost:2233</code> (không phải mở file trực tiếp).</p></div>`;
+     <p class="page-desc">Chưa đọc được nội dung.</p></div>`;
 }
 
-// Tối ưu hóa luồng dữ liệu tìm kiếm song hành - Triệt tiêu Muda chờ đợi
 async function buildSearchCorpus() {
   const corpus = [];
-  
-  // Lọc bỏ trang contemplate trước khi nạp
   const targetTopics = allTopics.filter(t => t.render !== 'contemplate');
 
-  // Phát lệnh nạp tất cả các file đồng thời (Parallel Fetch)
   const promises = targetTopics.map(async (t) => {
     try {
       const md = mdCache.get(t.id) || await fetchText(`content/${t.id}/${t.id}.md`);
       mdCache.set(t.id, md);
       corpus.push({ topic: t, items: flattenForSearch(md) });
-    } catch {
-      // Bỏ qua nếu chủ đề chưa có file .md
-    }
+    } catch {}
   });
 
-  // Đợi toàn bộ các tiến trình hoàn thành cùng lúc
   await Promise.all(promises);
   return corpus;
 }
@@ -214,38 +200,32 @@ function wireSearch() {
   });
 }
 
-// ── Tải các kho câu hỏi (.quiz.md) cho mọi chủ đề có file ──
 async function loadQuizBanks() {
   if (quizBanks) return quizBanks;
   quizBanks = [];
   for (const t of allTopics) {
-    if (t.core) continue; // chỉ lấy quiz của các framework
+    if (t.core) continue;
     try {
       const md = await fetchText(`content/${t.id}/${t.id}.quiz.md`);
       const questions = parseQuiz(md);
       if (questions.length) quizBanks.push({ topic: t, questions });
-    } catch { /* chủ đề chưa có kho câu hỏi */ }
+    } catch {}
   }
   return quizBanks;
 }
 
-// ── Khởi động ──
 async function init() {
   try {
     manifest = JSON.parse(await fetchText('content/manifest.json'));
-	// Thay vì await syncFromServer() thẳng, hãy bọc nó:
 	try {
 	  await store.syncFromServer();
-	  console.log("Đã sync xong dữ liệu từ server!");
 	} catch (err) {
 	  console.error("Lỗi syncFromServer:", err);
-	  // Thay vì crash, ta in lỗi ra console để xem
 	}	
   } catch (e) {
     document.getElementById('main-inner').innerHTML =
-      `<div class="page-head"><h1 class="page-title">Không tải được dữ liệu</h1>
-       <p class="page-desc">Hãy chạy qua server: <code>python server.py</code> rồi mở
-       <code>http://localhost:2233</code>. (Mở thẳng file sẽ bị trình duyệt chặn đọc nội dung.)</p></div>`;
+      `<div class="page-head"><h1 class="page-title">Lỗi cấu trúc dữ liệu</h1>
+       <p class="page-desc">Không tìm thấy hoặc sai định dạng file manifest.json</p></div>`;
     return;
   }
   allTopics = manifest.groups.flatMap(g => g.items);
